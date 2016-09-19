@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsClaimDataBank"
+	 targetNamespace="nsClaimDataBank"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="header"/>
+				<xs:element ref="body" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Reservado" type="xs:string"/>
+	<xs:element name="NumerodeRegistros" type="xs:string"/>
+	<xs:element name="ValorAcumuladodeUsos" type="xs:string"/>
+	<xs:element name="FechaGeneracionArchivo" type="xs:string"/>
+	<xs:element name="RFU" type="xs:string"/>
+	<xs:element name="IdentificadordeTransaccion" type="xs:string"/>
+	<xs:element name="CodigoBanco" type="xs:string"/>
+	<xs:element name="FechadeTransaccion" type="xs:string"/>
+	<xs:element name="MontodeUso" type="xs:string"/>
+	<xs:element name="DocumentodeIdentidad" type="xs:string"/>
+	<xs:element name="SerialTarjeta" type="xs:string"/>
+	<xs:element name="NombreEstacion-Parada" type="xs:string"/>
+	<xs:element name="CodigoEstacion-Parada" type="xs:string"/>
+	<xs:element name="header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Reservado"/>
+				<xs:element ref="NumerodeRegistros"/>
+				<xs:element ref="ValorAcumuladodeUsos"/>
+				<xs:element ref="FechaGeneracionArchivo"/>
+				<xs:element ref="RFU"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="body">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IdentificadordeTransaccion"/>
+				<xs:element ref="CodigoBanco"/>
+				<xs:element ref="FechadeTransaccion"/>
+				<xs:element ref="MontodeUso"/>
+				<xs:element ref="DocumentodeIdentidad"/>
+				<xs:element ref="SerialTarjeta"/>
+				<xs:element ref="NombreEstacion-Parada"/>
+				<xs:element ref="CodigoEstacion-Parada"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

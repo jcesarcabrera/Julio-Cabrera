@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsClaimDataBankExt"
+	 targetNamespace="nsClaimDataBankExt"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="header"/>
+				<xs:element ref="body" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Reservado">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:length value="8"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="NumerodeRegistros">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{8}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="ValorAcumuladodeUsos">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{13}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="FechaGeneracionArchivo">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[1-2][0-2][0-9][0-9][0-1][0-9][0-3][0-9]"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="RFU">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{82}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="IdentificadordeTransaccion">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{20}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CodigoBanco">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[a-zA-Z0-9]{3}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="FechadeTransaccion">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[1-2][0-2][0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-9][0-9][0-9][0-9]"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MontodeUso">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{7}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="DocumentodeIdentidad">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{16}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="SerialTarjeta">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:length value="16"/>
+				<xs:whiteSpace value="collapse"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="NombreEstacion-Parada">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:length value="40"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CodigoEstacion-Parada">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{7}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Reservado"/>
+				<xs:element ref="NumerodeRegistros"/>
+				<xs:element ref="ValorAcumuladodeUsos"/>
+				<xs:element ref="FechaGeneracionArchivo"/>
+				<xs:element ref="RFU"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="body">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IdentificadordeTransaccion"/>
+				<xs:element ref="CodigoBanco"/>
+				<xs:element ref="FechadeTransaccion"/>
+				<xs:element ref="MontodeUso"/>
+				<xs:element ref="DocumentodeIdentidad"/>
+				<xs:element ref="SerialTarjeta"/>
+				<xs:element ref="NombreEstacion-Parada"/>
+				<xs:element ref="CodigoEstacion-Parada"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

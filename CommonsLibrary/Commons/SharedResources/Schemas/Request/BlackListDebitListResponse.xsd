@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsBlackListDebitListResponseFcs"
+	 targetNamespace="nsBlackListDebitListResponseFcs"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RequestID"/>
+				<xs:element ref="RequestDateTime"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RequestID" type="xs:string"/>
+	<xs:element name="RequestDateTime" type="xs:string"/>
+</xs:schema>

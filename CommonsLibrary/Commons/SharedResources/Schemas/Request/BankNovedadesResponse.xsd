@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsNovedadesResponseBank"
+	 targetNamespace="nsNovedadesResponseBank"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="body" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="body">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DocumentodeIdentidad"/>
+				<xs:element ref="SerialTarjeta"/>
+				<xs:element ref="NombresTitular"/>
+				<xs:element ref="PrimerApellido"/>
+				<xs:element ref="SegundoApellido"/>
+				<xs:element ref="DireccionTitular"/>
+				<xs:element ref="Respuesta"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentodeIdentidad" type="xs:string"/>
+	<xs:element name="SerialTarjeta" type="xs:string"/>
+	<xs:element name="NombresTitular" type="xs:string"/>
+	<xs:element name="PrimerApellido" type="xs:string"/>
+	<xs:element name="SegundoApellido" type="xs:string"/>
+	<xs:element name="DireccionTitular" type="xs:string"/>
+	<xs:element name="Respuesta" type="xs:string"/>
+</xs:schema>

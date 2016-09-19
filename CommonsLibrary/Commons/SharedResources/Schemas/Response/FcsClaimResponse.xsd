@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsClaimResponseFcs"
+	 targetNamespace="nsClaimResponseFcs"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="JSON" type="JSONType"/>
+	<xs:complexType name="bodyType">
+		<xs:all>
+			<xs:element name="UserType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ClaimDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="UsageDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="ClearingDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="FCSCardNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="TransactionSequenceNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="CardTransactionNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="AmountUsed" type="xs:int" minOccurs="0"/>
+			<xs:element name="RemainingDailyBalance" type="xs:int" minOccurs="0"/>
+			<xs:element name="DailyMaxDebitUse" type="xs:int" minOccurs="0"/>
+			<xs:element name="TransportMeansGroupCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="TransportOperatorID" type="xs:string" minOccurs="0"/>
+			<xs:element name="LineID" type="xs:string" minOccurs="0"/>
+			<xs:element name="LineNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="RouteID" type="xs:string" minOccurs="0"/>
+			<xs:element name="RouteNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="StationBusStopID" type="xs:string" minOccurs="0"/>
+			<xs:element name="StationBusStopNm" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusID" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeviceID" type="xs:string" minOccurs="0"/>
+			<xs:element name="NumberTransfers" type="xs:int" minOccurs="0"/>
+			<xs:element name="CardProfile" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReClaimCode" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="headerType">
+		<xs:all>
+			<xs:element name="BankID" type="xs:string" minOccurs="0"/>
+			<xs:element name="OperationCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ResponseDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="TotalBodyRecordsCount" type="xs:int" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="JSONType">
+		<xs:sequence>
+			<xs:element name="header" type="headerType" minOccurs="0"/>
+			<xs:element name="body" type="bodyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="trailer" type="trailerType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="trailerType">
+		<xs:all>
+			<xs:element name="TotalBodyRecordsCount" type="xs:int" minOccurs="0"/>
+			<xs:element name="TotalBodyUseAmount" type="xs:int" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>
