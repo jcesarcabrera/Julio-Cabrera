@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Response/ChargingNetworkOperation.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/AgentTransactionsRequest.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd" schemaLocation="/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" schemaLocation="/Schemas/Version 1.0.0/Request/DateRequest.xsd"/>
+    <pd:name>REST/BusinessProcesses/Version 1.0.0/GetAgentTransactions/GetAgentTransactions.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx5:DateRequest"/>
+    <pd:startX>50</pd:startX>
+    <pd:startY>67</pd:startY>
+    <pd:returnBindings>
+        <ResponseString>
+            <xsl:value-of select="$varProcessResponse/ResponseString"/>
+        </ResponseString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ResponseString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1120</pd:endX>
+    <pd:endY>282</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varProcessResponse>
+            <xsd:element name="ResponseString" type="xsd:string"/>
+        </varProcessResponse>
+        <varErrorMessage ref="pfx2:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1456152581504</pd:targetNamespace>
+    <pd:activity name="Validate Token">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>190</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <processName>/GeneralProcesses/SecurityProcesses/DalValidateToken.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SecurityToken>
+                    <xsl:value-of select="$Start/pfx5:DateRequest/pfx5:SecurityToken"/>
+                </SecurityToken>
+                <ProcessName>
+                    <xsl:value-of select="&quot;GetAgentTransactions&quot;"/>
+                </ProcessName>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid Token">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>192</pd:x>
+        <pd:y>282</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Validate-Token/root/pfx2:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Transactions">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>354</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <processName>/GeneralProcesses/DataAccessProcesses/DalGetAgentTransactions.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <ClearingDate>
+                    <xsl:value-of select="$Start/pfx5:DateRequest/pfx5:RequestDate"/>
+                </ClearingDate>
+                <UserId>
+                    <xsl:value-of select="$Validate-Token/root/UserId"/>
+                </UserId>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Transactions Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>352</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-Transactions/root/pfx2:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Transaction Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>560</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <element ref="pfx4:ChargingNetworkOperation"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:ChargingNetworkOperation>
+                <pfx4:TransactionsSummary>
+                    <pfx4:Clearingdate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;substring($Start/pfx5:DateRequest/pfx5:RequestDate,1,4),&#xA;&#x9;substring($Start/pfx5:DateRequest/pfx5:RequestDate,5,2),&#xA;&#x9;substring($Start/pfx5:DateRequest/pfx5:RequestDate,7,2), 0, 0, 0)"/>
+                    </pfx4:Clearingdate>
+                    <pfx4:TotalRegistries>
+                        <xsl:value-of select="count($Get-Transactions/root/AgentTransactions/ns1:AgentTransaction)"/>
+                    </pfx4:TotalRegistries>
+                    <pfx4:TotalValue>
+                        <xsl:value-of select="sum( $Get-Transactions/root/AgentTransactions/ns1:AgentTransaction/ns1:TransactionValue)"/>
+                    </pfx4:TotalValue>
+                </pfx4:TransactionsSummary>
+                <pfx4:Transactions>
+                    <xsl:for-each select="$Get-Transactions/root/AgentTransactions/ns1:AgentTransaction">
+                        <ns1:AgentTransaction>
+                            <xsl:if test="ns1:TransactionId">
+                                <ns1:TransactionId>
+                                    <xsl:value-of select="ns1:TransactionId"/>
+                                </ns1:TransactionId>
+                            </xsl:if>
+                            <xsl:if test="ns1:TransactionClearingDate">
+                                <ns1:TransactionClearingDate>
+                                    <xsl:value-of select="ns1:TransactionClearingDate"/>
+                                </ns1:TransactionClearingDate>
+                            </xsl:if>
+                            <xsl:if test="ns1:TransactionDate">
+                                <ns1:TransactionDate>
+                                    <xsl:value-of select="ns1:TransactionDate"/>
+                                </ns1:TransactionDate>
+                            </xsl:if>
+                            <xsl:if test="ns1:AgentNumber">
+                                <ns1:AgentNumber>
+                                    <xsl:value-of select="ns1:AgentNumber"/>
+                                </ns1:AgentNumber>
+                            </xsl:if>
+                            <xsl:if test="ns1:AgentName">
+                                <ns1:AgentName>
+                                    <xsl:value-of select="ns1:AgentName"/>
+                                </ns1:AgentName>
+                            </xsl:if>
+                            <xsl:if test="ns1:AgentId">
+                                <ns1:AgentId>
+                                    <xsl:value-of select="ns1:AgentId"/>
+                                </ns1:AgentId>
+                            </xsl:if>
+                            <xsl:if test="ns1:PosId">
+                                <ns1:PosId>
+                                    <xsl:value-of select="ns1:PosId"/>
+                                </ns1:PosId>
+                            </xsl:if>
+                            <xsl:if test="ns1:CardNumber">
+                                <ns1:CardNumber>
+                                    <xsl:value-of select="ns1:CardNumber"/>
+                                </ns1:CardNumber>
+                            </xsl:if>
+                            <xsl:if test="ns1:CardType">
+                                <ns1:CardType>
+                                    <xsl:value-of select="ns1:CardType"/>
+                                </ns1:CardType>
+                            </xsl:if>
+                            <xsl:if test="ns1:ProfileName">
+                                <ns1:ProfileName>
+                                    <xsl:value-of select="ns1:ProfileName"/>
+                                </ns1:ProfileName>
+                            </xsl:if>
+                            <xsl:if test="ns1:TransactionType">
+                                <ns1:TransactionType>
+                                    <xsl:value-of select="ns1:TransactionType"/>
+                                </ns1:TransactionType>
+                            </xsl:if>
+                            <xsl:if test="ns1:RechargeType">
+                                <ns1:RechargeType>
+                                    <xsl:value-of select="ns1:RechargeType"/>
+                                </ns1:RechargeType>
+                            </xsl:if>
+                            <xsl:if test="ns1:BalanceBefore">
+                                <ns1:BalanceBefore>
+                                    <xsl:value-of select="ns1:BalanceBefore"/>
+                                </ns1:BalanceBefore>
+                            </xsl:if>
+                            <xsl:if test="ns1:TransactionValue">
+                                <ns1:TransactionValue>
+                                    <xsl:value-of select="ns1:TransactionValue"/>
+                                </ns1:TransactionValue>
+                            </xsl:if>
+                            <xsl:if test="ns1:BalanceAfter">
+                                <ns1:BalanceAfter>
+                                    <xsl:value-of select="ns1:BalanceAfter"/>
+                                </ns1:BalanceAfter>
+                            </xsl:if>
+                            <xsl:if test="ns1:NegativeBalance">
+                                <ns1:NegativeBalance>
+                                    <xsl:value-of select="ns1:NegativeBalance"/>
+                                </ns1:NegativeBalance>
+                            </xsl:if>
+                        </ns1:AgentTransaction>
+                    </xsl:for-each>
+                </pfx4:Transactions>
+                <pfx4:ErrorCount>
+                    <xsl:value-of select="0"/>
+                </pfx4:ErrorCount>
+            </pfx4:ChargingNetworkOperation>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Transactions">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>762</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx4:ChargingNetworkOperation"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Map-Transaction-Data/pfx4:ChargingNetworkOperation"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>941</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Transactions/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Unkown Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>773</pd:x>
+        <pd:y>415</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx4:ChargingNetworkOperation"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Map-Exception/pfx4:ChargingNetworkOperation"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>942</pd:x>
+        <pd:y>285</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>437</pd:x>
+        <pd:y>406</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>775</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>false</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx4:ChargingNetworkOperation"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Map-Error-Data/pfx4:ChargingNetworkOperation"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Error Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>618</pd:x>
+        <pd:y>285</pd:y>
+        <config>
+            <element ref="pfx4:ChargingNetworkOperation"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:ChargingNetworkOperation>
+                <pfx4:ErrorCount>
+                    <xsl:value-of select="1"/>
+                </pfx4:ErrorCount>
+                <xsl:copy-of select="$varErrorMessage/pfx2:Error"/>
+            </pfx4:ChargingNetworkOperation>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Exception">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>621</pd:x>
+        <pd:y>405</pd:y>
+        <config>
+            <element ref="pfx4:ChargingNetworkOperation"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:ChargingNetworkOperation>
+                <pfx4:ErrorCount>
+                    <xsl:value-of select="1"/>
+                </pfx4:ErrorCount>
+                <pfx2:Error>
+                    <pfx2:ErrorCode>
+                        <xsl:value-of select="&quot;99&quot;"/>
+                    </pfx2:ErrorCode>
+                    <pfx2:ErrorMessage>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </pfx2:ErrorMessage>
+                </pfx2:Error>
+            </pfx4:ChargingNetworkOperation>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Unkown Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>945</pd:x>
+        <pd:y>416</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Unkown-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Validate Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Get Transactions</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate-Token/root/ValidSecurityToken = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Invalid Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transactions</pd:from>
+        <pd:to>Map Transaction Data</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Transactions/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transactions</pd:from>
+        <pd:to>Transactions Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Transaction Data</pd:from>
+        <pd:to>Render Transactions</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Transactions</pd:from>
+        <pd:to>Response OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transactions Error</pd:from>
+        <pd:to>Map Error Data</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid Token</pd:from>
+        <pd:to>Map Error Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Error Data</pd:from>
+        <pd:to>Render Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Error</pd:from>
+        <pd:to>Response Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Unkown Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Unkown Error</pd:from>
+        <pd:to>Response Unkown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Exception</pd:from>
+        <pd:to>Render Unkown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Map Exception</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

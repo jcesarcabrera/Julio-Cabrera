@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
+    <pd:name>Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File.process</pd:name>
+    <pd:startName>TimerRejectedAR</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="TimerRejectedAR">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>55</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <StartTime>%%Mail/Timer%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>1</TimeInterval>
+            <FrequencyIndex>Day</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>663</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472841840820</pd:targetNamespace>
+    <pd:activity name="Rejected_Transactions">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>172</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/Rejected_Transactions.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SendMailAttachment">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>410</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Commons/SendMailAttachment.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Mail>
+                <mail_to>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Mail/RejectedTransactions_MailTo"/>
+                </mail_to>
+                <subject>
+                    <xsl:value-of select="concat(&quot;Davivienda - Usos rechazados &quot;, tib:add-to-date(current-date(), 0, 0, -1))"/>
+                </subject>
+                <fullfilename>
+                    <xsl:value-of select="$Rejected_Transactions/Rejected_Transactions_File"/>
+                </fullfilename>
+                <message>
+                    <xsl:value-of select="concat(&quot;Se envia adjunto Archivo con los usos rechazados por el banco correspondientes al dia &quot;, tib:add-to-date(current-date(), 0, 0, -1))"/>
+                </message>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </Mail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Start_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>287</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId))"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Hibirida Davivienda&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="concat(&quot;Comienza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
+                </ns12:message>
+                <ns12:detail>
+                    <xsl:value-of select="tib:substring-after-last($Rejected_Transactions/Rejected_Transactions_File, &quot;\&quot;)"/>
+                </ns12:detail>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>666</pd:x>
+        <pd:y>137</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns1:Errors_Save>
+                <ns1:error_message>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </ns1:error_message>
+                <ns1:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns1:id_process>
+            </ns1:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="End_log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId))"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Hibirida Davivienda&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="concat(&quot;Finaliza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
+                </ns12:message>
+                <ns12:detail>
+                    <xsl:value-of select="tib:substring-after-last($Rejected_Transactions/Rejected_Transactions_File, &quot;\&quot;)"/>
+                </ns12:detail>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>560</pd:x>
+        <pd:y>139</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>TimerRejectedAR</pd:from>
+        <pd:to>Rejected_Transactions</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start_Log</pd:from>
+        <pd:to>SendMailAttachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rejected_Transactions</pd:from>
+        <pd:to>Start_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SendMailAttachment</pd:from>
+        <pd:to>End_log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>End_log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

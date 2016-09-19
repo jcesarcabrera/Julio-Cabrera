@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns5="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns6="http://www.cafam.com.co/medications/commons/ErrorLogs" xmlns:ns7="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx="http://xmlns.tibco.com/body" xmlns:ns2="http://xmlns.tibco.com/encodings/mime" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.cafam.com.co/medications/commons/Datalogs" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType">
+    <pd:name>Commons/MailSend.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="to" type="xsd:string"/>
+                    <xsd:element name="subject" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Error" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="process" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="detalle" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="stackTrace" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Attachment" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="attachmentName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="attachmentBinary" type="xsd:base64Binary" minOccurs="0"/>
+                                <xsd:element name="attachmentText" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="id_proceso" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <xsl:choose>
+            <xsl:when test="$_error/ns1:ErrorReport!=&quot; &quot;">
+                <Error>
+                    <Message_Error>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </Message_Error>
+                    <CodeError>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </CodeError>
+                </Error>
+            </xsl:when>
+            <xsl:otherwise>
+                <Error>
+                    <Message_Error>
+                        <xsl:value-of select="&quot; &quot;"/>
+                    </Message_Error>
+                    <CodeError>
+                        <xsl:value-of select="&quot; &quot;"/>
+                    </CodeError>
+                </Error>
+            </xsl:otherwise>
+        </xsl:choose>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Error">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Message_Error" type="xsd:string"/>
+                    <xsd:element name="CodeError" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>271</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Error>
+            <xsd:element name="Error" type="xsd:string"/>
+        </Error>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1434030819985</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>70</pd:x>
+        <pd:y>154</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorMessage">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>154</pd:y>
+        <config>
+            <variableName>Error</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="$_error/ns1:ErrorReport!=&quot; &quot;">
+                    <Error>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </Error>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Error>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </Error>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>174</pd:x>
+        <pd:y>154</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns7:Errors_Save>
+                <ns7:error_message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </ns7:error_message>
+                <ns7:id_process>
+                    <xsl:value-of select="$Start/input/id_proceso"/>
+                </ns7:id_process>
+            </ns7:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Mail">
+        <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+        <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+        <pd:x>143</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <newMimeSupport>true</newMimeSupport>
+            <inputOutputVersion>5.2.0</inputOutputVersion>
+            <authenticate>true</authenticate>
+            <password/>
+            <host>%%Connections/Mail/Host%%</host>
+            <username/>
+            <useSsl>true</useSsl>
+            <ns0:ssl xmlns:ns0="http://www.tibco.com/xmlns/aemeta/services/2002">
+                <ns0:strongCipherSuitesOnly>true</ns0:strongCipherSuitesOnly>
+                <ns0:cert isRef="true">%%BW_GLOBAL_TRUSTED_CA_STORE%%</ns0:cert>
+            </ns0:ssl>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+        </config>
+        <pd:inputBindings>
+            <ns:mailActivityInput>
+                <username>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Connections/Mail/From"/>
+                </username>
+                <password>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Connections/Mail/Password"/>
+                </password>
+                <from>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Connections/Mail/From"/>
+                </from>
+                <to>
+                    <xsl:value-of select="$Start/input/to"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="$Start/input/subject"/>
+                </subject>
+                <sentdate>
+                    <xsl:value-of select="current-dateTime()"/>
+                </sentdate>
+                <pfx:bodyElement>
+                    <bodyText>
+                        <xsl:value-of select="$Start/input/message"/>
+                    </bodyText>
+                </pfx:bodyElement>
+                <Headers>
+                    <Content-Type>
+                        <xsl:value-of select="'text/html'"/>
+                    </Content-Type>
+                </Headers>
+                <ns2:mimeEnvelopeElement>
+                    <mimePart>
+                        <mimeHeaders>
+                            <content-disposition>
+                                <xsl:value-of select="concat(&quot;attachment;filename=&quot;, $Start/input/Attachment/attachmentName)"/>
+                            </content-disposition>
+                            <content-type>
+                                <xsl:value-of select="$Start/input/Attachment/content-type"/>
+                            </content-type>
+                        </mimeHeaders>
+                        <xsl:choose>
+                            <xsl:when test="string-length(tib:trim($Start/input/Attachment/attachmentBinary))>0">
+                                <binaryContent>
+                                    <xsl:value-of select="$Start/input/Attachment/attachmentBinary"/>
+                                </binaryContent>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <textContent>
+                                    <xsl:value-of select="$Start/input/Attachment/attachmentText"/>
+                                </textContent>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </mimePart>
+                </ns2:mimeEnvelopeElement>
+            </ns:mailActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>ErrorMessage</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Send Mail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Mail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>ErrorMessage</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/RechargePoints.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/RechargePoints.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="RechargePoints">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RechargePoint" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RechargePoint">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TransactionType"/>
+				<xs:element ref="TercId"/>
+				<xs:element ref="PointName"/>
+				<xs:element ref="PointTipology" minOccurs="0"/>
+				<xs:element ref="Category" minOccurs="0"/>
+				<xs:element ref="PointAddress" minOccurs="0"/>
+				<xs:element ref="PointNeighborhood" minOccurs="0"/>
+				<xs:element ref="PointLocality" minOccurs="0"/>
+				<xs:element ref="PointPhone" minOccurs="0"/>
+				<xs:element ref="RepresentantId" minOccurs="0"/>
+				<xs:element ref="RepresentantName" minOccurs="0"/>
+				<xs:element ref="XCoordinate" minOccurs="0"/>
+				<xs:element ref="YCoordinate" minOccurs="0"/>
+				<xs:element ref="Status"/>
+				<xs:element ref="PreCharge"/>
+				<xs:element ref="InstalationDate"/>
+				<xs:element ref="RetirementDate" minOccurs="0"/>
+				<xs:element ref="SITPRetirementCause" minOccurs="0"/>
+				<xs:element ref="PosId"/>
+				<xs:element ref="LSAM"/>
+				<xs:element ref="TerminalCode"/>
+				<xs:element ref="Monday2Friday" minOccurs="0"/>
+				<xs:element ref="Saturday" minOccurs="0"/>
+				<xs:element ref="SundayAndHolidays" minOccurs="0"/>
+				<xs:element ref="LSAMF2" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransactionType" type="xs:byte"/>
+	<xs:element name="TercId" type="xs:int"/>
+	<xs:element name="PointName" type="xs:string"/>
+	<xs:element name="PointTipology" type="xs:string"/>
+	<xs:element name="Category" type="xs:short"/>
+	<xs:element name="PointAddress" type="xs:string"/>
+	<xs:element name="PointNeighborhood" type="xs:string"/>
+	<xs:element name="PointLocality" type="xs:byte"/>
+	<xs:element name="PointPhone" type="xs:string"/>
+	<xs:element name="RepresentantId" type="xs:string"/>
+	<xs:element name="RepresentantName" type="xs:string"/>
+	<xs:element name="XCoordinate" type="xs:decimal"/>
+	<xs:element name="YCoordinate" type="xs:decimal"/>
+	<xs:element name="Status" type="xs:byte"/>
+	<xs:element name="PreCharge" type="xs:decimal"/>
+	<xs:element name="InstalationDate" type="xs:dateTime"/>
+	<xs:element name="RetirementDate" type="xs:dateTime"/>
+	<xs:element name="SITPRetirementCause" type="xs:string"/>
+	<xs:element name="PosId" type="xs:string"/>
+	<xs:element name="LSAM" type="xs:string"/>
+	<xs:element name="TerminalCode" type="xs:string"/>
+	<xs:element name="Monday2Friday" type="xs:string"/>
+	<xs:element name="Saturday" type="xs:string"/>
+	<xs:element name="SundayAndHolidays" type="xs:string"/>
+	<xs:element name="LSAMF2" type="xs:string"/>
+</xs:schema>

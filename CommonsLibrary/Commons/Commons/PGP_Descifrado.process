@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>Commons/PGP_Descifrado.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="fullNameInputFile" type="xsd:string"/>
+                    <xsd:element name="pathOutputFile" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <Uncifred_File>
+            <FileName>
+                <xsl:value-of select="concat($Start/input/pathOutputFile , tib:substring-before-last(tib:substring-after-last($Start/input/fullNameInputFile, &quot;\&quot;), '.'))"/>
+            </FileName>
+        </Uncifred_File>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Uncifred_File">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FileName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>414</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472353549606</pd:targetNamespace>
+    <pd:activity name="Descifrado">
+        <pd:type>com.tibco.plugin.cmdexec.CmdExecActivity</pd:type>
+        <pd:resourceType>ae.activities.CmdExecActivity</pd:resourceType>
+        <pd:description>Proceso para cifrar archivos</pd:description>
+        <pd:x>289</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <outputToString>true</outputToString>
+            <lineSplit>None</lineSplit>
+        </config>
+        <pd:inputBindings>
+            <CmdInput>
+                <command>
+                    <xsl:value-of select="$External-Command-PGP/Input/ExternalCommand"/>
+                </command>
+            </CmdInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="External Command PGP">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>146</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Input">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="ExternalCommand" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <ExternalCommand>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Decrypt/PGPExe,&quot; --batch --yes --passphrase &quot;,&#xA;$_globalVariables/ns:GlobalVariables/Decrypt/ClaveDecrypt,  &quot; -o &quot;,&#xA;$Start/input/pathOutputFile , tib:substring-before-last(tib:substring-after-last($Start/input/fullNameInputFile, &quot;\&quot;), &quot;.&quot;),&quot; --decrypt -r &quot;,&#xA; $_globalVariables/ns:GlobalVariables/Decrypt/KeyUserPrivate,&quot; &quot;,  $Start/input/fullNameInputFile)"/>
+                </ExternalCommand>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>External Command PGP</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>External Command PGP</pd:from>
+        <pd:to>Descifrado</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Descifrado</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

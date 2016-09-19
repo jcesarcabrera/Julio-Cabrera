@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>AE_Start_Time</name>
+			<value>2016 september 01 00:05:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472686484872</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>AR_StartTime</name>
+			<value>2016 september 01 01:05:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472686484903</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Retries_Intervals</name>
+			<value>300000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473347193094</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SFTP_Retries</name>
+			<value>120000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473775584318</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Timer_Contingencia</name>
+			<value>no value</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473345698479</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

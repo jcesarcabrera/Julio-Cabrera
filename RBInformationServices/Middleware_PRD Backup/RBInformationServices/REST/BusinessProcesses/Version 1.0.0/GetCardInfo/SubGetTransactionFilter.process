@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/TransactionInfoFilter.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Control/TransactionInfoFilter.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd" schemaLocation="/Schemas/Control/CardInfoFilter.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/TransactionInfoFilter.xsd" schemaLocation="/Schemas/Version 1.0.0/Control/TransactionInfoFilter.xsd"/>
+    <pd:name>REST/BusinessProcesses/Version 1.0.0/GetCardInfo/SubGetTransactionFilter.process</pd:name>
+    <pd:description/>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FieldList" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>34</pd:startX>
+    <pd:startY>397</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Add-Filter/pfx3:Transaction"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:Transaction"/>
+    <pd:endX>984</pd:endX>
+    <pd:endY>404</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varTransactionType>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varTransactionType>
+        <varStationBus>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varStationBus>
+        <varUsageDate>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varUsageDate>
+        <varRemainingDailyPreBalance>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varRemainingDailyPreBalance>
+        <varChargePoint>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varChargePoint>
+        <varTransactionTypeCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varTransactionTypeCode>
+        <varAmount>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varAmount>
+        <varRemainingDailyPosBalance>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varRemainingDailyPosBalance>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1449687973749</pd:targetNamespace>
+    <pd:activity name="Field List">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>163</pd:x>
+        <pd:y>399</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <value>
+                    <xsl:value-of select="&quot;TransactionTypeCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;TransactionType&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;UsageDate&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Amount&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;StationBus&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;RemainingDailyPreBalance&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;RemainingDailyPosBalance&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;ChargePoint&quot;"/>
+                </value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Create Filter">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>263</pd:x>
+        <pd:y>6</pd:y>
+        <pd:width>494</pd:width>
+        <pd:height>779</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Field-List/root/value</pd:over>
+            <pd:iterationElementSlot>Field</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>Filter</pd:outSlot>
+            <pd:activityOutputName>Add Filter</pd:activityOutputName>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Check Filter</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Out</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Filter</pd:from>
+            <pd:to>In</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>TransactionTypeCode</pd:to>
+            <pd:xpathDescription>TransactionTypeCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "transactiontypecode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>TransactionType</pd:to>
+            <pd:xpathDescription>TransactionType</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "transactiontype"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>UsageDate</pd:to>
+            <pd:xpathDescription>UsageDate</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "usagedate"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Amount</pd:to>
+            <pd:xpathDescription>Amount</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "amount"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>StationBus</pd:to>
+            <pd:xpathDescription>StationBus</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "stationbus"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>RemainingDaily PreBalance</pd:to>
+            <pd:xpathDescription>RemainingDailyPreBalance</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "remainingdailyprebalance"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>RemainingDaily PosBalance</pd:to>
+            <pd:xpathDescription>RemainingDailyPosBalance</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "remainingdailyposbalance"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>ChargePoint</pd:to>
+            <pd:xpathDescription>ChargePoint</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "chargepoint"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>TransactionTypeCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>TransactionType</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>UsageDate</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Amount</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>StationBus</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RemainingDaily PreBalance</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RemainingDaily PosBalance</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ChargePoint</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>No match</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>No match</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Check Filter">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>338</pd:x>
+            <pd:y>405</pd:y>
+            <config>
+                <processName>/GeneralProcesses/CommonProcesses/StringLookup.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <List>
+                        <xsl:value-of select="$Start/root/FieldList"/>
+                    </List>
+                    <Value>
+                        <xsl:value-of select="$Field/value"/>
+                    </Value>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="TransactionTypeCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>352</pd:x>
+            <pd:y>65</pd:y>
+            <config>
+                <variableName>varTransactionTypeCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="TransactionType">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>451</pd:x>
+            <pd:y>109</pd:y>
+            <config>
+                <variableName>varTransactionType</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="UsageDate">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>556</pd:x>
+            <pd:y>153</pd:y>
+            <config>
+                <variableName>varUsageDate</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Amount">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>583</pd:x>
+            <pd:y>243</pd:y>
+            <config>
+                <variableName>varAmount</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="StationBus">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>591</pd:x>
+            <pd:y>345</pd:y>
+            <config>
+                <variableName>varStationBus</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="RemainingDaily PreBalance">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>578</pd:x>
+            <pd:y>470</pd:y>
+            <config>
+                <variableName>varRemainingDailyPreBalance</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="RemainingDaily PosBalance">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>547</pd:x>
+            <pd:y>564</pd:y>
+            <config>
+                <variableName>varRemainingDailyPosBalance</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="ChargePoint">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>503</pd:x>
+            <pd:y>657</pd:y>
+            <config>
+                <variableName>varChargePoint</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="In">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>428</pd:x>
+            <pd:y>403</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Out">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>677</pd:x>
+            <pd:y>401</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="No match">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>433</pd:x>
+            <pd:y>730</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Add Filter">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>851</pd:x>
+        <pd:y>404</pd:y>
+        <config>
+            <element ref="pfx3:Transaction"/>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Transaction>
+                <pfx3:TransactionTypeCode>
+                    <xsl:value-of select="$varTransactionTypeCode/FilterOn"/>
+                </pfx3:TransactionTypeCode>
+                <pfx3:TransactionType>
+                    <xsl:value-of select="$varTransactionType/FilterOn"/>
+                </pfx3:TransactionType>
+                <pfx3:UsageDate>
+                    <xsl:value-of select="$varUsageDate/FilterOn"/>
+                </pfx3:UsageDate>
+                <pfx3:Amount>
+                    <xsl:value-of select="$varAmount/FilterOn"/>
+                </pfx3:Amount>
+                <pfx3:StationBus>
+                    <xsl:value-of select="$varStationBus/FilterOn"/>
+                </pfx3:StationBus>
+                <pfx3:RemainingDailyPreBalance>
+                    <xsl:value-of select="$varRemainingDailyPreBalance/FilterOn"/>
+                </pfx3:RemainingDailyPreBalance>
+                <pfx3:RemainingDailyPosBalance>
+                    <xsl:value-of select="$varRemainingDailyPosBalance/FilterOn"/>
+                </pfx3:RemainingDailyPosBalance>
+                <pfx3:ChargePoint>
+                    <xsl:value-of select="$varChargePoint/FilterOn"/>
+                </pfx3:ChargePoint>
+            </pfx3:Transaction>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Field List</pd:from>
+        <pd:to>Create Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Filter</pd:from>
+        <pd:to>Add Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Add Filter</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Field List</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

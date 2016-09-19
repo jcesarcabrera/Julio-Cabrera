@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HcsStatusCard.xsd" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>ReportingProcesses/HybridCardSystem/GetHcsStatusReport.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>41</pd:startX>
+    <pd:startY>206</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>888</pd:endX>
+    <pd:endY>202</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1467238114150</pd:targetNamespace>
+    <pd:group name="Iteration Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>57</pd:y>
+        <pd:width>549</pd:width>
+        <pd:height>274</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Get-Bank-List/root/BankList/Bank</pd:over>
+            <pd:iterationElementSlot>CurrentBank</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get Status Report</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Go</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send Mail</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Status Report</pd:from>
+            <pd:to>Render Status Report Data</pd:to>
+            <pd:xpathDescription>OK</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Get-Status-Report/root/Error="false"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render Status Report Data</pd:from>
+            <pd:to>Send Mail</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Status Report</pd:from>
+            <pd:to>Go</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Render Status Report Data">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>445</pd:x>
+            <pd:y>124</pd:y>
+            <config>
+                <ParseSharedConfig>/FileFormats/StatusReport.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <xsl:for-each select="$Get-Status-Report/root/ns:HcsStatusCard/ns:StatusCard">
+                        <root>
+                            <BankId>
+                                <xsl:value-of select="ns:BankId"/>
+                            </BankId>
+                            <BankName>
+                                <xsl:value-of select="ns:BankName"/>
+                            </BankName>
+                            <CardNumber>
+                                <xsl:value-of select="ns:CardNumber"/>
+                            </CardNumber>
+                            <CreatedAt>
+                                <xsl:value-of select="ns:CreatedAt"/>
+                            </CreatedAt>
+                            <UpdatedAt>
+                                <xsl:value-of select="ns:UpdatedAt"/>
+                            </UpdatedAt>
+                            <Status>
+                                <xsl:value-of select="ns:Status"/>
+                            </Status>
+                        </root>
+                    </xsl:for-each>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Status Report">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>316</pd:x>
+            <pd:y>203</pd:y>
+            <config>
+                <processName>/GeneralProcesses/DataAccessProcesses/DalGetHcsStatusCardReport.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <BankId>
+                        <xsl:value-of select="$CurrentBank/Bank/BankId"/>
+                    </BankId>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Go">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>529</pd:x>
+            <pd:y>203</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Send Mail">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>610</pd:x>
+            <pd:y>115</pd:y>
+            <config>
+                <processName>/MailingProcesses/SendMail.process</processName>
+            </config>
+            <pd:inputBindings>
+                <input>
+                    <to>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/HcsUsers"/>
+                    </to>
+                    <subject>
+                        <xsl:value-of select="concat(&quot;Reporte Estado Tarjetas &quot;, $Get-Bank-List/root/BankList/Bank[BankId = $CurrentBank/Bank/BankId]/BankName)"/>
+                    </subject>
+                    <message>
+                        <xsl:value-of select="concat(&quot;Reporte del  &quot;, tib:format-dateTime('yyyyMMddHHmmss', current-dateTime()))"/>
+                    </message>
+                    <Attachment>
+                        <content-type>
+                            <xsl:value-of select="&quot;text/csv&quot;"/>
+                        </content-type>
+                        <attachmentName>
+                            <xsl:value-of select="concat(&quot;Status_BID&quot;&#xA;,string($CurrentBank/Bank/BankId)&#xA;,&quot;_&quot;&#xA;,tib:format-dateTime('yyyyMMddHHmmss', current-dateTime())&#xA;,&quot;.csv&quot;)"/>
+                        </attachmentName>
+                        <attachmentText>
+                            <xsl:value-of select="concat(&quot;BankId,BankName,CardNumber,CreatedAt,UpdatedAt,Status&quot;,&quot;&#xA;&quot;,$Render-Status-Report-Data/Text)"/>
+                        </attachmentText>
+                    </Attachment>
+                </input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Get Bank List">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>149</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <processName>/GeneralProcesses/DataAccessProcesses/DalGetHcsBankList.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Iteration Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Bank List</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Bank List</pd:from>
+        <pd:to>Iteration Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

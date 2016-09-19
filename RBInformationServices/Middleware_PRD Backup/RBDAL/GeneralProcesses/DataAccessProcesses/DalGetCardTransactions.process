@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/RechargePoint.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardTransaction.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <pd:name>GeneralProcesses/DataAccessProcesses/DalGetCardTransactions.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardNumber" type="xsd:string"/>
+                    <xsd:element name="StartDate" type="xsd:string"/>
+                    <xsd:element name="EndDate" type="xsd:string"/>
+                    <xsd:element name="Filter" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>30</pd:startX>
+    <pd:startY>58</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error = &quot;false&quot;">
+                <Transactions>
+                    <xsl:copy-of select="$Get-Transactions-Mapper/CardTransactions/pfx4:Transaction"/>
+                </Transactions>
+            </xsl:if>
+            <xsl:if test="$varError/Error = &quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx3:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="Transactions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx4:Transaction" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx3:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>624</pd:endX>
+    <pd:endY>208</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx3:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450725579433</pd:targetNamespace>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>485</pd:x>
+        <pd:y>60</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>241</pd:x>
+        <pd:y>349</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>371</pd:x>
+        <pd:y>349</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>488</pd:x>
+        <pd:y>356</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Error>
+                <pfx3:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx3:ErrorCode>
+                <pfx3:ErrorMessage>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </pfx3:ErrorMessage>
+            </pfx3:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Card Transactions">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:description>Get recharges and transpor uses from FCS Reporting Database</pd:description>
+        <pd:x>145</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC Reporting Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT A.TRNSCTN_TYPE_CD TRANSACTION_TYPE_CODE, --USOS PRE
+  B.COMN_DETAIL_CD_DESC TRANSACTION_TYPE,  
+  A.USE_DATE USAGE_DATE,
+  A.USE_AMT AMOUNT,
+  NVL(C.STATION_NM, 'UNKNOWN') STATION_BUS,
+  (A.BEF_CARD_BAL - A.USE_AMT) REMAINING_PRE_BALANCE,
+  NULL REMAINING_POS_BALANCE,
+  NULL CHARGE_POINT
+  FROM TBAAD300 A,
+  TBAED141 B,
+  TBAFM102 C
+WHERE A.TRNSCTN_TYPE_CD = B.COMN_DETAIL_CD AND B.COMN_CD = 'AA007'
+  AND A.BUS_STOP_ID = C.STATION_ID(+)
+  AND A.USE_DATE BETWEEN ? AND ?
+  AND A.CARD_NUM = ?
+UNION    
+SELECT A.TRNSCTN_TYPE_CD TRANSACTION_TYPE_CODE, --RECARGAS PRE
+  B.COMN_DETAIL_CD_DESC TRANSACTION_TYPE,  
+  A.TRNSCTN_DATE USAGE_DATE,
+  A.RELOAD_REQ_AMT AMOUNT,
+  NULL STATION_BUS,
+  A.RELOAD_BEF_BAL + A.RELOAD_REQ_AMT REMAINING_PRE_BALANCE,
+  NULL REMAINING_POS_BALANCE,
+  D.AGENT_NM CHARGE_POINT
+FROM TBABD131 A,
+  TBAED141 B,
+  TBABM100 C,
+  TBABM200 D 
+WHERE A.TRNSCTN_TYPE_CD = B.COMN_DETAIL_CD AND B.COMN_CD = 'AA007'
+  AND A.SERV_ACCT_ID = C.SERV_ACCT_ID
+  AND C.AGENT_ID = D.AGENT_ID
+  AND A.TRNSCTN_DATE BETWEEN ? AND ?
+  AND A.CARD_NUM = ?  
+ORDER BY USAGE_DATE DESC</statement>
+            <wizardData>#Mon Feb 29 11:18:25 COT 2016&#xD;
+useSchemaInFQN=true&#xD;
+columncount=0&#xD;
+manualSQLText=SELECT A.TRNSCTN_TYPE_CD TRANSACTION_TYPE_CODE, --USOS PRE\n  B.COMN_DETAIL_CD_DESC TRANSACTION_TYPE,  \n  A.USE_DATE USAGE_DATE,\n  A.USE_AMT AMOUNT,\n  NVL(C.BUS_STOP_NM, 'UNKNOWN') STATION_BUS,\n  (A.BEF_CARD_BAL - A.USE_AMT) REMAINING_PRE_BALANCE,\n  NULL REMAINING_POS_BALANCE,\n  NULL CHARGE_POINT\n  FROM TBAAD300 A,\n  TBAED141 B,\n  TBAHM180 C\nWHERE A.TRNSCTN_TYPE_CD \= B.COMN_DETAIL_CD AND B.COMN_CD \= 'AA007'\n  AND A.BUS_STOP_ID \= C.BUS_STOP_ID(+)\n  AND A.USE_DATE BETWEEN ? AND ?\n  AND A.CARD_NUM \= ?\nUNION    \nSELECT A.TRNSCTN_TYPE_CD TRANSACTION_TYPE_CODE, --RECARGAS PRE\n  B.COMN_DETAIL_CD_DESC TRANSACTION_TYPE,  \n  A.TRNSCTN_DATE USAGE_DATE,\n  A.RELOAD_REQ_AMT AMOUNT,\n  NULL STATION_BUS,\n  A.RELOAD_BEF_BAL + A.RELOAD_REQ_AMT REMAINING_PRE_BALANCE,\n  NULL REMAINING_POS_BALANCE,\n  D.AGENT_NM CHARGE_POINT\nFROM TBABD131 A,\n  TBAED141 B,\n  TBABM100 C,\n  TBABM200 D \nWHERE A.TRNSCTN_TYPE_CD \= B.COMN_DETAIL_CD AND B.COMN_CD \= 'AA007'\n  AND A.SERV_ACCT_ID \= C.SERV_ACCT_ID\n  AND C.AGENT_ID \= D.AGENT_ID\n  AND A.TRNSCTN_DATE BETWEEN ? AND ?\n  AND A.CARD_NUM \= ?  \nORDER BY USAGE_DATE DESC&#xD;
+joincount=0&#xD;
+tablecount=0&#xD;
+</wizardData>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>StartDate1</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>EndDate1</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>CardNumber1</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>StartDate2</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>EndDate2</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>CardNumber2</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>TRANSACTION_TYPE_CODE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRANSACTION_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>USAGE_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AMOUNT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>STATION_BUS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>REMAINING_PRE_BALANCE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>REMAINING_POS_BALANCE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CHARGE_POINT</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <StartDate1>
+                    <xsl:value-of select="$Start/root/StartDate"/>
+                </StartDate1>
+                <EndDate1>
+                    <xsl:value-of select="$Start/root/EndDate"/>
+                </EndDate1>
+                <CardNumber1>
+                    <xsl:value-of select="$Start/root/CardNumber"/>
+                </CardNumber1>
+                <StartDate2>
+                    <xsl:value-of select="$Start/root/StartDate"/>
+                </StartDate2>
+                <EndDate2>
+                    <xsl:value-of select="$Start/root/EndDate"/>
+                </EndDate2>
+                <CardNumber2>
+                    <xsl:value-of select="$Start/root/CardNumber"/>
+                </CardNumber2>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Transaction Info">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>146</pd:x>
+        <pd:y>219</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>491</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Error>
+                <pfx3:ErrorCode>
+                    <xsl:value-of select="&quot;06&quot;"/>
+                </pfx3:ErrorCode>
+                <pfx3:ErrorMessage>
+                    <xsl:value-of select="&quot;No se encontraron transacciones&quot;"/>
+                </pfx3:ErrorMessage>
+            </pfx3:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Transactions Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <processName>/GeneralProcesses/MapperProcesses/GetCardTransactionsMapper.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Transactions>
+                <xsl:for-each select="$Get-Card-Transactions/resultSet/Record">
+                    <ns:Transaction>
+                        <ns:TransactionDate>
+                            <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;number(substring(USAGE_DATE, 1, 4)),&#xA;&#x9;number(substring(USAGE_DATE, 5, 2)), &#xA;&#x9;number(substring(USAGE_DATE, 7, 2)),&#xA;&#x9;number(substring(USAGE_DATE, 9, 2)), &#xA;&#x9;number(substring(USAGE_DATE, 11, 2)), &#xA;&#x9;number(substring(USAGE_DATE, 13, 2))&#xA;)"/>
+                        </ns:TransactionDate>
+                        <xsl:if test="STATION_BUS">
+                            <ns:StationBus>
+                                <xsl:value-of select="STATION_BUS"/>
+                            </ns:StationBus>
+                        </xsl:if>
+                        <xsl:if test="TRANSACTION_TYPE_CODE">
+                            <ns:TransactionTypeCode>
+                                <xsl:value-of select="TRANSACTION_TYPE_CODE"/>
+                            </ns:TransactionTypeCode>
+                        </xsl:if>
+                        <xsl:if test="TRANSACTION_TYPE">
+                            <ns:TransactionType>
+                                <xsl:value-of select="TRANSACTION_TYPE"/>
+                            </ns:TransactionType>
+                        </xsl:if>
+                        <xsl:if test="AMOUNT">
+                            <ns:TransactionValue>
+                                <xsl:value-of select="AMOUNT"/>
+                            </ns:TransactionValue>
+                        </xsl:if>
+                        <xsl:if test="REMAINING_PRE_BALANCE">
+                            <ns:BalanceAfter>
+                                <xsl:value-of select="REMAINING_PRE_BALANCE"/>
+                            </ns:BalanceAfter>
+                        </xsl:if>
+                        <xsl:if test="REMAINING_POS_BALANCE">
+                            <ns:NegativeBalance>
+                                <xsl:value-of select="REMAINING_POS_BALANCE"/>
+                            </ns:NegativeBalance>
+                        </xsl:if>
+                        <ns2:RechargePoint>
+                            <ns2:TransactionType>
+                                <xsl:value-of select="0"/>
+                            </ns2:TransactionType>
+                            <ns2:TercId>
+                                <xsl:value-of select="0"/>
+                            </ns2:TercId>
+                            <ns2:PointName>
+                                <xsl:value-of select="CHARGE_POINT"/>
+                            </ns2:PointName>
+                            <ns2:Status>
+                                <xsl:value-of select="0"/>
+                            </ns2:Status>
+                            <ns2:PreCharge>
+                                <xsl:value-of select="0.0"/>
+                            </ns2:PreCharge>
+                            <ns2:InstalationDate>
+                                <xsl:value-of select="&quot;2000-01-01T00:00:00&quot;"/>
+                            </ns2:InstalationDate>
+                            <ns2:PosId>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns2:PosId>
+                            <ns2:LSAM>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns2:LSAM>
+                            <ns2:TerminalCode>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </ns2:TerminalCode>
+                        </ns2:RechargePoint>
+                    </ns:Transaction>
+                </xsl:for-each>
+            </Transactions>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Card Transactions</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Card Transactions</pd:from>
+        <pd:to>Get Transactions Mapper</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Get-Card-Transactions/resultSet/Record) &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Card Transactions</pd:from>
+        <pd:to>No Transaction Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Transaction Info</pd:from>
+        <pd:to>Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transactions Mapper</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

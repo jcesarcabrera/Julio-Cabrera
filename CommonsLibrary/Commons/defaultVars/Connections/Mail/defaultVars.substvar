@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>From</name>
+			<value>notificaciones.pyrbmo@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472679368818</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Host</name>
+			<value>smtp.gmail.com:587</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472679368870</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>lxlomqqftoeyzvvc</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472679368914</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Port</name>
+			<value>587</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472679368965</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

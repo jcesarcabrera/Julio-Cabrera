@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/ChargingNetworkOperation.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" xmlns:pfx="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" schemaLocation="/CanonicalModel 1.0.0/Core/Transaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd"/>
+    <pd:name>GeneralProcesses/MapperProcesses/GetAgentTransactionsMapper.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Transactions">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:Transaction" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>80</pd:startX>
+    <pd:startY>85</pd:startY>
+    <pd:returnBindings>
+        <AgentTransactions>
+            <xsl:for-each select="$Start/Transactions/pfx:Transaction">
+                <pfx2:AgentTransaction>
+                    <xsl:if test="pfx:TransactionId">
+                        <pfx2:TransactionId>
+                            <xsl:value-of select="pfx:TransactionId"/>
+                        </pfx2:TransactionId>
+                    </xsl:if>
+                    <pfx2:TransactionClearingDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx:TransactionClearingDate),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx:TransactionClearingDate),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx:TransactionClearingDate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx:TransactionClearingDate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx:TransactionClearingDate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx:TransactionClearingDate)&#xA;)"/>
+                    </pfx2:TransactionClearingDate>
+                    <pfx2:TransactionDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx:TransactionDate)&#xA;)"/>
+                    </pfx2:TransactionDate>
+                    <xsl:if test="pfx:AgentNumber">
+                        <pfx2:AgentNumber>
+                            <xsl:value-of select="pfx:AgentNumber"/>
+                        </pfx2:AgentNumber>
+                    </xsl:if>
+                    <xsl:if test="pfx:AgentName">
+                        <pfx2:AgentName>
+                            <xsl:value-of select="pfx:AgentName"/>
+                        </pfx2:AgentName>
+                    </xsl:if>
+                    <xsl:if test="pfx:AgentId">
+                        <pfx2:AgentId>
+                            <xsl:value-of select="pfx:AgentId"/>
+                        </pfx2:AgentId>
+                    </xsl:if>
+                    <xsl:if test="pfx:PosId">
+                        <pfx2:PosId>
+                            <xsl:value-of select="pfx:PosId"/>
+                        </pfx2:PosId>
+                    </xsl:if>
+                    <xsl:if test="pfx:CardNumber">
+                        <pfx2:CardNumber>
+                            <xsl:value-of select="pfx:CardNumber"/>
+                        </pfx2:CardNumber>
+                    </xsl:if>
+                    <xsl:if test="pfx:CardType">
+                        <pfx2:CardType>
+                            <xsl:value-of select="pfx:CardType"/>
+                        </pfx2:CardType>
+                    </xsl:if>
+                    <xsl:if test="pfx:ProfileName">
+                        <pfx2:ProfileName>
+                            <xsl:value-of select="pfx:ProfileName"/>
+                        </pfx2:ProfileName>
+                    </xsl:if>
+                    <xsl:if test="pfx:TransactionType">
+                        <pfx2:TransactionType>
+                            <xsl:value-of select="pfx:TransactionType"/>
+                        </pfx2:TransactionType>
+                    </xsl:if>
+                    <xsl:if test="pfx:RechargeType">
+                        <pfx2:RechargeType>
+                            <xsl:value-of select="pfx:RechargeType"/>
+                        </pfx2:RechargeType>
+                    </xsl:if>
+                    <xsl:if test="pfx:BalanceBefore">
+                        <pfx2:BalanceBefore>
+                            <xsl:value-of select="pfx:BalanceBefore"/>
+                        </pfx2:BalanceBefore>
+                    </xsl:if>
+                    <xsl:if test="pfx:TransactionValue">
+                        <pfx2:TransactionValue>
+                            <xsl:value-of select="pfx:TransactionValue"/>
+                        </pfx2:TransactionValue>
+                    </xsl:if>
+                    <xsl:if test="pfx:BalanceAfter">
+                        <pfx2:BalanceAfter>
+                            <xsl:value-of select="pfx:BalanceAfter"/>
+                        </pfx2:BalanceAfter>
+                    </xsl:if>
+                    <xsl:if test="pfx:NegativeBalance">
+                        <pfx2:NegativeBalance>
+                            <xsl:value-of select="pfx:NegativeBalance"/>
+                        </pfx2:NegativeBalance>
+                    </xsl:if>
+                </pfx2:AgentTransaction>
+            </xsl:for-each>
+        </AgentTransactions>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="AgentTransactions">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx2:AgentTransaction" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>360</pd:endX>
+    <pd:endY>84</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1455896810283</pd:targetNamespace>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

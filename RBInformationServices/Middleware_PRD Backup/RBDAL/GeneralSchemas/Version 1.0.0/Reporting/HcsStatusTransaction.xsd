@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HcsStatusTransaction.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HcsStatusTransaction.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="HcsStatusTransaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="StatusTransaction" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="StatusTransaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="code_bank"/>
+				<xs:element ref="name"/>
+				<xs:element ref="HybridCard_card_number"/>
+				<xs:element ref="hc_created_at"/>
+				<xs:element ref="created_At"/>
+				<xs:element ref="Status"/>
+				<xs:element ref="tx_clearing_date"/>
+				<xs:element ref="tx_card_transaction_number"/>
+				<xs:element ref="tx_transport_means_group_cd"/>
+				<xs:element ref="tx_card_profile"/>
+				<xs:element ref="tx_transport_operator_id"/>
+				<xs:element ref="tx_remaining_daily_balance"/>
+				<xs:element ref="tx_reclaim_code"/>
+				<xs:element ref="tx_number_transfers"/>
+				<xs:element ref="tx_user_type"/>
+				<xs:element ref="tx_station_bus_stop_id"/>
+				<xs:element ref="tx_station_bus_stop_name"/>
+				<xs:element ref="tx_bus_id"/>
+				<xs:element ref="tx_amount_used"/>
+				<xs:element ref="tx_usage_date"/>
+				<xs:element ref="tx_transaction_sequence_number"/>
+				<xs:element ref="tx_line_id"/>
+				<xs:element ref="tx_line_name"/>
+				<xs:element ref="tx_route_id"/>
+				<xs:element ref="tx_route_name"/>
+				<xs:element ref="tx_claim_date"/>
+				<xs:element ref="tx_daily_max_debit_use"/>
+				<xs:element ref="tx_device_id"/>
+				<xs:element ref="tx_unique_id"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="code_bank" type="xs:string"/>
+	<xs:element name="HybridCard_card_number" type="xs:string"/>
+	<xs:element name="created_At" type="xs:string"/>
+	<xs:element name="Status" type="xs:string"/>
+	<xs:element name="tx_clearing_date" type="xs:string"/>
+	<xs:element name="tx_card_transaction_number" type="xs:string"/>
+	<xs:element name="tx_transport_means_group_cd" type="xs:string"/>
+	<xs:element name="tx_card_profile" type="xs:string"/>
+	<xs:element name="tx_transport_operator_id" type="xs:string"/>
+	<xs:element name="tx_remaining_daily_balance" type="xs:string"/>
+	<xs:element name="tx_reclaim_code" type="xs:string"/>
+	<xs:element name="tx_number_transfers" type="xs:string"/>
+	<xs:element name="tx_user_type" type="xs:string"/>
+	<xs:element name="tx_station_bus_stop_id" type="xs:string"/>
+	<xs:element name="tx_station_bus_stop_name" type="xs:string"/>
+	<xs:element name="tx_bus_id" type="xs:string"/>
+	<xs:element name="tx_amount_used" type="xs:string"/>
+	<xs:element name="tx_usage_date" type="xs:string"/>
+	<xs:element name="tx_transaction_sequence_number" type="xs:string"/>
+	<xs:element name="tx_line_id" type="xs:string"/>
+	<xs:element name="tx_line_name" type="xs:string"/>
+	<xs:element name="tx_route_id" type="xs:string"/>
+	<xs:element name="tx_route_name" type="xs:string"/>
+	<xs:element name="tx_claim_date" type="xs:string"/>
+	<xs:element name="tx_daily_max_debit_use" type="xs:string"/>
+	<xs:element name="tx_device_id" type="xs:string"/>
+	<xs:element name="tx_unique_id" type="xs:string"/>
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="hc_created_at" type="xs:string"/>
+</xs:schema>

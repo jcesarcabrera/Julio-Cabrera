@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HCSRejectedTransaction.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HCSRejectedTransaction.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="HCSRejectedTransacion">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RejectedTransaction" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RejectedTransaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="BankName"/>
+				<xs:element ref="HybridCard_card_number"/>
+				<xs:element ref="ar_transaction_id"/>
+				<xs:element ref="ar_transaction_date"/>
+				<xs:element ref="ar_amount_used"/>
+				<xs:element ref="ar_station_name"/>
+				<xs:element ref="ar_station_code"/>
+				<xs:element ref="ar_id_response"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="HybridCard_card_number" type="xs:string"/>
+	<xs:element name="ar_transaction_id" type="xs:string"/>
+	<xs:element name="ar_transaction_date" type="xs:string"/>
+	<xs:element name="ar_amount_used" type="xs:string"/>
+	<xs:element name="ar_station_name" type="xs:string"/>
+	<xs:element name="ar_station_code" type="xs:string"/>
+	<xs:element name="ar_id_response" type="xs:string"/>
+	<xs:element name="BankName" type="xs:string"/>
+</xs:schema>

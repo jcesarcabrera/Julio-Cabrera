@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HcsStatusCard.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HcsStatusCard.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="HcsStatusCard">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="StatusCard" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="StatusCard">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="BankId"/>
+				<xs:element ref="BankName"/>
+				<xs:element ref="CardNumber"/>
+				<xs:element ref="CreatedAt"/>
+				<xs:element ref="UpdatedAt"/>
+				<xs:element ref="Status"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BankId" type="xs:string"/>
+	<xs:element name="BankName" type="xs:string"/>
+	<xs:element name="CardNumber" type="xs:string"/>
+	<xs:element name="CreatedAt" type="xs:dateTime"/>
+	<xs:element name="UpdatedAt" type="xs:dateTime"/>
+	<xs:element name="Status" type="xs:string"/>
+</xs:schema>

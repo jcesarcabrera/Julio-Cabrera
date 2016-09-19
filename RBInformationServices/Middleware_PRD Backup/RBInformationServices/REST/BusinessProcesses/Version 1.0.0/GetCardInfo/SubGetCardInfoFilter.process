@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/CardInfoFilter.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd" schemaLocation="/Schemas/Version 1.0/Control/CardInfoFilter.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/CardInfoFilter.xsd" schemaLocation="/Schemas/Version 1.0.0/Control/CardInfoFilter.xsd"/>
+    <pd:name>REST/BusinessProcesses/Version 1.0.0/GetCardInfo/SubGetCardInfoFilter.process</pd:name>
+    <pd:description>Get the filter of fields that are going to be finally returned by the 
+GetCardInfo service, when no field list is provided all fields 
+will be returned.</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FieldList" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>36</pd:startX>
+    <pd:startY>449</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Add-Filter/pfx2:CardInfo"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:CardInfo"/>
+    <pd:endX>982</pd:endX>
+    <pd:endY>456</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varStatus>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varStatus>
+        <varCreatedAt>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varCreatedAt>
+        <varCardNumber>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varCardNumber>
+        <varCardTypeCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varCardTypeCode>
+        <varStatusCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varStatusCode>
+        <varProfileCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varProfileCode>
+        <varPospaidBalance>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varPospaidBalance>
+        <varPrepaidBalance>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varPrepaidBalance>
+        <varCardType>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varCardType>
+        <varLastModify>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varLastModify>
+        <varProfile>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varProfile>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1449687973749</pd:targetNamespace>
+    <pd:activity name="Field List">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>168</pd:x>
+        <pd:y>449</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <value>
+                    <xsl:value-of select="&quot;CardNumber&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;StatusCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Status&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;ProfileCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Profile&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;CardTypeCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;CardType&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;PrepaidBalance&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;PospaidBalance&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;CreatedAt&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;LastModify&quot;"/>
+                </value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Create Filter">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>268</pd:x>
+        <pd:y>5</pd:y>
+        <pd:width>494</pd:width>
+        <pd:height>876</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Field-List/root/value</pd:over>
+            <pd:iterationElementSlot>Field</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>Filter</pd:outSlot>
+            <pd:activityOutputName>Add Filter</pd:activityOutputName>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Check Filter</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Out</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Filter</pd:from>
+            <pd:to>In</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>CardNumber</pd:to>
+            <pd:xpathDescription>CardNumber</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "cardnumber"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Status</pd:to>
+            <pd:xpathDescription>Status</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "status"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>CardTypeCode</pd:to>
+            <pd:xpathDescription>CardTypeCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "cardtypecode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>CardType</pd:to>
+            <pd:xpathDescription>CardType</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "cardtype"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>PrepaidBalance</pd:to>
+            <pd:xpathDescription>PrepaidBalance</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "prepaidbalance"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>PospaidBalance</pd:to>
+            <pd:xpathDescription>PospaidBalance</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "pospaidbalance"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>CreatedAt</pd:to>
+            <pd:xpathDescription>CreatedAt</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "createdat"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>LastModify</pd:to>
+            <pd:xpathDescription>LastModify</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "lastmodify"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CardNumber</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Status</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CardTypeCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CardType</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>PrepaidBalance</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>PospaidBalance</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CreatedAt</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LastModify</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>No match</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>No match</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>StatusCode</pd:to>
+            <pd:xpathDescription>StatusCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "statuscode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>StatusCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>ProfileCode</pd:to>
+            <pd:xpathDescription>ProfileCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "profilecode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ProfileCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Profile</pd:to>
+            <pd:xpathDescription>Profile</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "profile"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Profile</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Check Filter">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>339</pd:x>
+            <pd:y>454</pd:y>
+            <config>
+                <processName>/GeneralProcesses/CommonProcesses/StringLookup.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <List>
+                        <xsl:value-of select="$Start/root/FieldList"/>
+                    </List>
+                    <Value>
+                        <xsl:value-of select="$Field/value"/>
+                    </Value>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CardNumber">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>330</pd:x>
+            <pd:y>67</pd:y>
+            <config>
+                <variableName>varCardNumber</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Status">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>492</pd:x>
+            <pd:y>153</pd:y>
+            <config>
+                <variableName>varStatus</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CardTypeCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>607</pd:x>
+            <pd:y>357</pd:y>
+            <config>
+                <variableName>varCardTypeCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CardType">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>592</pd:x>
+            <pd:y>454</pd:y>
+            <config>
+                <variableName>varCardType</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="PrepaidBalance">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>588</pd:x>
+            <pd:y>563</pd:y>
+            <config>
+                <variableName>varPrepaidBalance</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="PospaidBalance">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>536</pd:x>
+            <pd:y>652</pd:y>
+            <config>
+                <variableName>varPospaidBalance</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CreatedAt">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>465</pd:x>
+            <pd:y>730</pd:y>
+            <config>
+                <variableName>varCreatedAt</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LastModify">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>393</pd:x>
+            <pd:y>775</pd:y>
+            <config>
+                <variableName>varLastModify</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="In">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>436</pd:x>
+            <pd:y>453</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Out">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>681</pd:x>
+            <pd:y>452</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="No match">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>307</pd:x>
+            <pd:y>828</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="StatusCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>429</pd:x>
+            <pd:y>101</pd:y>
+            <config>
+                <variableName>varStatusCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="ProfileCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>554</pd:x>
+            <pd:y>208</pd:y>
+            <config>
+                <variableName>varProfileCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Profile">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>590</pd:x>
+            <pd:y>281</pd:y>
+            <config>
+                <variableName>varProfile</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Add Filter">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>841</pd:x>
+        <pd:y>455</pd:y>
+        <config>
+            <element ref="pfx2:CardInfo"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:CardInfo>
+                <pfx2:CardNumber>
+                    <xsl:value-of select="$varCardNumber/FilterOn"/>
+                </pfx2:CardNumber>
+                <pfx2:StatusCode>
+                    <xsl:value-of select="$varStatusCode/FilterOn"/>
+                </pfx2:StatusCode>
+                <pfx2:Status>
+                    <xsl:value-of select="$varStatus/FilterOn"/>
+                </pfx2:Status>
+                <pfx2:ProfileCode>
+                    <xsl:value-of select="$varProfileCode/FilterOn"/>
+                </pfx2:ProfileCode>
+                <pfx2:Profile>
+                    <xsl:value-of select="$varProfile/FilterOn"/>
+                </pfx2:Profile>
+                <pfx2:CardTypeCode>
+                    <xsl:value-of select="$varCardTypeCode/FilterOn"/>
+                </pfx2:CardTypeCode>
+                <pfx2:CardType>
+                    <xsl:value-of select="$varCardType/FilterOn"/>
+                </pfx2:CardType>
+                <pfx2:PrepaidBalance>
+                    <xsl:value-of select="$varPrepaidBalance/FilterOn"/>
+                </pfx2:PrepaidBalance>
+                <pfx2:PospaidBalance>
+                    <xsl:value-of select="$varPospaidBalance/FilterOn"/>
+                </pfx2:PospaidBalance>
+                <pfx2:CreatedAt>
+                    <xsl:value-of select="$varCreatedAt/FilterOn"/>
+                </pfx2:CreatedAt>
+                <pfx2:LastModify>
+                    <xsl:value-of select="$varLastModify/FilterOn"/>
+                </pfx2:LastModify>
+            </pfx2:CardInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Field List</pd:from>
+        <pd:to>Create Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Filter</pd:from>
+        <pd:to>Add Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Add Filter</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Field List</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/UserFilter.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/UserFilter.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="User">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Name" minOccurs="0"/>
+				<xs:element ref="LastName" minOccurs="0"/>
+				<xs:element ref="SecondLastName" minOccurs="0"/>
+				<xs:element ref="IdTypeCode" minOccurs="0"/>
+				<xs:element ref="IdType" minOccurs="0"/>
+				<xs:element ref="IdNumber" minOccurs="0"/>
+				<xs:element ref="BirthDate" minOccurs="0"/>
+				<xs:element ref="Address" minOccurs="0"/>
+				<xs:element ref="ScholarityCode" minOccurs="0"/>
+				<xs:element ref="Scholarity" minOccurs="0"/>
+				<xs:element ref="GenderCode" minOccurs="0"/>
+				<xs:element ref="Gender" minOccurs="0"/>
+				<xs:element ref="RhCode" minOccurs="0"/>
+				<xs:element ref="RH" minOccurs="0"/>
+				<xs:element ref="Email" minOccurs="0"/>
+				<xs:element ref="Phone" minOccurs="0"/>
+				<xs:element ref="Mobile" minOccurs="0"/>
+				<xs:element ref="Occupation" minOccurs="0"/>
+				<xs:element ref="AuthorizeDataUse" minOccurs="0"/>
+				<xs:element ref="LastUpdate" minOccurs="0"/>
+				<xs:element ref="StatusCode" minOccurs="0"/>
+				<xs:element ref="Status" minOccurs="0"/>
+				<xs:element ref="Benefits" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Status" type="xs:boolean"/>
+	<xs:element name="CreatedAt" type="xs:boolean"/>
+	<xs:element name="LastModify" type="xs:boolean"/>
+	<xs:element name="PospaidBalance" type="xs:boolean"/>
+	<xs:element name="Name" type="xs:boolean"/>
+	<xs:element name="LastName" type="xs:boolean"/>
+	<xs:element name="SecondLastName" type="xs:boolean"/>
+	<xs:element name="IdTypeCode" type="xs:boolean"/>
+	<xs:element name="IdNumber" type="xs:boolean"/>
+	<xs:element name="Address" type="xs:boolean"/>
+	<xs:element name="Gender" type="xs:boolean"/>
+	<xs:element name="Email" type="xs:boolean"/>
+	<xs:element name="Phone" type="xs:boolean"/>
+	<xs:element name="Mobile" type="xs:boolean"/>
+	<xs:element name="Occupation" type="xs:boolean"/>
+	<xs:element name="CardType" type="xs:boolean"/>
+	<xs:element name="PrepaidBalance" type="xs:boolean"/>
+	<xs:element name="BirthDate" type="xs:boolean"/>
+	<xs:element name="AuthorizeDataUse" type="xs:boolean"/>
+	<xs:element name="LastUpdate" type="xs:boolean"/>
+	<xs:element name="ScholarityCode" type="xs:boolean"/>
+	<xs:element name="Scholarity" type="xs:boolean"/>
+	<xs:element name="CardTypeCode" type="xs:boolean"/>
+	<xs:element name="Benefits" type="xs:boolean"/>
+	<xs:element name="GenderCode" type="xs:boolean"/>
+	<xs:element name="RhCode" type="xs:boolean"/>
+	<xs:element name="RH" type="xs:boolean"/>
+	<xs:element name="StatusCode" type="xs:boolean"/>
+	<xs:element name="IdType" type="xs:boolean"/>
+</xs:schema>

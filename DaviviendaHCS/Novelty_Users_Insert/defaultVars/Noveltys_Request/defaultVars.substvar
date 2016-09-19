@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>BankID</name>
+			<value>003</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472830070634</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Bank_Code</name>
+			<value>B03</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472830070576</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Noveltys_FileName_Prefix</name>
+			<value>EE</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472675951124</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Noveltys_File_Local_Path</name>
+			<value>C:\RBFiles\FileEEDecryp\</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472750064467</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

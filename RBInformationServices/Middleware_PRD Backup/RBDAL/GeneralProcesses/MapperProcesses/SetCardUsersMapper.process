@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardInfo.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:pfx6="http://www.tibco.com/pe/EngineTypes">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd" schemaLocation="/CanonicalModel 1.0.0/Core/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardInfo.xsd" schemaLocation="/CanonicalModel 1.0.0/Core/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <pd:name>GeneralProcesses/MapperProcesses/SetCardUsersMapper.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Card" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="User">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element ref="pfx:User"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Payer" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element ref="pfx:User"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element ref="pfx2:CardInfo" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>28</pd:startX>
+    <pd:startY>321</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:for-each select="$Start/root/Card">
+                    <Card>
+                        <User>
+                            <pfx3:CardUser>
+                                <xsl:if test="User/pfx:User/pfx:Name">
+                                    <pfx3:Name>
+                                        <xsl:value-of select="User/pfx:User/pfx:Name"/>
+                                    </pfx3:Name>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:LastName">
+                                    <pfx3:LastName>
+                                        <xsl:value-of select="User/pfx:User/pfx:LastName"/>
+                                    </pfx3:LastName>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:SecondLastName">
+                                    <pfx3:SecondLastName>
+                                        <xsl:value-of select="User/pfx:User/pfx:SecondLastName"/>
+                                    </pfx3:SecondLastName>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:IdTypeCode">
+                                    <pfx3:IdTypeCode>
+                                        <xsl:value-of select="User/pfx:User/pfx:IdTypeCode"/>
+                                    </pfx3:IdTypeCode>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:IdType">
+                                    <pfx3:IdType>
+                                        <xsl:value-of select="User/pfx:User/pfx:IdType"/>
+                                    </pfx3:IdType>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:IdNumber">
+                                    <pfx3:IdNumber>
+                                        <xsl:value-of select="User/pfx:User/pfx:IdNumber"/>
+                                    </pfx3:IdNumber>
+                                </xsl:if>
+                                <xsl:if test="exists(User/pfx:User/pfx:BirthDate)">
+                                    <pfx3:BirthDate>
+                                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/User/pfx:User/pfx:BirthDate),&#xA;&#x9;tib:get-month-from-dateTime(current()/User/pfx:User/pfx:BirthDate),&#xA;&#x9;tib:get-day-from-dateTime(current()/User/pfx:User/pfx:BirthDate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/User/pfx:User/pfx:BirthDate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/User/pfx:User/pfx:BirthDate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/User/pfx:User/pfx:BirthDate)&#xA;)"/>
+                                    </pfx3:BirthDate>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Address">
+                                    <pfx3:Address>
+                                        <xsl:value-of select="User/pfx:User/pfx:Address"/>
+                                    </pfx3:Address>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:ScholarityCode">
+                                    <pfx3:ScholarityCode>
+                                        <xsl:value-of select="User/pfx:User/pfx:ScholarityCode"/>
+                                    </pfx3:ScholarityCode>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Scholarity">
+                                    <pfx3:Scholarity>
+                                        <xsl:value-of select="User/pfx:User/pfx:Scholarity"/>
+                                    </pfx3:Scholarity>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:GenderCode">
+                                    <pfx3:GenderCode>
+                                        <xsl:value-of select="User/pfx:User/pfx:GenderCode"/>
+                                    </pfx3:GenderCode>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Gender">
+                                    <pfx3:Gender>
+                                        <xsl:value-of select="User/pfx:User/pfx:Gender"/>
+                                    </pfx3:Gender>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:RhCode">
+                                    <pfx3:RhCode>
+                                        <xsl:value-of select="User/pfx:User/pfx:RhCode"/>
+                                    </pfx3:RhCode>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:RH">
+                                    <pfx3:RH>
+                                        <xsl:value-of select="User/pfx:User/pfx:RH"/>
+                                    </pfx3:RH>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Email">
+                                    <pfx3:Email>
+                                        <xsl:value-of select="User/pfx:User/pfx:Email"/>
+                                    </pfx3:Email>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Phone">
+                                    <pfx3:Phone>
+                                        <xsl:value-of select="User/pfx:User/pfx:Phone"/>
+                                    </pfx3:Phone>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Mobile">
+                                    <pfx3:Mobile>
+                                        <xsl:value-of select="User/pfx:User/pfx:Mobile"/>
+                                    </pfx3:Mobile>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Occupation">
+                                    <pfx3:Occupation>
+                                        <xsl:value-of select="User/pfx:User/pfx:Occupation"/>
+                                    </pfx3:Occupation>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:AuthorizeDataUse">
+                                    <pfx3:AuthorizeDataUse>
+                                        <xsl:value-of select="User/pfx:User/pfx:AuthorizeDataUse"/>
+                                    </pfx3:AuthorizeDataUse>
+                                </xsl:if>
+                                <xsl:if test="exists(User/pfx:User/pfx:LastUpdate)">
+                                    <pfx3:LastUpdate>
+                                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/User/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-month-from-dateTime(current()/User/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-day-from-dateTime(current()/User/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/User/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/User/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/User/pfx:User/pfx:LastUpdate)&#xA;)"/>
+                                    </pfx3:LastUpdate>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:StatusCode">
+                                    <pfx3:StatusCode>
+                                        <xsl:value-of select="User/pfx:User/pfx:StatusCode"/>
+                                    </pfx3:StatusCode>
+                                </xsl:if>
+                                <xsl:if test="User/pfx:User/pfx:Status">
+                                    <pfx3:Status>
+                                        <xsl:value-of select="User/pfx:User/pfx:Status"/>
+                                    </pfx3:Status>
+                                </xsl:if>
+                            </pfx3:CardUser>
+                        </User>
+                        <xsl:if test="exists(Payer)">
+                            <Payer>
+                                <pfx3:CardUser>
+                                    <pfx3:Name>
+                                        <xsl:value-of select="Payer/pfx:User/pfx:Name"/>
+                                    </pfx3:Name>
+                                    <xsl:if test="Payer/pfx:User/pfx:LastName">
+                                        <pfx3:LastName>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:LastName"/>
+                                        </pfx3:LastName>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:SecondLastName">
+                                        <pfx3:SecondLastName>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:SecondLastName"/>
+                                        </pfx3:SecondLastName>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:IdTypeCode">
+                                        <pfx3:IdTypeCode>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:IdTypeCode"/>
+                                        </pfx3:IdTypeCode>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:IdType">
+                                        <pfx3:IdType>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:IdType"/>
+                                        </pfx3:IdType>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:IdNumber">
+                                        <pfx3:IdNumber>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:IdNumber"/>
+                                        </pfx3:IdNumber>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:BirthDate">
+                                        <pfx3:BirthDate>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:BirthDate"/>
+                                        </pfx3:BirthDate>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Address">
+                                        <pfx3:Address>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Address"/>
+                                        </pfx3:Address>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:ScholarityCode">
+                                        <pfx3:ScholarityCode>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:ScholarityCode"/>
+                                        </pfx3:ScholarityCode>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Scholarity">
+                                        <pfx3:Scholarity>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Scholarity"/>
+                                        </pfx3:Scholarity>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:GenderCode">
+                                        <pfx3:GenderCode>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:GenderCode"/>
+                                        </pfx3:GenderCode>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Gender">
+                                        <pfx3:Gender>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Gender"/>
+                                        </pfx3:Gender>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:RhCode">
+                                        <pfx3:RhCode>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:RhCode"/>
+                                        </pfx3:RhCode>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:RH">
+                                        <pfx3:RH>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:RH"/>
+                                        </pfx3:RH>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Email">
+                                        <pfx3:Email>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Email"/>
+                                        </pfx3:Email>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Phone">
+                                        <pfx3:Phone>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Phone"/>
+                                        </pfx3:Phone>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Mobile">
+                                        <pfx3:Mobile>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Mobile"/>
+                                        </pfx3:Mobile>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Occupation">
+                                        <pfx3:Occupation>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Occupation"/>
+                                        </pfx3:Occupation>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:AuthorizeDataUse">
+                                        <pfx3:AuthorizeDataUse>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:AuthorizeDataUse"/>
+                                        </pfx3:AuthorizeDataUse>
+                                    </xsl:if>
+                                    <xsl:if test="exists(Payer/pfx:User/pfx:LastUpdate)">
+                                        <pfx3:LastUpdate>
+                                            <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/Payer/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-month-from-dateTime(current()/Payer/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-day-from-dateTime(current()/Payer/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/Payer/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/Payer/pfx:User/pfx:LastUpdate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/Payer/pfx:User/pfx:LastUpdate)&#xA;)"/>
+                                        </pfx3:LastUpdate>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:StatusCode">
+                                        <pfx3:StatusCode>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:StatusCode"/>
+                                        </pfx3:StatusCode>
+                                    </xsl:if>
+                                    <xsl:if test="Payer/pfx:User/pfx:Status">
+                                        <pfx3:Status>
+                                            <xsl:value-of select="Payer/pfx:User/pfx:Status"/>
+                                        </pfx3:Status>
+                                    </xsl:if>
+                                </pfx3:CardUser>
+                            </Payer>
+                        </xsl:if>
+                        <xsl:if test="exists( pfx2:CardInfo)">
+                            <pfx4:CardInfo>
+                                <xsl:if test="pfx2:CardInfo/pfx2:CardNumber">
+                                    <pfx4:CardNumber>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:CardNumber"/>
+                                    </pfx4:CardNumber>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:StatusCode">
+                                    <pfx4:StatusCode>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:StatusCode"/>
+                                    </pfx4:StatusCode>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:Status">
+                                    <pfx4:Status>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:Status"/>
+                                    </pfx4:Status>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:CardTypeCode">
+                                    <pfx4:CardTypeCode>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:CardTypeCode"/>
+                                    </pfx4:CardTypeCode>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:CardType">
+                                    <pfx4:CardType>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:CardType"/>
+                                    </pfx4:CardType>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:PrepaidBalance">
+                                    <pfx4:PrepaidBalance>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:PrepaidBalance"/>
+                                    </pfx4:PrepaidBalance>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:PospaidBalance">
+                                    <pfx4:PospaidBalance>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:PospaidBalance"/>
+                                    </pfx4:PospaidBalance>
+                                </xsl:if>
+                                <xsl:if test="exists(pfx2:CardInfo/pfx2:CreatedAt)">
+                                    <pfx4:CreatedAt>
+                                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx2:CardInfo/pfx2:CreatedAt),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx2:CardInfo/pfx2:CreatedAt),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx2:CardInfo/pfx2:CreatedAt),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx2:CardInfo/pfx2:CreatedAt),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx2:CardInfo/pfx2:CreatedAt),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx2:CardInfo/pfx2:CreatedAt)&#xA;)"/>
+                                    </pfx4:CreatedAt>
+                                </xsl:if>
+                                <xsl:if test="exists(pfx2:CardInfo/pfx2:LastModify)">
+                                    <pfx4:LastModify>
+                                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx2:CardInfo/pfx2:LastModify),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx2:CardInfo/pfx2:LastModify),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx2:CardInfo/pfx2:LastModify),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx2:CardInfo/pfx2:LastModify),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx2:CardInfo/pfx2:LastModify),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx2:CardInfo/pfx2:LastModify)&#xA;)"/>
+                                    </pfx4:LastModify>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:CardAcquisitionFormCode">
+                                    <pfx4:CardAcquisitionFormCode>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:CardAcquisitionFormCode"/>
+                                    </pfx4:CardAcquisitionFormCode>
+                                </xsl:if>
+                                <xsl:if test="pfx2:CardInfo/pfx2:CardAcquisitionForm">
+                                    <pfx4:CardAcquisitionForm>
+                                        <xsl:value-of select="pfx2:CardInfo/pfx2:CardAcquisitionForm"/>
+                                    </pfx4:CardAcquisitionForm>
+                                </xsl:if>
+                            </pfx4:CardInfo>
+                        </xsl:if>
+                    </Card>
+                </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx5:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="Card" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="User">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element ref="pfx3:CardUser"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Payer" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element ref="pfx3:CardUser"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element ref="pfx4:CardInfo" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx5:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1300</pd:endX>
+    <pd:endY>318</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx5:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1459980587355</pd:targetNamespace>
+    <pd:group name="Validation Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>253</pd:x>
+        <pd:y>16</pd:y>
+        <pd:width>893</pd:width>
+        <pd:height>593</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/root/Card</pd:over>
+            <pd:iterationElementSlot>CurrentCard</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Check User</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GO</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>User Incomplete Error</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check User</pd:from>
+            <pd:to>Check Card</pd:to>
+            <pd:xpathDescription>User OK</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($CurrentCard/Card/User/pfx:User/pfx:Name) and
+exists($CurrentCard/Card/User/pfx:User/pfx:LastName) and
+exists($CurrentCard/Card/User/pfx:User/pfx:IdTypeCode) and
+exists($CurrentCard/Card/User/pfx:User/pfx:IdNumber) and
+exists($CurrentCard/Card/User/pfx:User/pfx:AuthorizeDataUse) and
+exists($CurrentCard/Card/User/pfx:User/pfx:StatusCode)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check User</pd:from>
+            <pd:to>User Incomplete Error</pd:to>
+            <pd:xpathDescription>User Incomplete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Card</pd:from>
+            <pd:to>Check Card Info</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Card</pd:from>
+            <pd:to>Check Payer</pd:to>
+            <pd:xpathDescription>No Card</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>not(exists($CurrentCard/Card/pfx2:CardInfo))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Card Info Incomplete Error</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Payer Info Incomplete Error</pd:from>
+            <pd:to>Generate Error</pd:to>
+            <pd:xpathDescription>Payer Incomplete</pd:xpathDescription>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Card Info</pd:from>
+            <pd:to>Check Payer</pd:to>
+            <pd:xpathDescription>Card Info OK</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($CurrentCard/Card/pfx2:CardInfo/pfx2:CardNumber) and
+exists($CurrentCard/Card/pfx2:CardInfo/pfx2:CardAcquisitionFormCode)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Card Info</pd:from>
+            <pd:to>Card Info Incomplete Error</pd:to>
+            <pd:xpathDescription>Card Incomplete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Payer</pd:from>
+            <pd:to>GO</pd:to>
+            <pd:xpathDescription>No Payer</pd:xpathDescription>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>not(exists($CurrentCard/Card/Payer))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Payer</pd:from>
+            <pd:to>Check Payer Info</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Payer Info</pd:from>
+            <pd:to>Payer Info Incomplete Error</pd:to>
+            <pd:xpathDescription>Payer Incomplete</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Payer Info</pd:from>
+            <pd:to>GO</pd:to>
+            <pd:xpathDescription>Payer Info OK</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($CurrentCard/Card/Payer/pfx:User/pfx:Name) and
+exists($CurrentCard/Card/Payer/pfx:User/pfx:LastName) and
+exists($CurrentCard/Card/Payer/pfx:User/pfx:IdTypeCode) and
+exists($CurrentCard/Card/Payer/pfx:User/pfx:IdNumber)</pd:xpath>
+        </pd:transition>
+        <pd:activity name="Check User">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>359</pd:x>
+            <pd:y>88</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Check Card">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>542</pd:x>
+            <pd:y>87</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Generate Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>1017</pd:x>
+            <pd:y>527</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns0:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$varErrorMessage/pfx5:Error/pfx5:ErrorMessage"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="$varErrorMessage/pfx5:Error/pfx5:ErrorCode"/>
+                    </messageCode>
+                </ns0:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="User Incomplete Error">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>363</pd:x>
+            <pd:y>531</pd:y>
+            <config>
+                <variableName>varErrorMessage</variableName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:Error>
+                    <pfx5:ErrorCode>
+                        <xsl:value-of select="&quot;15&quot;"/>
+                    </pfx5:ErrorCode>
+                    <pfx5:ErrorMessage>
+                        <xsl:value-of select="&quot;La información de usuario está incompleta&quot;"/>
+                    </pfx5:ErrorMessage>
+                </pfx5:Error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Card Info Incomplete Error">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>543</pd:x>
+            <pd:y>455</pd:y>
+            <config>
+                <variableName>varErrorMessage</variableName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:Error>
+                    <pfx5:ErrorCode>
+                        <xsl:value-of select="&quot;15&quot;"/>
+                    </pfx5:ErrorCode>
+                    <pfx5:ErrorMessage>
+                        <xsl:value-of select="&quot;La información de tarjeta no incluye el serial, o el codigo de medio de adquisición&quot;"/>
+                    </pfx5:ErrorMessage>
+                </pfx5:Error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Check Payer">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>774</pd:x>
+            <pd:y>86</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Payer Info Incomplete Error">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>777</pd:x>
+            <pd:y>361</pd:y>
+            <config>
+                <variableName>varErrorMessage</variableName>
+            </config>
+            <pd:inputBindings>
+                <pfx5:Error>
+                    <pfx5:ErrorCode>
+                        <xsl:value-of select="&quot;15&quot;"/>
+                    </pfx5:ErrorCode>
+                    <pfx5:ErrorMessage>
+                        <xsl:value-of select="&quot;La información del pagador está incompleta&quot;"/>
+                    </pfx5:ErrorMessage>
+                </pfx5:Error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Check Card Info">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>542</pd:x>
+            <pd:y>246</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Check Payer Info">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>776</pd:x>
+            <pd:y>233</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="GO">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>1014</pd:x>
+            <pd:y>234</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>738</pd:x>
+        <pd:y>715</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Initialize Error Var">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>131</pd:x>
+        <pd:y>329</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>866</pd:x>
+        <pd:y>715</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="To End">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1131</pd:x>
+        <pd:y>715</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Unknown error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1003</pd:x>
+        <pd:y>829</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:Error>
+                <pfx5:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx5:ErrorCode>
+                <pfx5:ErrorMessage>
+                    <xsl:value-of select="$_error/pfx6:ErrorReport/StackTrace"/>
+                </pfx5:ErrorMessage>
+            </pfx5:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Initialize Error Var</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validation Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Initialize Error Var</pd:from>
+        <pd:to>Validation Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>To End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>To End</pd:to>
+        <pd:xpathDescription>Known Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_error/pfx6:ErrorReport/MsgCode = "15"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Unknown error</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown error</pd:from>
+        <pd:to>To End</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

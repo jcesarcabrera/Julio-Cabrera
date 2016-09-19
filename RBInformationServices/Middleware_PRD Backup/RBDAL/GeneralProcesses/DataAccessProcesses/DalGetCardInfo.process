@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardInfo.xsd" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardInfo.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Card.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <pd:name>GeneralProcesses/DataAccessProcesses/DalGetCardInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardNumber" type="xsd:string"/>
+                    <xsd:element name="Filter" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>86</pd:startX>
+    <pd:startY>62</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError=&quot;false&quot;">
+                <xsl:copy-of select="$Get-Card-Info-Mapper/pfx4:CardInfo"/>
+            </xsl:if>
+            <xsl:if test="$varError=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx5:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element ref="pfx4:CardInfo" minOccurs="0"/>
+                    <xsd:element ref="pfx5:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>704</pd:endX>
+    <pd:endY>211</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx5:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450478015991</pd:targetNamespace>
+    <pd:activity name="Card Basic Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>214</pd:x>
+        <pd:y>63</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>0</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>SELECT A.CARD_NUM
+    , D.COMN_DETAIL_CD CARD_CLASS_CD
+    , D.COMN_DETAIL_CD_NM CARD_CLASS_NM
+    , B.ISSUER_ID
+    , B.ISSUER_NM
+    , C.COMN_DETAIL_CD PROFILE_CD
+    , C.COMN_DETAIL_CD_NM PROFILE_NM
+    , NVL (E.COMN_DETAIL_CD, '05') CARD_STAT_CD
+    , NVL (E.COMN_DETAIL_CD_DESC, 'Card Number Only') CARD_STAT_DESC
+    , F.CARD_PROD_ID
+    , F.CARD_PROD_NM
+    , TO_DATE(A.REGIST_DATE,'YYYYMMDDHH24MISS') REGIST_DATE
+    , TO_DATE(A.UPDAT_DATE,'YYYYMMDDHH24MISS') UPDAT_DATE
+    , H.AFT_CARD_BAL
+FROM TBGZM100 A INNER JOIN TBADM600 B ON (A.ISSUER_ID = B.ISSUER_ID)
+                INNER JOIN TBAED141 C ON (A.PROFILE_CD = C.COMN_DETAIL_CD AND C.COMN_CD = 'CO014')
+                INNER JOIN TBAED141 D ON (A.CARD_CLASS_CD = D.COMN_DETAIL_CD AND D.COMN_CD = 'CO022')
+                LEFT JOIN TBAED141 E ON (A.CARD_STAT_CD  = E.COMN_DETAIL_CD AND E.COMN_CD = 'AD017')
+                INNER JOIN TBADM650 F ON (A.CARD_PROD_ID  = F.CARD_PROD_ID)
+                LEFT JOIN TBAAD300 H ON (A.CARD_NUM = H.CARD_NUM)
+WHERE A.CARD_NUM = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>CardNumber</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC FCS Connection.sharedjdbc</jdbcSharedConfig>
+            <wizardData/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>CARD_NUM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_CLASS_CD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_CLASS_NM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ISSUER_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ISSUER_NM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PROFILE_CD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PROFILE_NM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_STAT_CD</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_STAT_DESC</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_PROD_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_PROD_NM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>REGIST_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>date</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>UPDAT_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>date</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AFT_CARD_BAL</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <CardNumber>
+                    <xsl:value-of select="$Start/root/CardNumber"/>
+                </CardNumber>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>406</pd:x>
+        <pd:y>335</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>275</pd:x>
+        <pd:y>335</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>524</pd:x>
+        <pd:y>340</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:Error>
+                <pfx5:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx5:ErrorCode>
+                <pfx5:ErrorMessage>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </pfx5:ErrorMessage>
+            </pfx5:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Card dont exist">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>216</pd:x>
+        <pd:y>213</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Card Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>213</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:Error>
+                <pfx5:ErrorCode>
+                    <xsl:value-of select="&quot;02&quot;"/>
+                </pfx5:ErrorCode>
+                <pfx5:ErrorMessage>
+                    <xsl:value-of select="&quot;Numero de tarjeta no encontrado&quot;"/>
+                </pfx5:ErrorMessage>
+            </pfx5:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Card Info Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>383</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <processName>/GeneralProcesses/MapperProcesses/GetCardInfoMapper.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:CardInfo>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/CARD_NUM">
+                    <ns:CardNumber>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/CARD_NUM"/>
+                    </ns:CardNumber>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/CARD_STAT_CD">
+                    <ns:StatusCode>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/CARD_STAT_CD"/>
+                    </ns:StatusCode>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/CARD_STAT_DESC">
+                    <ns:Status>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/CARD_STAT_DESC"/>
+                    </ns:Status>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/PROFILE_CD">
+                    <ns:ProfileCode>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/PROFILE_CD"/>
+                    </ns:ProfileCode>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/PROFILE_NM">
+                    <ns:Profile>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/PROFILE_NM"/>
+                    </ns:Profile>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/CARD_PROD_ID">
+                    <ns:CardTypeCode>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/CARD_PROD_ID"/>
+                    </ns:CardTypeCode>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/CARD_PROD_NM">
+                    <ns:CardType>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/CARD_PROD_NM"/>
+                    </ns:CardType>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="empty($Card-Basic-Info/resultSet/Record[1]/AFT_CARD_BAL)">
+                        <ns:PrepaidBalance>
+                            <xsl:value-of select="0.0"/>
+                        </ns:PrepaidBalance>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ns:PrepaidBalance>
+                            <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/AFT_CARD_BAL"/>
+                        </ns:PrepaidBalance>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <ns:PospaidBalance>
+                    <xsl:value-of select="0.0"/>
+                </ns:PospaidBalance>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/REGIST_DATE">
+                    <ns:CreatedAt>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/REGIST_DATE"/>
+                    </ns:CreatedAt>
+                </xsl:if>
+                <xsl:if test="$Card-Basic-Info/resultSet/Record[1]/UPDAT_DATE">
+                    <ns:LastModify>
+                        <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/UPDAT_DATE"/>
+                    </ns:LastModify>
+                </xsl:if>
+            </ns:CardInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Card Basic Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Card Basic Info</pd:from>
+        <pd:to>Get Card Info Mapper</pd:to>
+        <pd:xpathDescription>Card Exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Card-Basic-Info/resultSet/Record) &gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Card Basic Info</pd:from>
+        <pd:to>Card dont exist</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Card dont exist</pd:from>
+        <pd:to>Card Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Card Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Card Info Mapper</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

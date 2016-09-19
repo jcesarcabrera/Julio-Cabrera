@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Catalina Montero</authorProperty>
+        </sharedArchive>
+        <processArchive name="AVVILLAS_Transactions_HCS">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Julio Cabrera</authorProperty>
+            <processProperty>/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process</processProperty>
+        </processArchive>
+        <versionProperty>5</versionProperty>
+        <authorProperty>Julio Cabrera</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>AVVILLAS_Transactions_HCS</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\Users\Catalina Montero\Documents\Deployments\AVVILLAS_Transactions_HCS.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

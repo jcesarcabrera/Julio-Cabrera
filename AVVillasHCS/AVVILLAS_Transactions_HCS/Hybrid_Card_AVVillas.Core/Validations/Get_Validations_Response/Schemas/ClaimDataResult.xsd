@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsUsosResponseBank"
+	 targetNamespace="nsUsosResponseBank"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="header"/>
+				<xs:element ref="body" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Reservado"/>
+				<xs:element ref="NumerodeRegistros"/>
+				<xs:element ref="ValoraAcumuladodeUsos"/>
+				<xs:element ref="FechadeGeneraciondelArchivo"/>
+				<xs:element ref="RFU"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Reservado" type="xs:string"/>
+	<xs:element name="NumerodeRegistros" type="xs:string"/>
+	<xs:element name="ValoraAcumuladodeUsos" type="xs:string"/>
+	<xs:element name="FechadeGeneraciondelArchivo" type="xs:string"/>
+	<xs:element name="RFU" type="xs:string"/>
+	<xs:element name="body">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IdentificadordeTransaccion"/>
+				<xs:element ref="CodigoBanco"/>
+				<xs:element ref="fechaTransaccion"/>
+				<xs:element ref="MontodeUso"/>
+				<xs:element ref="DocumentodeIdentidad"/>
+				<xs:element ref="SerialTarjeta"/>
+				<xs:element ref="NombreEstacion"/>
+				<xs:element ref="CodigoEstacion"/>
+				<xs:element ref="IndicadorRespuesta"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IdentificadordeTransaccion" type="xs:string"/>
+	<xs:element name="CodigoBanco" type="xs:string"/>
+	<xs:element name="MontodeUso" type="xs:string"/>
+	<xs:element name="DocumentodeIdentidad" type="xs:string"/>
+	<xs:element name="SerialTarjeta" type="xs:base64Binary"/>
+	<xs:element name="NombreEstacion" type="xs:string"/>
+	<xs:element name="CodigoEstacion" type="xs:string"/>
+	<xs:element name="IndicadorRespuesta" type="xs:string"/>
+	<xs:element name="fechaTransaccion" type="xs:string"/>
+</xs:schema>

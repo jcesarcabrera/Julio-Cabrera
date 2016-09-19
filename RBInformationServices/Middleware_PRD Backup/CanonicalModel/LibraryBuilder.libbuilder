@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <name name="LibraryBuilder">
+        <version>40</version>
+        <author>Francisco</author>
+        <fileLocation>C:\TibcoProjects\Middleware\Libraries\CanonicalModel.projlib</fileLocation>
+        <resources>/CanonicalModel 1.0.0/Core/CardInfo.xsd,/CanonicalModel 1.0.0/Core/CardUser.xsd,/CanonicalModel 1.0.0/Core/RechargePoint.xsd,/CanonicalModel 1.0.0/Core/Transaction.xsd,/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd</resources>
+    </name>
+</Repository:repository>

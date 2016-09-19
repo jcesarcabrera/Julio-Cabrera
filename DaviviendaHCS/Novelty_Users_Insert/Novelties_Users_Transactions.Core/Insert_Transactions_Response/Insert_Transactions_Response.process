@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx7="nsUsosResponseBank" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult.sharedparse"/>
+    <xsd:import namespace="nsUsosResponseBank" schemaLocation="/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/Schemas/BankValidationsResponse.xsd"/>
+    <pd:name>Novelties_Users_Transactions.Core/Insert_Transactions_Response/Insert_Transactions_Response.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>579</pd:endX>
+    <pd:endY>131</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1473288444360</pd:targetNamespace>
+    <pd:activity name="ARFile">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>235</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <element ref="pfx7:root"/>
+        </config>
+        <pd:inputBindings>
+            <pfx7:root>
+                <pfx7:header>
+                    <pfx7:Reservado>
+                        <xsl:value-of select="substring(tib:tokenize($Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent, &quot;&#xA;&quot;)[1], 0,9)"/>
+                    </pfx7:Reservado>
+                    <pfx7:NumerodeRegistros>
+                        <xsl:value-of select="substring(tib:tokenize($Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent,&quot;&#xA;&quot;)[1], 9,8)"/>
+                    </pfx7:NumerodeRegistros>
+                    <pfx7:ValoraAcumuladodeUsos>
+                        <xsl:value-of select="substring(tib:tokenize($Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent, &quot;&#xA;&quot;)[1], 17,13)"/>
+                    </pfx7:ValoraAcumuladodeUsos>
+                    <pfx7:FechadeGeneraciondelArchivo>
+                        <xsl:value-of select="substring(tib:tokenize($Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent, &quot;&#xA;&quot;)[1], 30,8)"/>
+                    </pfx7:FechadeGeneraciondelArchivo>
+                    <pfx7:RFU>
+                        <xsl:value-of select="substring(tib:tokenize($Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent, &quot;&quot;)[1], 38,84)"/>
+                    </pfx7:RFU>
+                </pfx7:header>
+                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="tib:tokenize($Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent, &quot;&#xA;&quot;)[position ()>1]">
+                    <pfx7:body>
+                        <pfx7:IdentificadordeTransaccion>
+                            <xsl:value-of select="substring(current(), 0,21)"/>
+                        </pfx7:IdentificadordeTransaccion>
+                        <pfx7:CodigoBanco>
+                            <xsl:value-of select="substring(current(), 21,3)"/>
+                        </pfx7:CodigoBanco>
+                        <pfx7:fechaTransaccion>
+                            <xsl:value-of select="substring(current(), 24,14)"/>
+                        </pfx7:fechaTransaccion>
+                        <pfx7:MontodeUso>
+                            <xsl:value-of select="substring(current(), 38,7)"/>
+                        </pfx7:MontodeUso>
+                        <pfx7:DocumentodeIdentidad>
+                            <xsl:value-of select="substring(current(), 45, 16)"/>
+                        </pfx7:DocumentodeIdentidad>
+                        <pfx7:SerialTarjeta>
+                            <xsl:value-of select="substring(current(), 61, 16)"/>
+                        </pfx7:SerialTarjeta>
+                        <pfx7:NombreEstacion>
+                            <xsl:value-of select="substring(current(), 77, 40)"/>
+                        </pfx7:NombreEstacion>
+                        <pfx7:CodigoEstacion>
+                            <xsl:value-of select="substring(current(), 117, 7)"/>
+                        </pfx7:CodigoEstacion>
+                        <pfx7:IndicadorRespuesta>
+                            <xsl:value-of select="tib:right(current(), 2)"/>
+                        </pfx7:IndicadorRespuesta>
+                    </pfx7:body>
+                </xsl:for-each>
+            </pfx7:root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>227</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns12:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$GET_AR_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fullName"/>
+                </fileName>
+                <encoding>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Validations_Response/Encoding"/>
+                </encoding>
+            </ns12:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GET_AR_File">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>126</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns1:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Validations_Response/Validations_Response_UncifredFile,&#xA;$_globalVariables/ns:GlobalVariables/Validations_Response/Validations_ResponseFileName_Prefix,&#xA;$_globalVariables/ns:GlobalVariables/Validations_Response/Validations_ResponseFile_BankPrefix,&#xA;tib:format-date(&quot;yyyyMMdd&quot;, current-date()),&#xA;'*')"/>
+                </fileName>
+            </ns1:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Transactions_Response">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>314</pd:x>
+        <pd:y>51</pd:y>
+        <pd:width>173</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$ARFile/pfx7:root/pfx7:body</pd:over>
+            <pd:iterationElementSlot>ARBody</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Insert_Transactions_Response</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert_Transactions_Response</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Insert_Transactions_Response">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>398</pd:x>
+            <pd:y>130</pd:y>
+            <config>
+                <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO TransactionsResponse (TransactionSequenceNumber, DocumentID, BankCode, UsageDate, AmountUsed, FCSCardNumber, BusStopNm, BusStopID, ResponseCode, ARFileName) VALUES (?,?,?,?,?,?,?,?,?,?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>TransactionSequenceNumber</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>DocumentID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>BankCode</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>UsageDate</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>AmountUsed</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>FCSCardNumber</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>BusStopNm</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>BusStopID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ResponseCode</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ARFileName</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <TransactionSequenceNumber>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:IdentificadordeTransaccion"/>
+                    </TransactionSequenceNumber>
+                    <DocumentID>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:DocumentodeIdentidad"/>
+                    </DocumentID>
+                    <BankCode>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:CodigoBanco"/>
+                    </BankCode>
+                    <UsageDate>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:fechaTransaccion"/>
+                    </UsageDate>
+                    <AmountUsed>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:MontodeUso"/>
+                    </AmountUsed>
+                    <FCSCardNumber>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:SerialTarjeta"/>
+                    </FCSCardNumber>
+                    <BusStopNm>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:NombreEstacion"/>
+                    </BusStopNm>
+                    <BusStopID>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:CodigoEstacion"/>
+                    </BusStopID>
+                    <ResponseCode>
+                        <xsl:value-of select="$ARBody/pfx7:body/pfx7:IndicadorRespuesta"/>
+                    </ResponseCode>
+                    <ARFileName>
+                        <xsl:value-of select="$Read-File/ns1:ReadActivityOutputTextClass/fileInfo/fileName"/>
+                    </ARFileName>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GET_AR_File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GET_AR_File</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>ARFile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ARFile</pd:from>
+        <pd:to>Transactions_Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transactions_Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

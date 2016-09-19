@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Francisco</authorProperty>
+            <sharedResources>/Certificates/Equifax_Secure_Certificate_Authority.cert,/Certificates/smtp_gmail_com.cert,/Certificates/mail_google_com.cert,/Certificates/GeoTrust Global CA.cert,/Certificates/Google Internet Authority G2.cert</sharedResources>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="RBReportingServices">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Francisco</authorProperty>
+            <processProperty>/StarterProcesses/HcsSender.process</processProperty>
+        </processArchive>
+        <versionProperty>9</versionProperty>
+        <authorProperty>Francisco</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>RBReportingServices</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\TibcoProjects\Middleware\RBRS.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

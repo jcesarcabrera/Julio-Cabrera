@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/SecurityInfo.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/SecurityInfo.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Security">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SecurityToken"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SecurityToken" type="xs:string"/>
+</xs:schema>

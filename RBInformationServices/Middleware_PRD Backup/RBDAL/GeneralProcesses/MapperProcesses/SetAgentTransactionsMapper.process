@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" schemaLocation="/CanonicalModel 1.0.0/Core/Transaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <pd:name>GeneralProcesses/MapperProcesses/SetAgentTransactionsMapper.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="AgentTransactions">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:AgentTransaction" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>56</pd:startX>
+    <pd:startY>103</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <Transactions>
+                    <xsl:for-each select="$Start/AgentTransactions/pfx:AgentTransaction">
+                        <pfx2:Transaction>
+                            <xsl:if test="pfx:TransactionId">
+                                <pfx2:TransactionId>
+                                    <xsl:value-of select="pfx:TransactionId"/>
+                                </pfx2:TransactionId>
+                            </xsl:if>
+                            <pfx2:TransactionDate>
+                                <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx:TransactionDate)&#xA;)"/>
+                            </pfx2:TransactionDate>
+                            <xsl:if test="pfx:AgentNumber">
+                                <pfx2:AgentNumber>
+                                    <xsl:value-of select="pfx:AgentNumber"/>
+                                </pfx2:AgentNumber>
+                            </xsl:if>
+                            <xsl:if test="pfx:AgentName">
+                                <pfx2:AgentName>
+                                    <xsl:value-of select="pfx:AgentName"/>
+                                </pfx2:AgentName>
+                            </xsl:if>
+                            <xsl:if test="pfx:AgentId">
+                                <pfx2:AgentId>
+                                    <xsl:value-of select="pfx:AgentId"/>
+                                </pfx2:AgentId>
+                            </xsl:if>
+                            <xsl:if test="pfx:PosId">
+                                <pfx2:PosId>
+                                    <xsl:value-of select="pfx:PosId"/>
+                                </pfx2:PosId>
+                            </xsl:if>
+                            <xsl:if test="pfx:CardNumber">
+                                <pfx2:CardNumber>
+                                    <xsl:value-of select="pfx:CardNumber"/>
+                                </pfx2:CardNumber>
+                            </xsl:if>
+                            <xsl:if test="pfx:TransactionType">
+                                <pfx2:TransactionType>
+                                    <xsl:value-of select="pfx:TransactionType"/>
+                                </pfx2:TransactionType>
+                            </xsl:if>
+                            <xsl:if test="pfx:RechargeType">
+                                <pfx2:RechargeType>
+                                    <xsl:value-of select="pfx:RechargeType"/>
+                                </pfx2:RechargeType>
+                            </xsl:if>
+                            <xsl:if test="pfx:BalanceBefore">
+                                <pfx2:BalanceBefore>
+                                    <xsl:value-of select="pfx:BalanceBefore"/>
+                                </pfx2:BalanceBefore>
+                            </xsl:if>
+                            <xsl:if test="pfx:TransactionValue">
+                                <pfx2:TransactionValue>
+                                    <xsl:value-of select="pfx:TransactionValue"/>
+                                </pfx2:TransactionValue>
+                            </xsl:if>
+                            <xsl:if test="pfx:BalanceAfter">
+                                <pfx2:BalanceAfter>
+                                    <xsl:value-of select="pfx:BalanceAfter"/>
+                                </pfx2:BalanceAfter>
+                            </xsl:if>
+                            <xsl:if test="pfx:NegativeBalance">
+                                <pfx2:NegativeBalance>
+                                    <xsl:value-of select="pfx:NegativeBalance"/>
+                                </pfx2:NegativeBalance>
+                            </xsl:if>
+                        </pfx2:Transaction>
+                    </xsl:for-each>
+                </Transactions>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <pfx3:Error>
+                    <pfx3:ErrorCode>
+                        <xsl:value-of select="&quot;13&quot;"/>
+                    </pfx3:ErrorCode>
+                    <pfx3:ErrorMessage>
+                        <xsl:value-of select="&quot;Faltan campos obligatorios de las transacciones&quot;"/>
+                    </pfx3:ErrorMessage>
+                </pfx3:Error>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="Transactions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx2:Transaction" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx3:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>596</pd:endX>
+    <pd:endY>104</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1457471974077</pd:targetNamespace>
+    <pd:activity name="Check Completeness">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>102</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Incomplete Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>233</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>447</pd:x>
+        <pd:y>105</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Check Completeness</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Completeness</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:xpathDescription>Info Complete</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>if (exists($Start/AgentTransactions/pfx:AgentTransaction)) then
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:TransactionId) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:AgentNumber) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:AgentName) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:AgentId) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:PosId) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:CardNumber) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:TransactionType) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:RechargeType) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:BalanceBefore) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:TransactionValue) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:BalanceAfter) and
+	exists($Start/AgentTransactions/pfx:AgentTransaction/pfx:NegativeBalance)
+else true()</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Completeness</pd:from>
+        <pd:to>Incomplete Message</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Incomplete Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

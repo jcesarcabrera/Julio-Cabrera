@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>FcsServiceIP</name>
+			<value>10.50.128.134</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1463779241669</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>FcsServicePort</name>
+			<value>8001</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1463779241621</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>LocalIP</name>
+			<value>172.30.1.82</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1463779295450</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

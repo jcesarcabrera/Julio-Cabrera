@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.recaudo.bogota.com/schemas/ws/GetWSUsos" xmlns:ns5="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns6="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd">
+    <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations_Main.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <Archivo_AE>
+            <FullName>
+                <xsl:value-of select="$ValidacionJSONClaimData/output/fullname"/>
+            </FullName>
+            <FileName>
+                <xsl:value-of select="$ValidacionJSONClaimData/output/Filename"/>
+            </FileName>
+        </Archivo_AE>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Archivo_AE">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FullName" type="xsd:string"/>
+                    <xsd:element name="FileName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>791</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1437241955209</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>538</pd:x>
+        <pd:y>129</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get_Validations">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>136</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Invoke_End_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>666</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns5:LOGS_SAVE>
+                <ns5:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns5:process>
+                <ns5:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns5:project>
+                <ns5:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns5:datetime>
+                <ns5:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns5:level>
+                <ns5:message>
+                    <xsl:value-of select="&quot;Se valida el archivo JSON, se procesa y es enviado de vuelta al Banco&quot;"/>
+                </ns5:message>
+                <ns5:detail>
+                    <xsl:value-of select="$ValidacionJSONClaimData/output/Filename"/>
+                </ns5:detail>
+                <ns5:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns5:id_process>
+            </ns5:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>645</pd:x>
+        <pd:y>128</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Send_Validations_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>379</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns5:LOGS_SAVE>
+                <ns5:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns5:process>
+                <ns5:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns5:project>
+                <ns5:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns5:datetime>
+                <ns5:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns5:level>
+                <ns5:message>
+                    <xsl:value-of select="&quot;Se genera el archivo plano&quot;"/>
+                </ns5:message>
+                <ns5:detail>
+                    <xsl:value-of select="concat(string($Get_Validations/ZipFile/Rest_StatusCode), &quot; &quot;, string($Get_Validations/ZipFile/Rest_Response_ReasonPhrase))"/>
+                </ns5:detail>
+                <ns5:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns5:id_process>
+            </ns5:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unzip">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>251</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Commons/Unzip.process</processName>
+        </config>
+        <pd:inputBindings>
+            <UnzipFile>
+                <inputPathFile>
+                    <xsl:value-of select="$Get_Validations/ZipFile/ZipFile_FullName"/>
+                </inputPathFile>
+                <outputPathFile>
+                    <xsl:value-of select="tib:substring-before-last(concat($_globalVariables/ns3:GlobalVariables/RecaudoBogota/Validations_Request/Validations_File_Local_Unzipped_Path, $Get_Validations/ZipFile/ZipFile_FileName), &quot;.&quot;)"/>
+                </outputPathFile>
+                <filenameIntern>
+                    <xsl:value-of select="$Get_Validations/ZipFile/ZipFile_FileName"/>
+                </filenameIntern>
+            </UnzipFile>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ValidacionJSONClaimData">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>523</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/ValidacionJSONClaimData.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <fullNameInputFile>
+                    <xsl:value-of select="$Unzip/root/outputPathFile"/>
+                </fullNameInputFile>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get_Validations</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unzip</pd:from>
+        <pd:to>Send_Validations_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValidacionJSONClaimData</pd:from>
+        <pd:to>Invoke_End_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send_Validations_Log</pd:from>
+        <pd:to>ValidacionJSONClaimData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke_End_Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get_Validations</pd:from>
+        <pd:to>Unzip</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

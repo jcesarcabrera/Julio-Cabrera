@@ -1,0 +1,1419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/ChargingNetworkOperation.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/RechargePoints.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/ChargingNetwork.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/RechargePoints.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/RechargePoints.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd"/>
+    <pd:name>GeneralProcesses/DataAccessProcesses/DalGetAgentTransactions.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ClearingDate" type="xsd:string"/>
+                    <xsd:element name="UserId" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>53</pd:startX>
+    <pd:startY>52</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:copy-of select="$Get-Agent-Transactions-Mapper/AgentTransactions"/>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx4:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="AgentTransactions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx5:AgentTransaction" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx4:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1700</pd:endX>
+    <pd:endY>538</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varConciliationId>
+            <xsd:element name="conciliationId" type="xsd:int"/>
+        </varConciliationId>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx4:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1454970129709</pd:targetNamespace>
+    <pd:activity name="Get Agent Transaction Data">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>369</pd:x>
+        <pd:y>253</pd:y>
+        <config>
+            <timeout>600</timeout>
+            <commit>false</commit>
+            <maxRows>0</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC Reporting Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT A.SERV_ACCT_ID Pos_Id -- Ventas
+      , A.JOB_DT Transaction_Clearing_Date
+      , A.TRNSCTN_DATE Transaction_Date
+      , NULL Agent_Type
+      , C.PROVIDR_REGIST_NUM Agent_Number
+      , C.AGENT_NM Agent_Name
+      , NULL Station_Name
+      , NULL Station_Access
+      , C.AGENT_ID Agent_Id
+      , NULL Sam_Id
+      , NULL Trx_Sam_Num
+      , A.CARD_NUM Card_Number
+      , NULL Trx_Card_Num
+      , D.COMN_DETAIL_CD_NM Card_Type
+      , E.COMN_DETAIL_CD_NM Profile_Name
+      , NULL Payment_Type
+      , 'VENTA'  Transaction_Type
+      , NULL Recharge_Type
+      , NULL Balance_Before
+      , A.CARD_SALE_AMT Transaction_Value
+      , NULL Balance_After
+      , NULL LSAM_Before_Balance
+      , NULL LSAM_After_Balance
+      , NULL Negative_Balance
+FROM TBABD140 A, 
+      TBABM100 B,
+      TBABM200 C, 
+      TBAED141 D,
+      TBAED141 E
+WHERE A.SERV_ACCT_ID = B.SERV_ACCT_ID
+      AND B.AGENT_ID = C.AGENT_ID
+      AND A.CARD_TYPE_CD = D.COMN_DETAIL_CD AND D.COMN_CD = 'CO015'
+      AND A.PROFILE_CD = E.COMN_DETAIL_CD AND E.COMN_CD = 'CO014'
+      AND C.REPRESNTN_AGENT_ID =?
+      AND A.JOB_DT LIKE ?
+UNION
+SELECT A.SERV_ACCT_ID AS Pos_Id -- Recargas
+       , A.JOB_DT as Transaction_Clearing_Date
+       , A.TRNSCTN_DATE as Transaction_Date
+       , (SELECT 
+           COMN_DETAIL_CD_NM 
+           FROM TBAED141 
+           WHERE COMN_CD = 'AB002' 
+           AND COMN_DETAIL_CD = C.AGENT_TYPE_CD) AS Agent_type
+           , C.PROVIDR_REGIST_NUM as Agent_number
+       , CASE WHEN C.AGENT_ID IS NULL THEN C.AGENT_ID ELSE C.AGENT_NM || '(' || C.AGENT_ID || ')' END AS Agent_Name
+       , CASE WHEN A.STATION_ID = '00000' THEN NULL ELSE L.STATION_NM|| '(' || A.STATION_ID || ')' END AS Station_Name
+       , M.STATION_ACCS_NM AS Station_Access
+       , C.AGENT_ID  AS Agent_Id     
+       , A.SAM_ID as Sam_Id
+       , A.SAM_TRNSCTN_NUM as Trx_Sam_Num
+       , A.CARD_NUM as Card_Number
+       , A.CARD_TRNSCTN_SEQ as Trx_Card_Num
+       , CASE WHEN A.CARD_TYPE_CD IS NULL THEN A.CARD_TYPE_CD 
+          ELSE (SELECT 
+                   COMN_DETAIL_CD_NM 
+                   FROM TBAED141 
+                   WHERE COMN_CD = 'CO015' 
+                   AND COMN_DETAIL_CD = A.CARD_TYPE_CD) || '(' || A.CARD_TYPE_CD || ')' END AS Card_Type
+       , CASE WHEN A.CARD_TYPE_CD = '1' THEN '(' || A.PROFILE_CD || ')' || 
+         (SELECT COMN_DETAIL_CD_NM FROM TBAED141 WHERE COMN_CD = 'CO029' AND COMN_DETAIL_CD = A.PROFILE_CD)
+          WHEN A.CARD_TYPE_CD = '2' 
+               THEN '(' || A.PROFILE_CD || ')' || 
+                 (SELECT COMN_DETAIL_CD_NM FROM TBAED141 WHERE COMN_CD = 'CO014' AND COMN_DETAIL_CD = A.PROFILE_CD)
+          WHEN A.CARD_TYPE_CD = '5'
+               THEN '(' || A.PROFILE_CD || ')' || 
+                 (SELECT COMN_DETAIL_CD_NM FROM TBAED141 WHERE COMN_CD = 'CO030' AND COMN_DETAIL_CD = A.PROFILE_CD) 
+          ELSE NULL END AS Profile_Name
+       , CASE WHEN G.COMN_DETAIL_CD_NM IS NULL THEN A.PAY_TYPE_CD ELSE G.COMN_DETAIL_CD_NM || '(' || A.PAY_TYPE_CD || ')' END AS Payment_Type
+       , DECODE(A.TRNSCTN_TYPE_CD, 2, 'CARGA', 4, 'ANULACION' ) AS Transaction_Type 
+       , CASE WHEN J.COMN_DETAIL_CD_NM IS NULL THEN A.RELOAD_TYPE_CD ELSE J.COMN_DETAIL_CD_NM || '(' || A.RELOAD_TYPE_CD || ')' END AS Recharge_Type
+       , A.RELOAD_BEF_BAL as Balance_Before
+       , A.RELOAD_REQ_AMT as Transaction_Value
+       , A.RELOAD_AFT_BAL as Balance_After
+       , A.LSAM_RELOAD_BEF_BAL as LSAM_Before_Balance
+       , A.LSAM_RELOAD_AFT_BAL as LSAM_After_Balance
+       , NVL(D.NGTBAL, 0) as Negative_Balance      
+FROM TBABD131 A 
+       JOIN TBABM100 B ON A.SERV_ACCT_ID = B.SERV_ACCT_ID 
+       LEFT JOIN TBABM200 C ON B.AGENT_ID = C.AGENT_ID 
+       LEFT JOIN TBABD150 D ON A.SAM_ID = D.LSAM_ID AND A.SAM_TRNSCTN_NUM = D.LSAM_TRNSCTN_NUM 
+       JOIN (SELECT ISSUER_ID, ISSUER_NM, MNTN_CARD_YN FROM TBADM600 
+       UNION ALL 
+       SELECT ISSUER_ID, 
+              ISSUER_NM, 
+              MNTN_CARD_YN 
+              FROM TBADM601) E 
+          ON A.ISSUER_ID = E.ISSUER_ID 
+       LEFT JOIN TBAED141 G ON A.PAY_TYPE_CD = G.COMN_DETAIL_CD AND G.COMN_CD = 'AB001' 
+       LEFT JOIN TBAED141 J ON A.RELOAD_TYPE_CD = J.COMN_DETAIL_CD AND J.COMN_CD = 'AB069' 
+       JOIN TBADM120 K ON K.DEVICE_ID = B.DEVICE_ID 
+       LEFT JOIN TBAFM102 L ON A.STATION_ID = L.STATION_ID 
+       LEFT JOIN TBAFM104 M ON M.STATION_ID = A.STATION_ID AND M.STATION_ACCS_ID = K.STATION_ACCS_ID 
+       --LEFT JOIN TBADM740 R ON A.OPERATOR_ID = R.OPERATOR_ID 
+WHERE C.REPRESNTN_AGENT_ID =?
+      AND A.JOB_DT = ?
+      -- AND A.SERV_ACCT_ID = '0000005551'-- Busqueda por PosID del Dispositivo. e.g. A.SERV_ACCT_ID = '0000005430' 
+ORDER BY Transaction_Date DESC</statement>
+            <wizardData/>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>RechargeNetworkId1</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ClearingDate1</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>RechargeNetworkId2</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ClearingDate2</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>POS_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRANSACTION_CLEARING_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRANSACTION_DATE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AGENT_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AGENT_NUMBER</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AGENT_NAME</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>STATION_NAME</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>STATION_ACCESS</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AGENT_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SAM_ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRX_SAM_NUM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_NUMBER</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRX_CARD_NUM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CARD_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PROFILE_NAME</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PAYMENT_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRANSACTION_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>RECHARGE_TYPE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BALANCE_BEFORE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TRANSACTION_VALUE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BALANCE_AFTER</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LSAM_BEFORE_BALANCE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>LSAM_AFTER_BALANCE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>NEGATIVE_BALANCE</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>number</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <RechargeNetworkId1>
+                    <xsl:choose>
+                        <xsl:when test="exists($Get-Agent-ID/resultSet/Record[1]/RepresentantId)">
+                            <xsl:value-of select="$Get-Agent-ID/resultSet/Record[1]/RepresentantId"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </RechargeNetworkId1>
+                <ClearingDate1>
+                    <xsl:value-of select="concat($Start/root/ClearingDate, &quot;%&quot;)"/>
+                </ClearingDate1>
+                <RechargeNetworkId2>
+                    <xsl:value-of select="$Get-Agent-ID/resultSet/Record[1]/RepresentantId"/>
+                </RechargeNetworkId2>
+                <ClearingDate2>
+                    <xsl:value-of select="$Start/root/ClearingDate"/>
+                </ClearingDate2>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Empty Data">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>370</pd:x>
+        <pd:y>539</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1470</pd:x>
+        <pd:y>242</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Empty Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1489</pd:x>
+        <pd:y>548</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx4:Error>
+                <pfx4:ErrorCode>
+                    <xsl:value-of select="&quot;12&quot;"/>
+                </pfx4:ErrorCode>
+                <pfx4:ErrorMessage>
+                    <xsl:value-of select="&quot;No hay transacciones para la fecha especificada&quot;"/>
+                </pfx4:ErrorMessage>
+            </pfx4:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1209</pd:x>
+        <pd:y>655</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1341</pd:x>
+        <pd:y>656</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1489</pd:x>
+        <pd:y>662</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx4:Error>
+                <pfx4:ErrorCode>
+                    <xsl:value-of select="99"/>
+                </pfx4:ErrorCode>
+                <pfx4:ErrorMessage>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </pfx4:ErrorMessage>
+            </pfx4:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Agent Transactions Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1584</pd:x>
+        <pd:y>257</pd:y>
+        <config>
+            <processName>/GeneralProcesses/MapperProcesses/GetAgentTransactionsMapper.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Transactions>
+                <xsl:for-each select="$Parse-XML/Resultsets/ResultSet1/Record1">
+                    <ns2:Transaction>
+                        <ns2:TransactionId>
+                            <xsl:value-of select="transactionId"/>
+                        </ns2:TransactionId>
+                        <ns2:TransactionClearingDate>
+                            <xsl:value-of select="clearingDate"/>
+                        </ns2:TransactionClearingDate>
+                        <ns2:TransactionDate>
+                            <xsl:value-of select="transactionDate"/>
+                        </ns2:TransactionDate>
+                        <ns2:AgentNumber>
+                            <xsl:value-of select="agentNumber"/>
+                        </ns2:AgentNumber>
+                        <ns2:AgentName>
+                            <xsl:value-of select="agentName"/>
+                        </ns2:AgentName>
+                        <ns2:AgentId>
+                            <xsl:value-of select="agentId"/>
+                        </ns2:AgentId>
+                        <ns2:PosId>
+                            <xsl:value-of select="posId"/>
+                        </ns2:PosId>
+                        <ns2:CardNumber>
+                            <xsl:value-of select="cardNumber"/>
+                        </ns2:CardNumber>
+                        <ns2:CardType>
+                            <xsl:value-of select="cardType"/>
+                        </ns2:CardType>
+                        <ns2:ProfileName>
+                            <xsl:value-of select="profileName"/>
+                        </ns2:ProfileName>
+                        <ns2:TransactionType>
+                            <xsl:value-of select="transactionType"/>
+                        </ns2:TransactionType>
+                        <xsl:if test="transactionType !=&quot;VENTA&quot;">
+                            <ns2:RechargeType>
+                                <xsl:value-of select="rechargeType"/>
+                            </ns2:RechargeType>
+                        </xsl:if>
+                        <xsl:if test="transactionType !=&quot;VENTA&quot;">
+                            <xsl:if test="balanceBefore">
+                                <ns2:BalanceBefore>
+                                    <xsl:value-of select="balanceBefore"/>
+                                </ns2:BalanceBefore>
+                            </xsl:if>
+                        </xsl:if>
+                        <ns2:TransactionValue>
+                            <xsl:value-of select="transactionValue"/>
+                        </ns2:TransactionValue>
+                        <xsl:if test="transactionType !=&quot;VENTA&quot;">
+                            <xsl:if test="balanceAfter">
+                                <ns2:BalanceAfter>
+                                    <xsl:value-of select="balanceAfter"/>
+                                </ns2:BalanceAfter>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="transactionType !=&quot;VENTA&quot;">
+                            <xsl:if test="negativeBalance">
+                                <ns2:NegativeBalance>
+                                    <xsl:value-of select="negativeBalance"/>
+                                </ns2:NegativeBalance>
+                            </xsl:if>
+                        </xsl:if>
+                    </ns2:Transaction>
+                </xsl:for-each>
+            </Transactions>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Compensation Transactional Group">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>491</pd:x>
+        <pd:y>34</pd:y>
+        <pd:width>896</pd:width>
+        <pd:height>405</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Check</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Update Conciliation Info</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create Conciliation Registry</pd:from>
+            <pd:to>Get Conciliation Id</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Conciliation Id</pd:from>
+            <pd:to>Set New Conciliation ID</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert Transactions</pd:from>
+            <pd:to>Get Agent Transactions</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Agent Transactions</pd:from>
+            <pd:to>Parse XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse XML</pd:from>
+            <pd:to>Update Conciliation Info</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check</pd:from>
+            <pd:to>Create Conciliation Registry</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check</pd:from>
+            <pd:to>Get Conciliation Info</pd:to>
+            <pd:xpathDescription>Exists Conciliation</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$varConciliationId/conciliationId !=0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Delete Transactions</pd:from>
+            <pd:to>Insert Transactions</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Set New Conciliation ID</pd:from>
+            <pd:to>Insert Transactions</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Conciliation Info</pd:from>
+            <pd:to>Get Agent Transactions</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Conciliation Info</pd:from>
+            <pd:to>Get Compensation Info</pd:to>
+            <pd:xpathDescription>Different Data</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>count($Get-Agent-Transaction-Data/resultSet/Record)  !=$Get-Conciliation-Info/resultSet/Record/totalRegistries</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Compensation Info</pd:from>
+            <pd:to>Delete Transactions</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Compensation Info</pd:from>
+            <pd:to>Get Agent Transactions</pd:to>
+            <pd:xpathDescription>Exists Compensation</pd:xpathDescription>
+            <pd:lineType>Curved</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Get-Compensation-Info/resultSet/Record/compensationExists &gt; 0</pd:xpath>
+        </pd:transition>
+        <pd:activity name="Create Conciliation Registry">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>682</pd:x>
+            <pd:y>370</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                <statement>INSERT INTO ChargingNetworkConciliation (conciliationDate, totalRegistries, reportedRegistries, totalValue, reportedValue, statusId)
+VALUES  (?, NULL, NULL, NULL, NULL, 1)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>conciliationDate</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <conciliationDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;number(substring($Start/root/ClearingDate, 1, 4)),&#xA;&#x9;number(substring($Start/root/ClearingDate, 5, 2)),&#xA;&#x9;number(substring($Start/root/ClearingDate, 7, 2)),0,0,0&#xA;)"/>
+                    </conciliationDate>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:group name="Insert Transactions">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>1034</pd:x>
+            <pd:y>219</pd:y>
+            <pd:width>182</pd:width>
+            <pd:height>166</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Get-Agent-Transaction-Data/resultSet/Record</pd:over>
+                <pd:iterationElementSlot>transaction</pd:iterationElementSlot>
+                <pd:indexSlot>i</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Insert Transaction Data</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert Transaction Data</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Insert Transaction Data">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1121</pd:x>
+                <pd:y>320</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <statement>INSERT INTO ChargingNetworkTransactions
+           (transactionId
+           ,conciliationId
+	   ,clearingDate
+           ,transactionDate
+           ,agentNumber
+           ,agentName
+           ,agentId
+           ,posId
+           ,cardNumber
+           ,cardType
+           ,profileName
+           ,transactionType
+           ,rechargeType
+           ,balanceBefore
+           ,transactionValue
+           ,balanceAfter
+           ,negativeBalance
+	   ,controlType)
+     VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'NORMAL')</statement>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>transactionId</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>conciliationId</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>clearingDate</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>transactionDate</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>agentNumber</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>agentName</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>agentId</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>posId</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>cardNumber</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>cardType</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>profileName</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>transactionType</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>rechargeType</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>balanceBefore</parameterName>
+                            <dataType>DECIMAL</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>transactionValue</parameterName>
+                            <dataType>DECIMAL</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>balanceAfter</parameterName>
+                            <dataType>DECIMAL</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>negativeBalance</parameterName>
+                            <dataType>DECIMAL</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <transactionId>
+                            <xsl:value-of select="concat(tib:right($transaction/Record/POS_ID, 5),  $transaction/Record/TRANSACTION_DATE)"/>
+                        </transactionId>
+                        <conciliationId>
+                            <xsl:value-of select="$varConciliationId/conciliationId"/>
+                        </conciliationId>
+                        <clearingDate>
+                            <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_CLEARING_DATE, 1, 4)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_CLEARING_DATE, 5, 2)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_CLEARING_DATE, 7, 2)),0,0,0&#xA;)"/>
+                        </clearingDate>
+                        <transactionDate>
+                            <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_DATE, 1, 4)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_DATE, 5, 2)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_DATE, 7, 2)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_DATE, 9, 2)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_DATE, 11,2)),&#xA;&#x9;number(substring($transaction/Record/TRANSACTION_DATE, 13, 2))&#xA;)"/>
+                        </transactionDate>
+                        <agentNumber>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/AGENT_NUMBER)">
+                                    <xsl:value-of select="$transaction/Record/AGENT_NUMBER"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </agentNumber>
+                        <agentName>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/AGENT_NAME)">
+                                    <xsl:value-of select="$transaction/Record/AGENT_NAME"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </agentName>
+                        <agentId>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/AGENT_ID)">
+                                    <xsl:value-of select="$transaction/Record/AGENT_ID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </agentId>
+                        <posId>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/POS_ID)">
+                                    <xsl:value-of select="$transaction/Record/POS_ID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </posId>
+                        <cardNumber>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/CARD_NUMBER)">
+                                    <xsl:value-of select="$transaction/Record/CARD_NUMBER"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </cardNumber>
+                        <cardType>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/CARD_TYPE)">
+                                    <xsl:value-of select="$transaction/Record/CARD_TYPE"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </cardType>
+                        <profileName>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/PROFILE_NAME)">
+                                    <xsl:value-of select="$transaction/Record/PROFILE_NAME"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </profileName>
+                        <transactionType>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/TRANSACTION_TYPE)">
+                                    <xsl:value-of select="$transaction/Record/TRANSACTION_TYPE"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </transactionType>
+                        <rechargeType>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/RECHARGE_TYPE)">
+                                    <xsl:value-of select="$transaction/Record/RECHARGE_TYPE"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </rechargeType>
+                        <balanceBefore>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/BALANCE_BEFORE)">
+                                    <xsl:value-of select="$transaction/Record/BALANCE_BEFORE"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </balanceBefore>
+                        <xsl:choose>
+                            <xsl:when test="$transaction/Record/TRANSACTION_TYPE = &quot;ANULACION&quot;">
+                                <transactionValue>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($transaction/Record/TRANSACTION_VALUE * -1)">
+                                            <xsl:value-of select="$transaction/Record/TRANSACTION_VALUE * -1"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </transactionValue>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <transactionValue>
+                                    <xsl:choose>
+                                        <xsl:when test="exists($transaction/Record/TRANSACTION_VALUE)">
+                                            <xsl:value-of select="$transaction/Record/TRANSACTION_VALUE"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </transactionValue>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <balanceAfter>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/BALANCE_AFTER)">
+                                    <xsl:value-of select="$transaction/Record/BALANCE_AFTER"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </balanceAfter>
+                        <negativeBalance>
+                            <xsl:choose>
+                                <xsl:when test="exists($transaction/Record/NEGATIVE_BALANCE)">
+                                    <xsl:value-of select="$transaction/Record/NEGATIVE_BALANCE"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </negativeBalance>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="Get Agent Transactions">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>1124</pd:x>
+            <pd:y>108</pd:y>
+            <config>
+                <timeout>600</timeout>
+                <maxRows>0</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>sp_rechargeNetworkCompensation;1</ProcedureName>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@conciliationDate</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@conciliationId</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <conciliationDate>
+                            <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;number(substring($Start/root/ClearingDate, 1, 4)),&#xA;&#x9;number(substring($Start/root/ClearingDate, 5, 2)),&#xA;&#x9;number(substring($Start/root/ClearingDate, 7, 2)),0,0,0&#xA;)"/>
+                        </conciliationDate>
+                        <conciliationId>
+                            <xsl:value-of select="$varConciliationId/conciliationId"/>
+                        </conciliationId>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Conciliation Id">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>810</pd:x>
+            <pd:y>356</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT MAX(conciliationId) ConciliationId FROM ChargingNetworkConciliation</statement>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>ConciliationId</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update Conciliation Info">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>1297</pd:x>
+            <pd:y>251</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                <statement>UPDATE ChargingNetworkConciliation SET totalRegistries = ?, totalValue = ? WHERE conciliationId = ?</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>totalRegistries</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>totalValue</parameterName>
+                        <dataType>DECIMAL</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>conciliationId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcUpdateActivityInput>
+                    <totalRegistries>
+                        <xsl:value-of select="count( $Parse-XML/Resultsets/ResultSet1/Record1)"/>
+                    </totalRegistries>
+                    <totalValue>
+                        <xsl:value-of select="sum( $Parse-XML/Resultsets/ResultSet1/Record1/transactionValue)"/>
+                    </totalValue>
+                    <conciliationId>
+                        <xsl:choose>
+                            <xsl:when test="exists($Get-Conciliation-Id/resultSet/Record[1]/ConciliationId)">
+                                <xsl:value-of select="$Get-Conciliation-Id/resultSet/Record[1]/ConciliationId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </conciliationId>
+                </jdbcUpdateActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse XML">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>1295</pd:x>
+            <pd:y>102</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>false</validateOutput>
+                <term>
+                    <xsd:element name="Resultsets">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ResultSet1">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Record1" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="transactionId" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="conciliationId" type="xsd:int" minOccurs="0"/>
+                                                        <xsd:element name="clearingDate" type="xsd:dateTime" minOccurs="0"/>
+                                                        <xsd:element name="transactionDate" type="xsd:dateTime" minOccurs="0"/>
+                                                        <xsd:element name="agentNumber" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="agentName" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="agentId" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="posId" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="cardNumber" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="cardType" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="profileName" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="transactionType" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="rechargeType" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="balanceBefore" type="xsd:decimal" minOccurs="0"/>
+                                                        <xsd:element name="transactionValue" type="xsd:decimal" minOccurs="0"/>
+                                                        <xsd:element name="balanceAfter" type="xsd:decimal" minOccurs="0"/>
+                                                        <xsd:element name="negativeBalance" type="xsd:decimal" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </term>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$Get-Agent-Transactions/resultSet/UnresolvedResultsets"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Check">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>561</pd:x>
+            <pd:y>243</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Delete Transactions">
+            <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+            <pd:x>935</pd:x>
+            <pd:y>242</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcGeneralActivityInput>
+                    <statement>
+                        <xsl:value-of select="concat(&quot;DELETE FROM ChargingNetworkTransactions WHERE controlType = 'NORMAL' AND conciliationId = &quot;, string( $varConciliationId/conciliationId))"/>
+                    </statement>
+                </jdbcGeneralActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Set New Conciliation ID">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>935</pd:x>
+            <pd:y>358</pd:y>
+            <config>
+                <variableName>varConciliationId</variableName>
+            </config>
+            <pd:inputBindings>
+                <conciliationId>
+                    <xsl:value-of select="$Get-Conciliation-Id/resultSet/Record[1]/ConciliationId"/>
+                </conciliationId>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Conciliation Info">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>682</pd:x>
+            <pd:y>110</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT totalRegistries, totalValue
+FROM ChargingNetworkConciliation
+WHERE conciliationId = ?</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>conciliationId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>totalRegistries</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>totalValue</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <conciliationId>
+                        <xsl:value-of select="$varConciliationId/conciliationId"/>
+                    </conciliationId>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Compensation Info">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>810</pd:x>
+            <pd:y>240</pd:y>
+            <config>
+                <timeout>10</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+                <statement>SELECT COUNT(compensationId) compensationExists
+FROM ChargingNetworkCompensation
+WHERE conciliationId = ?</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>conciliationId</parameterName>
+                        <dataType>INTEGER</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>compensationExists</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <conciliationId>
+                        <xsl:value-of select="$varConciliationId/conciliationId"/>
+                    </conciliationId>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Check For Conciliation Data">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>179</pd:x>
+        <pd:y>60</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT conciliationId 
+FROM ChargingNetworkConciliation 
+WHERE conciliationDate = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>conciliationDate</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>conciliationId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int identity</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <conciliationDate>
+                    <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;number(substring($Start/root/ClearingDate, 1, 4)),&#xA;&#x9;number(substring($Start/root/ClearingDate, 5, 2)),&#xA;&#x9;number(substring($Start/root/ClearingDate, 7, 2)),0,0,0&#xA;)"/>
+                </conciliationDate>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Set Conciliation ID">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>163</pd:x>
+        <pd:y>255</pd:y>
+        <config>
+            <variableName>varConciliationId</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="count($Check-For-Conciliation-Data/resultSet/Record) > 0">
+                    <conciliationId>
+                        <xsl:value-of select="$Check-For-Conciliation-Data/resultSet/Record[1]/conciliationId"/>
+                    </conciliationId>
+                </xsl:when>
+                <xsl:otherwise>
+                    <conciliationId>
+                        <xsl:value-of select="0"/>
+                    </conciliationId>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Agent ID">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>329</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT RepresentantId FROM Users WHERE userId = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>userId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>RepresentantId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <userId>
+                    <xsl:value-of select="$Start/root/UserId"/>
+                </userId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Check For Conciliation Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Agent Transaction Data</pd:from>
+        <pd:to>Empty Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Empty Data</pd:from>
+        <pd:to>Empty Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Empty Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>Get Agent Transactions Mapper</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Agent Transactions Mapper</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Agent Transaction Data</pd:from>
+        <pd:to>Compensation Transactional Group</pd:to>
+        <pd:xpathDescription>Exists Data</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Get-Agent-Transaction-Data/resultSet/Record) &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Compensation Transactional Group</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Set Conciliation ID</pd:from>
+        <pd:to>Get Agent Transaction Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check For Conciliation Data</pd:from>
+        <pd:to>Get Agent ID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Agent ID</pd:from>
+        <pd:to>Set Conciliation ID</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

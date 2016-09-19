@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd">
+    <pd:name>Commons/Unzip.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="UnzipFile">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputPathFile" type="xsd:string"/>
+                    <xsd:element name="outputPathFile" type="xsd:string"/>
+                    <xsd:element name="filenameIntern" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>67</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <outputPathFile>
+                <xsl:value-of select="$Start/UnzipFile/outputPathFile"/>
+            </outputPathFile>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="outputPathFile" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>315</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1435954941125</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <fileName>UnzipJavaCode</fileName>
+            <packageName>Commons.Unzip</packageName>
+            <fullsource>package Commons.Unzip;
+import java.util.*;
+import java.util.zip.*;
+import java.io.*;
+public class UnzipJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String inputPathFile = "";
+	protected String outPathFile = "";
+	protected String internNameFile = "";
+	protected String outTrue = "";
+	protected String outFalse = "";
+	public String getinputPathFile() {
+		return inputPathFile;
+	}
+	public void setinputPathFile(String val) {
+		inputPathFile = val;
+	}
+	public String getoutPathFile() {
+		return outPathFile;
+	}
+	public void setoutPathFile(String val) {
+		outPathFile = val;
+	}
+	public String getinternNameFile() {
+		return internNameFile;
+	}
+	public void setinternNameFile(String val) {
+		internNameFile = val;
+	}
+	public String getoutTrue() {
+		return outTrue;
+	}
+	public void setoutTrue(String val) {
+		outTrue = val;
+	}
+	public String getoutFalse() {
+		return outFalse;
+	}
+	public void setoutFalse(String val) {
+		outFalse = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	private static final int BUFFER_SIZE = 1024;
+	public UnzipJavaCode() {
+	}
+
+     public void Zippear(String pFile, String pZipFile) throws Exception {
+
+		// objetos en memoria
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		ZipOutputStream zipos = null;
+ 
+		// buffer
+		byte[] buffer = new byte[BUFFER_SIZE];
+		try {
+			// fichero a comprimir
+			fis = new FileInputStream(pFile);
+			// fichero contenedor del zip
+			fos = new FileOutputStream(pZipFile);
+			// fichero comprimido
+			zipos = new ZipOutputStream(fos);
+			String nameFileIntern =pFile.split("/")[pFile.split("/").length-1];
+			ZipEntry zipEntry = new ZipEntry(nameFileIntern);
+			zipos.putNextEntry(zipEntry);
+			int len = 0;
+			// zippear
+			while ((len = fis.read(buffer, 0, BUFFER_SIZE)) != -1)
+				zipos.write(buffer, 0, len);
+			// volcar la memoria al disco
+			zipos.flush();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// cerramos los files
+			zipos.close();
+			fis.close();
+			fos.close();
+		} // end try
+	} // end Zippear
+	
+	public void UnZip(String pZipFile, String pFile) throws Exception {
+		BufferedOutputStream bos = null;
+		FileInputStream fis = null;
+		ZipInputStream zipis = null;
+		FileOutputStream fos = null;
+ 
+		try {
+			fis = new FileInputStream(pZipFile);
+			zipis = new ZipInputStream(new BufferedInputStream(fis));
+			if (zipis.getNextEntry() != null) {
+				int len = 0;
+				byte[] buffer = new byte[BUFFER_SIZE];
+				fos = new FileOutputStream(pFile);
+				bos = new BufferedOutputStream(fos, BUFFER_SIZE);
+ 
+				while  ((len = zipis.read(buffer, 0, BUFFER_SIZE)) != -1)
+					bos.write(buffer, 0, len);
+				bos.flush();
+			} else {
+				throw new Exception("El zip no contenia fichero alguno");
+			} // end if
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			bos.close();
+			zipis.close();
+			fos.close();
+			fis.close();
+		} // end try
+	} // end UnZip
+
+
+public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String inputPathFile
+	In  : String outPathFile
+	In  : String internNameFile
+	Out : String outTrue
+	Out : String outFalse
+* Available Variables: DO NOT MODIFY *****/
+try {
+String extension=""+inputPathFile.split("\\.")[inputPathFile.split("\\.").length-1];
+ if(extension.equals("zip")){
+			UnZip(inputPathFile, outPathFile);
+			outTrue="Descomprimido!";
+}
+		} catch (Exception e) {
+			
+StringWriter errors = new StringWriter();
+e.printStackTrace(new PrintWriter(errors));
+outFalse= errors.toString();
+		}
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>outTrue</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outFalse</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>inputPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>internNameFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>UnzipJavaCode</name>
+                    <byteCode>yv66vgAAADMAqwkANwBmCQA3AGcJADcAaAkANwBpCQA3AGoKADgAawgAbAcAbQoACABuBwBvCgAKAG4HAHAKAAwAcQgAcgoAcwB0BwB1CgAQAG4KAAwAdgoACAB3CgAMAHgKAAwAeQoADAB6CgAIAHoKAAoAegcAewcAfAcAfQoAGwB+CgAaAH4KABoAfwcAgAoAHwCBCgAaAHcKAB8AeAoAHwB5CACCCgAZAG4KAB8AegoAGgB6BwCDCgAoAGsKACgAhAgAhQoAKACGCACHCgBzAIgKADcAiQgAigcAiwoAMQBrBwCMCgAzAI0KABkAjgoAMQCGBwCPBwCQAQANaW5wdXRQYXRoRmlsZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAC291dFBhdGhGaWxlAQAOaW50ZXJuTmFtZUZpbGUBAAdvdXRUcnVlAQAIb3V0RmFsc2UBAAtCVUZGRVJfU0laRQEAAUkBAA1Db25zdGFudFZhbHVlAwAABAABABBnZXRpbnB1dFBhdGhGaWxlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAQc2V0aW5wdXRQYXRoRmlsZQEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADmdldG91dFBhdGhGaWxlAQAOc2V0b3V0UGF0aEZpbGUBABFnZXRpbnRlcm5OYW1lRmlsZQEAEXNldGludGVybk5hbWVGaWxlAQAKZ2V0b3V0VHJ1ZQEACnNldG91dFRydWUBAAtnZXRvdXRGYWxzZQEAC3NldG91dEZhbHNlAQAGPGluaXQ+AQADKClWAQAHWmlwcGVhcgEAJyhMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspVgEADVN0YWNrTWFwVGFibGUHAI8HAJEHAG0HAG8HAHAHAJIHAHUHAHsHAJMBAApFeGNlcHRpb25zAQAFVW5aaXAHAIAHAHwBAAZpbnZva2UBAApTb3VyY2VGaWxlAQASVW56aXBKYXZhQ29kZS5qYXZhDAA5ADoMADsAOgwAPAA6DAA9ADoMAD4AOgwAUQBSAQAAAQAXamF2YS9pby9GaWxlSW5wdXRTdHJlYW0MAFEASAEAGGphdmEvaW8vRmlsZU91dHB1dFN0cmVhbQEAHWphdmEvdXRpbC96aXAvWmlwT3V0cHV0U3RyZWFtDABRAJQBAAEvBwCRDACVAJYBABZqYXZhL3V0aWwvemlwL1ppcEVudHJ5DACXAJgMAJkAmgwAmwCcDACdAFIMAJ4AUgEAE2phdmEvbGFuZy9FeGNlcHRpb24BABxqYXZhL3V0aWwvemlwL1ppcElucHV0U3RyZWFtAQAbamF2YS9pby9CdWZmZXJlZElucHV0U3RyZWFtDABRAJ8MAKAAoQEAHGphdmEvaW8vQnVmZmVyZWRPdXRwdXRTdHJlYW0MAFEAogEAIUVsIHppcCBubyBjb250ZW5pYSBmaWNoZXJvIGFsZ3VubwEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyDACjAKQBAAJcLgwApQBEAQADemlwDACmAKcMAGAAVAEADkRlc2NvbXByaW1pZG8hAQAUamF2YS9pby9TdHJpbmdXcml0ZXIBABNqYXZhL2lvL1ByaW50V3JpdGVyDABRAKgMAKkAqgEAG0NvbW1vbnMvVW56aXAvVW56aXBKYXZhQ29kZQEAEGphdmEvbGFuZy9PYmplY3QBABBqYXZhL2xhbmcvU3RyaW5nAQACW0IBABNqYXZhL2xhbmcvVGhyb3dhYmxlAQAZKExqYXZhL2lvL091dHB1dFN0cmVhbTspVgEABXNwbGl0AQAnKExqYXZhL2xhbmcvU3RyaW5nOylbTGphdmEvbGFuZy9TdHJpbmc7AQAMcHV0TmV4dEVudHJ5AQAbKExqYXZhL3V0aWwvemlwL1ppcEVudHJ5OylWAQAEcmVhZAEAByhbQklJKUkBAAV3cml0ZQEAByhbQklJKVYBAAVmbHVzaAEABWNsb3NlAQAYKExqYXZhL2lvL0lucHV0U3RyZWFtOylWAQAMZ2V0TmV4dEVudHJ5AQAaKClMamF2YS91dGlsL3ppcC9aaXBFbnRyeTsBABooTGphdmEvaW8vT3V0cHV0U3RyZWFtO0kpVgEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEACHRvU3RyaW5nAQAGZXF1YWxzAQAVKExqYXZhL2xhbmcvT2JqZWN0OylaAQATKExqYXZhL2lvL1dyaXRlcjspVgEAD3ByaW50U3RhY2tUcmFjZQEAGChMamF2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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <inputPathFile>
+                    <xsl:value-of select="$Start/UnzipFile/inputPathFile"/>
+                </inputPathFile>
+                <outPathFile>
+                    <xsl:value-of select="$Start/UnzipFile/outputPathFile"/>
+                </outPathFile>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

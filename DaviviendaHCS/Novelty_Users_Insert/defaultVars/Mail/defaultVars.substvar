@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>AEFile_MailTo</name>
+			<value>wkling@rbsas.co, wsalgar@rbsas.co, reportesrb@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472899467546</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>RejectedTransactions_MailTo</name>
+			<value>wkling@rbsas.co, nprieto@rbsas.co, jcabrera@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472899467591</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Report_Mail_To</name>
+			<value>wkling@rbsas.co, nprieto@rbsas.co, jcabrera@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473366897152</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Timer</name>
+			<value>2016 september 07 04:00:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473240108294</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TimerReport</name>
+			<value>2016 septiembre 15 08:52:30</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473947514915</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

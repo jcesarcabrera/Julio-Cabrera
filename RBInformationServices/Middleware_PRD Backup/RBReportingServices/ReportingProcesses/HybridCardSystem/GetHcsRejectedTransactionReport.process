@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HCSRejectedTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/Reporting/HcsStatusTransaction.xsd" xmlns:ns3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>ReportingProcesses/HybridCardSystem/GetHcsRejectedTransactionReport.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ReportDate" type="xsd:dateTime"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>47</pd:startX>
+    <pd:startY>184</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>902</pd:endX>
+    <pd:endY>183</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1467392460811</pd:targetNamespace>
+    <pd:activity name="Get Bank List">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>153</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <processName>/GeneralProcesses/DataAccessProcesses/DalGetHcsBankList.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:group name="Iteration Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>49</pd:y>
+        <pd:width>569</pd:width>
+        <pd:height>253</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Get-Bank-List/root/BankList/Bank</pd:over>
+            <pd:iterationElementSlot>CurrentBank</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get Rejected Transaction Report</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Go</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SendMail</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Rejected Transaction Report</pd:from>
+            <pd:to>Render Rejected Transaction Report Data</pd:to>
+            <pd:xpathDescription>OK</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Get-Rejected-Transaction-Report/root/Error="false"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render Rejected Transaction Report Data</pd:from>
+            <pd:to>SendMail</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Rejected Transaction Report</pd:from>
+            <pd:to>Go</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Render Rejected Transaction Report Data">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>487</pd:x>
+            <pd:y>121</pd:y>
+            <config>
+                <ParseSharedConfig>/FileFormats/RejectedTransactionReport.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <xsl:for-each select="$Get-Rejected-Transaction-Report/root/ns2:HCSRejectedTransacion/ns2:RejectedTransaction">
+                        <root>
+                            <BankName>
+                                <xsl:value-of select="ns2:BankName"/>
+                            </BankName>
+                            <ar_hybrid_card_number>
+                                <xsl:value-of select="ns2:HybridCard_card_number"/>
+                            </ar_hybrid_card_number>
+                            <ar_transaction_date>
+                                <xsl:value-of select="ns2:ar_transaction_date"/>
+                            </ar_transaction_date>
+                            <ar_amount_used>
+                                <xsl:value-of select="ns2:ar_amount_used"/>
+                            </ar_amount_used>
+                            <ar_station_name>
+                                <xsl:value-of select="ns2:ar_station_name"/>
+                            </ar_station_name>
+                            <ar_station_code>
+                                <xsl:value-of select="ns2:ar_station_code"/>
+                            </ar_station_code>
+                            <ar_id_response>
+                                <xsl:value-of select="ns2:ar_id_response"/>
+                            </ar_id_response>
+                        </root>
+                    </xsl:for-each>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SendMail">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>611</pd:x>
+            <pd:y>109</pd:y>
+            <config>
+                <processName>/MailingProcesses/SendMail.process</processName>
+            </config>
+            <pd:inputBindings>
+                <input>
+                    <to>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/HcsUsers"/>
+                    </to>
+                    <subject>
+                        <xsl:value-of select="concat(&quot;Reporte Transacciones Rechazadas &quot;, $Get-Bank-List/root/BankList/Bank[BankId = $CurrentBank/Bank/BankId]/BankName)"/>
+                    </subject>
+                    <message>
+                        <xsl:value-of select="concat(&quot;Reporte del  &quot;, tib:format-dateTime('yyyyMMddHHmmss', current-dateTime()))"/>
+                    </message>
+                    <Attachment>
+                        <content-type>
+                            <xsl:value-of select="&quot;text/csv&quot;"/>
+                        </content-type>
+                        <attachmentName>
+                            <xsl:value-of select="concat(&quot;RejectedTransaction_BID&quot;&#xA;,string($CurrentBank/Bank/BankId)&#xA;,&quot;_&quot;&#xA;,tib:format-dateTime('yyyyMMddHHmmss', current-dateTime())&#xA;,&quot;.csv&quot;)"/>
+                        </attachmentName>
+                        <attachmentText>
+                            <xsl:value-of select="concat(&quot;BankName,HybridCard_card_number,ar_transaction_id,ar_transaction_date,TRBD.ar_amount_used,ar_station_name,ar_station_code,ar_id_response&quot;&#xA;,&quot;&#xA;&quot;,$Render-Rejected-Transaction-Report-Data/Text)"/>
+                        </attachmentText>
+                    </Attachment>
+                </input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Go">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>611</pd:x>
+            <pd:y>223</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Get Rejected Transaction Report">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>327</pd:x>
+            <pd:y>230</pd:y>
+            <config>
+                <processName>/GeneralProcesses/DataAccessProcesses/DalGetHcsRejectedCardReport.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <BankId>
+                        <xsl:value-of select="$CurrentBank/Bank/BankId"/>
+                    </BankId>
+                    <ReportDate>
+                        <xsl:value-of select="$Start/root/ReportDate"/>
+                    </ReportDate>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Get Bank List</pd:from>
+        <pd:to>Iteration Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Iteration Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Bank List</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

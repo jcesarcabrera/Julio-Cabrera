@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="CardUser">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Name" minOccurs="0"/>
+				<xs:element ref="LastName" minOccurs="0"/>
+				<xs:element ref="SecondLastName" minOccurs="0"/>
+				<xs:element ref="IdTypeCode" minOccurs="0"/>
+				<xs:element ref="IdType" minOccurs="0"/>
+				<xs:element ref="IdNumber" minOccurs="0"/>
+				<xs:element ref="IdExpeditionDate" minOccurs="0"/>
+				<xs:element ref="BirthDate" minOccurs="0"/>
+				<xs:element ref="Address" minOccurs="0"/>
+				<xs:element ref="ScholarityCode" minOccurs="0"/>
+				<xs:element ref="Scholarity" minOccurs="0"/>
+				<xs:element ref="GenderCode" minOccurs="0"/>
+				<xs:element ref="Gender" minOccurs="0"/>
+				<xs:element ref="RhCode" minOccurs="0"/>
+				<xs:element ref="RH" minOccurs="0"/>
+				<xs:element ref="Email" minOccurs="0"/>
+				<xs:element ref="Phone" minOccurs="0"/>
+				<xs:element ref="Mobile" minOccurs="0"/>
+				<xs:element ref="Occupation" minOccurs="0"/>
+				<xs:element ref="AuthorizeDataUse" minOccurs="0"/>
+				<xs:element ref="LastUpdate" minOccurs="0"/>
+				<xs:element ref="StatusCode" minOccurs="0"/>
+				<xs:element ref="Status" minOccurs="0"/>
+				<xs:element ref="Benefits" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Status" type="xs:string"/>
+	<xs:element name="CreatedAt" type="xs:dateTime"/>
+	<xs:element name="LastModify" type="xs:dateTime"/>
+	<xs:element name="PospaidBalance" type="xs:decimal"/>
+	<xs:element name="Name" type="xs:string"/>
+	<xs:element name="LastName" type="xs:string"/>
+	<xs:element name="SecondLastName" type="xs:string"/>
+	<xs:element name="IdNumber" type="xs:string"/>
+	<xs:element name="Address" type="xs:string"/>
+	<xs:element name="Gender" type="xs:string"/>
+	<xs:element name="Email" type="xs:string"/>
+	<xs:element name="Phone" type="xs:string"/>
+	<xs:element name="Mobile" type="xs:string"/>
+	<xs:element name="Occupation" type="xs:string"/>
+	<xs:element name="CardType" type="xs:string"/>
+	<xs:element name="PrepaidBalance" type="xs:decimal"/>
+	<xs:element name="BirthDate" type="xs:dateTime"/>
+	<xs:element name="AuthorizeDataUse" type="xs:boolean"/>
+	<xs:element name="LastUpdate" type="xs:dateTime"/>
+	<xs:element name="ScholarityCode" type="xs:string"/>
+	<xs:element name="Scholarity" type="xs:string"/>
+	<xs:element name="CardTypeCode" type="xs:string"/>
+	<xs:element name="Benefits">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Benefit" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Benefit" type="xs:string"/>
+	<xs:element name="IdTypeCode" type="xs:string"/>
+	<xs:element name="IdExpeditionDate" type="xs:dateTime"/>
+	<xs:element name="RhCode" type="xs:string"/>
+	<xs:element name="RH" type="xs:string"/>
+	<xs:element name="GenderCode" type="xs:string"/>
+	<xs:element name="StatusCode" type="xs:string"/>
+	<xs:element name="IdType" type="xs:string"/>
+</xs:schema>

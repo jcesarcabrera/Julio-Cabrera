@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="nsClaimDataBank" xmlns:pfx="nsUsosResponseBank">
+    <xsd:import namespace="nsUsosResponseBank" schemaLocation="/SharedResources/Schemas/Response/BankUsosResponse.xsd"/>
+    <xsd:import namespace="nsClaimDataBank" schemaLocation="/SharedResources/Schemas/Request/BankClaimData.xsd"/>
+    <pd:name>Hybrid_Card_Davivienda/Get_Validations_FromFCS/Implementation/CountersTotal.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CountersTotal" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Body">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Montodeuso" type="xsd:int"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>56</pd:startX>
+    <pd:startY>85</pd:startY>
+    <pd:returnBindings>
+        <Output>
+            <SumTotal>
+                <xsl:value-of select="$Total/Total_Amount/Totalizador"/>
+            </SumTotal>
+        </Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SumTotal" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>513</pd:endX>
+    <pd:endY>85</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Total>
+            <xsd:element name="Total_Amount">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Totalizador" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Total>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1437012206863</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>283</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>145</pd:width>
+        <pd:height>154</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/Input/CountersTotal</pd:over>
+            <pd:iterationElementSlot>iterator</pd:iterationElementSlot>
+            <pd:indexSlot>index</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>TotalSum</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>TotalSum</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="TotalSum">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>354</pd:x>
+            <pd:y>79</pd:y>
+            <config>
+                <variableName>Total</variableName>
+            </config>
+            <pd:inputBindings>
+                <Total_Amount>
+                    <Totalizador>
+                        <xsl:value-of select="$Total/Total_Amount/Totalizador+$iterator/CountersTotal/Body/Montodeuso"/>
+                    </Totalizador>
+                </Total_Amount>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="INIT">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <variableName>Total</variableName>
+        </config>
+        <pd:inputBindings>
+            <Total_Amount>
+                <Totalizador>
+                    <xsl:value-of select="0"/>
+                </Totalizador>
+            </Total_Amount>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>INIT</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>INIT</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

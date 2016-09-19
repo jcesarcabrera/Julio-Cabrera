@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/TokenRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/MerchantSystemTransactionRequest.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/MerchantSystemTransaction.xsd" xmlns:pfx="http://www.tibco.com/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/MerchantSystemTransactionRequest.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/MerchantSystemTransactionRequest.xsd" schemaLocation="/Schemas/Version 1.0.0/Request/MerchantSystemTransactionRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/MerchantSystemTransaction.xsd" schemaLocation="/Schemas/Version 1.0.0/Response/MerchantSystemTransaction.xsd"/>
+    <pd:name>REST/BusinessProcesses/Version 1.0.0/SetMerchantSystemTransaction/SetMerchantSystemTransaction.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:MerchantSystemTransactionRequest"/>
+    <pd:startX>45</pd:startX>
+    <pd:startY>120</pd:startY>
+    <pd:returnBindings>
+        <ResponseString>
+            <xsl:value-of select="$varProcessResponse/ResponseString"/>
+        </ResponseString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ResponseString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>851</pd:endX>
+    <pd:endY>288</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varProcessResponse>
+            <xsd:element name="ResponseString" type="xsd:string"/>
+        </varProcessResponse>
+        <varErrorMessage ref="ns2:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1462312863485</pd:targetNamespace>
+    <pd:activity name="Render OK Message">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>573</pd:x>
+        <pd:y>119</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>false</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx2:MerchantSystemTransaction"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx2:MerchantSystemTransaction>
+                    <xsl:if test="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:TransactionId">
+                        <pfx2:TransactionId>
+                            <xsl:value-of select="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:TransactionId"/>
+                        </pfx2:TransactionId>
+                    </xsl:if>
+                    <pfx2:RequestDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;substring($Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:RequestDate, 1, 4),&#xA;&#x9;substring($Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:RequestDate, 5, 2),&#xA;&#x9;substring($Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:RequestDate, 7, 2),&#xA;&#x9;substring($Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:RequestDate, 9, 2),&#xA;&#x9;substring($Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:RequestDate, 11, 2),&#xA;&#x9;substring($Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:RequestDate, 13, 2)&#xA;)"/>
+                    </pfx2:RequestDate>
+                    <xsl:if test="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:ProcessingCode">
+                        <pfx2:ProcessingCode>
+                            <xsl:value-of select="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:ProcessingCode"/>
+                        </pfx2:ProcessingCode>
+                    </xsl:if>
+                    <xsl:if test="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:MerchantCode">
+                        <pfx2:MerchantCode>
+                            <xsl:value-of select="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:MerchantCode"/>
+                        </pfx2:MerchantCode>
+                    </xsl:if>
+                    <xsl:if test="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:AccountBalanceAfter">
+                        <pfx2:AcountBalanceAfter>
+                            <xsl:value-of select="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:AccountBalanceAfter"/>
+                        </pfx2:AcountBalanceAfter>
+                    </xsl:if>
+                    <xsl:if test="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:PosId">
+                        <pfx2:PosId>
+                            <xsl:value-of select="$Set-Recharge/root/ns1:MerchantSystemTransaction/ns1:PosId"/>
+                        </pfx2:PosId>
+                    </xsl:if>
+                    <pfx2:ErrorCount>
+                        <xsl:value-of select="0"/>
+                    </pfx2:ErrorCount>
+                </pfx2:MerchantSystemTransaction>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Validate Token">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>191</pd:x>
+        <pd:y>121</pd:y>
+        <config>
+            <processName>/GeneralProcesses/SecurityProcesses/DalValidateToken.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SecurityToken>
+                    <xsl:value-of select="$Start/pfx3:MerchantSystemTransactionRequest/pfx3:SecurityToken"/>
+                </SecurityToken>
+                <ProcessName>
+                    <xsl:value-of select="&quot;SetMerchantSystemTransaction&quot;"/>
+                </ProcessName>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>748</pd:x>
+        <pd:y>119</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-OK-Message/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid Token">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>189</pd:x>
+        <pd:y>402</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Validate-Token/root/ns2:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Token Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>527</pd:x>
+        <pd:y>403</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>false</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx2:MerchantSystemTransaction"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx2:MerchantSystemTransaction>
+                    <pfx2:RequestDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-month-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-day-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-hours-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-minutes-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-seconds-from-dateTime(current-dateTime())&#xA;)"/>
+                    </pfx2:RequestDate>
+                    <pfx2:ErrorCount>
+                        <xsl:value-of select="1"/>
+                    </pfx2:ErrorCount>
+                    <pfx2:Errors>
+                        <xsl:copy-of select="$varErrorMessage/ns2:Error"/>
+                    </pfx2:Errors>
+                </pfx2:MerchantSystemTransaction>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Token Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>723</pd:x>
+        <pd:y>409</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Token-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Recharge Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>362</pd:x>
+        <pd:y>288</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Set-Recharge/root/ns2:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Recharge Error Message">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>519</pd:x>
+        <pd:y>294</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx2:MerchantSystemTransaction"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx2:MerchantSystemTransaction>
+                    <pfx2:RequestDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-month-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-day-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-hours-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-minutes-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-seconds-from-dateTime(current-dateTime())&#xA;)"/>
+                    </pfx2:RequestDate>
+                    <pfx2:ErrorCount>
+                        <xsl:value-of select="1"/>
+                    </pfx2:ErrorCount>
+                    <pfx2:Errors>
+                        <xsl:copy-of select="$Set-Recharge/root/ns2:Error"/>
+                    </pfx2:Errors>
+                </pfx2:MerchantSystemTransaction>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>720</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Recharge-Error-Message/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>341</pd:x>
+        <pd:y>520</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render Unknown Message">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>521</pd:x>
+        <pd:y>528</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>false</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx2:MerchantSystemTransaction"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx2:MerchantSystemTransaction>
+                    <pfx2:RequestDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-month-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-day-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-hours-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-minutes-from-dateTime(current-dateTime()),&#xA;&#x9;tib:get-seconds-from-dateTime(current-dateTime())&#xA;)"/>
+                    </pfx2:RequestDate>
+                    <pfx2:ErrorCount>
+                        <xsl:value-of select="1"/>
+                    </pfx2:ErrorCount>
+                    <pfx2:Errors>
+                        <ns2:Error>
+                            <ns2:ErrorCode>
+                                <xsl:value-of select="&quot;99&quot;"/>
+                            </ns2:ErrorCode>
+                            <ns2:ErrorMessage>
+                                <xsl:value-of select="$_error/ns4:ErrorReport/StackTrace"/>
+                            </ns2:ErrorMessage>
+                        </ns2:Error>
+                    </pfx2:Errors>
+                </pfx2:MerchantSystemTransaction>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Unknown Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>726</pd:x>
+        <pd:y>528</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Unknown-Message/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Serialize Requests">
+        <pd:type>com.tibco.pe.core.CriticalSectionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>273</pd:x>
+        <pd:y>44</pd:y>
+        <pd:width>175</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>52</pd:collapsedWidth>
+        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <config>
+            <pd:groupType>criticalSection</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:scope>single</pd:scope>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Set Recharge</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Set Recharge</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Set Recharge">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>360</pd:x>
+            <pd:y>123</pd:y>
+            <config>
+                <processName>/GeneralProcesses/DataAccessProcesses/DalSetMerchantSystemTransaction.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <TransactionId>
+                        <xsl:value-of select="tib:pad-front($Start/pfx3:MerchantSystemTransactionRequest/pfx3:TransactionId, &quot;10&quot;, &quot;0&quot;)"/>
+                    </TransactionId>
+                    <TransactionAmount>
+                        <xsl:value-of select="$Start/pfx3:MerchantSystemTransactionRequest/pfx3:TransactionAmount"/>
+                    </TransactionAmount>
+                    <PosId>
+                        <xsl:value-of select="$Start/pfx3:MerchantSystemTransactionRequest/pfx3:PosId"/>
+                    </PosId>
+                    <BusinessCode>
+                        <xsl:value-of select="&quot;01&quot;"/>
+                    </BusinessCode>
+                    <UserId>
+                        <xsl:value-of select="$Validate-Token/root/UserId"/>
+                    </UserId>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Validate Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render OK Message</pd:from>
+        <pd:to>Response OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Invalid Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid Token</pd:from>
+        <pd:to>Render Token Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Token Error</pd:from>
+        <pd:to>Response Token Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Token Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Recharge Error</pd:from>
+        <pd:to>Render Recharge Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Recharge Error Message</pd:from>
+        <pd:to>Response Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render Unknown Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Unknown Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Unknown Message</pd:from>
+        <pd:to>Response Unknown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Serialize Requests</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate-Token/root/ValidSecurityToken = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Serialize Requests</pd:from>
+        <pd:to>Render OK Message</pd:to>
+        <pd:xpathDescription>Recharge OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Set-Recharge/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Serialize Requests</pd:from>
+        <pd:to>Recharge Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

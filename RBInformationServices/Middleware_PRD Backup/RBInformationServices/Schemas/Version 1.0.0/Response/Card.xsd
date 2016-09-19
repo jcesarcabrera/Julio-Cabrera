@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/Card.xsd"
+	 xmlns:ns0="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd"
+	 xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd"
+	 xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd"
+	 xmlns:ns3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd"
+	 xmlns:ns4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/Card.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" schemaLocation="../../../GeneralSchemas/Version%201.0.0/BusinessObjects/CardInfo.xsd"/>
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd" schemaLocation="../../../GeneralSchemas/Version%201.0.0/BusinessObjects/CardPermission.xsd"/>
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" schemaLocation="../../../GeneralSchemas/Version%201.0.0/BusinessObjects/CardTransaction.xsd"/>
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="../../../GeneralSchemas/Version%201.0.0/BusinessObjects/CardUser.xsd"/>
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="../../../GeneralSchemas/Version%201.0.0/BusinessObjects/Error.xsd"/>
+	<xs:element name="Card">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ns0:CardInfo" minOccurs="0"/>
+				<xs:element ref="ns3:User" minOccurs="0"/>
+				<xs:element ref="Transactions" minOccurs="0"/>
+				<xs:element ref="Permissions" minOccurs="0"/>
+				<xs:element ref="ErrorCount" minOccurs="0"/>
+				<xs:element ref="Errors" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Permissions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ns1:Permission" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Errors">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ns4:Error" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Transactions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ns2:Transaction" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ErrorCount" type="xs:byte"/>
+</xs:schema>

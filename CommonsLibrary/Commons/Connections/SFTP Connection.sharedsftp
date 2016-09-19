@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>SFTP Connection</name>
+    <resourceType>ae.shared.SFTPuserChannel</resourceType>
+    <config>
+        <Timeout>60000</Timeout>
+        <Port>%%Connections/SFTP/Port%%</Port>
+        <PrivKeyVerification>false</PrivKeyVerification>
+        <StrictHostkeyCheck>false</StrictHostkeyCheck>
+        <Host>%%Connections/SFTP/Host%%</Host>
+        <UserName>%%Connections/SFTP/UserName%%</UserName>
+        <Password>%%Connections/SFTP/Password%%</Password>
+    </config>
+</BWSharedResource>

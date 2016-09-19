@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Control/UserFilter.xsd" xmlns:ns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd" xmlns:ns3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/UserFilter.xsd" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Control/CardInfoControl.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" schemaLocation="/Schemas/Response/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Control/CardInfoControl.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" schemaLocation="/Schemas/General/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <pd:name>REST/BusinessProcesses/Version 1.0.0/GetCardInfo/SubGetUserInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardNumber" type="xsd:string"/>
+                    <xsd:element name="Params" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>42</pd:startX>
+    <pd:startY>172</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:copy-of select="$Map-Data/pfx5:User"/>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx6:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element ref="pfx5:User" minOccurs="0"/>
+                    <xsd:element ref="pfx6:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1217</pd:endX>
+    <pd:endY>173</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varFieldList>
+            <xsd:element name="FieldList" type="xsd:string"/>
+        </varFieldList>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx6:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1449525568127</pd:targetNamespace>
+    <pd:activity name="Check All Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Check if it's required to get card's user data</pd:description>
+        <pd:x>244</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <processName>/GeneralProcesses/CommonProcesses/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;AllUser&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="User Info Not Required">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>504</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get User Data">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>731</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <processName>/GeneralProcesses/DataAccessProcesses/DalGetCardUser.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardNumber>
+                    <xsl:value-of select="$Start/root/CardNumber"/>
+                </CardNumber>
+                <Filter>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </Filter>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get User Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>590</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <processName>/REST/BusinessProcesses/Version 1.0.0/GetCardInfo/SubGetUserFilter.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <FieldList>
+                    <xsl:value-of select="$varFieldList/FieldList"/>
+                </FieldList>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>901</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <element ref="pfx5:User"/>
+        </config>
+        <pd:inputBindings>
+            <pfx5:User>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Name=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Name">
+                        <pfx5:Name>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Name"/>
+                        </pfx5:Name>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:LastName=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:LastName">
+                        <pfx5:LastName>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:LastName"/>
+                        </pfx5:LastName>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:SecondLastName=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:SecondLastName">
+                        <pfx5:SecondLastName>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:SecondLastName"/>
+                        </pfx5:SecondLastName>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:IdTypeCode=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:IdTypeCode">
+                        <pfx5:IdTypeCode>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:IdTypeCode"/>
+                        </pfx5:IdTypeCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:IdType=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:IdType">
+                        <pfx5:IdType>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:IdType"/>
+                        </pfx5:IdType>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:IdNumber=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:IdNumber">
+                        <pfx5:IdNumber>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:IdNumber"/>
+                        </pfx5:IdNumber>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:BirthDate=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:BirthDate">
+                        <pfx5:BirthDate>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:BirthDate"/>
+                        </pfx5:BirthDate>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Address=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Address">
+                        <pfx5:Address>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Address"/>
+                        </pfx5:Address>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:ScholarityCode=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:ScholarityCode">
+                        <pfx5:ScholarityCode>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:ScholarityCode"/>
+                        </pfx5:ScholarityCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Scholarity=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Scholarity">
+                        <pfx5:Scholarity>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Scholarity"/>
+                        </pfx5:Scholarity>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:GenderCode=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:GenderCode">
+                        <pfx5:GenderCode>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:GenderCode"/>
+                        </pfx5:GenderCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Gender=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Gender">
+                        <pfx5:Gender>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Gender"/>
+                        </pfx5:Gender>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:RhCode=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:RhCode">
+                        <pfx5:RhCode>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:RhCode"/>
+                        </pfx5:RhCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:RH=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:RH">
+                        <pfx5:RH>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:RH"/>
+                        </pfx5:RH>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Email=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Email">
+                        <pfx5:Email>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Email"/>
+                        </pfx5:Email>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Phone=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Phone">
+                        <pfx5:Phone>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Phone"/>
+                        </pfx5:Phone>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Mobile=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Mobile">
+                        <pfx5:Mobile>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Mobile"/>
+                        </pfx5:Mobile>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Occupation=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Occupation">
+                        <pfx5:Occupation>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Occupation"/>
+                        </pfx5:Occupation>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:AuthorizeDataUse=&quot;true&quot;">
+                    <pfx5:AuthorizeDataUse>
+                        <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:AuthorizeDataUse"/>
+                    </pfx5:AuthorizeDataUse>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:LastUpdate=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:LastUpdate">
+                        <pfx5:LastUpdate>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:LastUpdate"/>
+                        </pfx5:LastUpdate>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:StatusCode=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:StatusCode">
+                        <pfx5:StatusCode>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:StatusCode"/>
+                        </pfx5:StatusCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Status=&quot;true&quot;">
+                    <xsl:if test="$Get-User-Data/root/pfx5:User/pfx5:Status">
+                        <pfx5:Status>
+                            <xsl:value-of select="$Get-User-Data/root/pfx5:User/pfx5:Status"/>
+                        </pfx5:Status>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Filter/ns3:User/ns3:Benefits=&quot;true&quot;">
+                    <xsl:copy-of select="$Get-User-Data/root/pfx5:User/pfx5:Benefits"/>
+                </xsl:if>
+            </pfx5:User>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>733</pd:x>
+        <pd:y>330</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>985</pd:x>
+        <pd:y>330</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-User-Data/root/pfx6:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1038</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Filter">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>92</pd:x>
+        <pd:y>52</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Check Partial Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>347</pd:y>
+        <config>
+            <processName>/GeneralProcesses/CommonProcesses/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;User&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Partial Field List">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>441</pd:x>
+        <pd:y>338</pd:y>
+        <config>
+            <variableName>varFieldList</variableName>
+        </config>
+        <pd:inputBindings>
+            <FieldList>
+                <xsl:value-of select="$Start/root/Params"/>
+            </FieldList>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="All Field List">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>173</pd:y>
+        <config>
+            <variableName>varFieldList</variableName>
+        </config>
+        <pd:inputBindings>
+            <FieldList>
+                <xsl:value-of select="&quot;Name,LastName,SecondLastName,IdTypeCode,IdType,IdNumber,BirthDate,Address,ScholarityCode,Scholarity,GenderCode,Gender,RhCode,RH,Email,Phone,Mobile,Occupation,AuthorizeDataUse,LastUpdate,StatusCode,Status,Benefits&quot;"/>
+            </FieldList>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Data">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>738</pd:x>
+        <pd:y>498</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Empty Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>985</pd:x>
+        <pd:y>506</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx6:Error>
+                <pfx6:ErrorCode>
+                    <xsl:value-of select="&quot;98&quot;"/>
+                </pfx6:ErrorCode>
+                <pfx6:ErrorMessage>
+                    <xsl:value-of select="&quot;User Info Not Required&quot;"/>
+                </pfx6:ErrorMessage>
+            </pfx6:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Check All Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>All Field List</pd:to>
+        <pd:xpathDescription>All Filter</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-All-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>Check Partial Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>User Info Not Required</pd:from>
+        <pd:to>No Data</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Filter</pd:from>
+        <pd:to>Get User Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Data</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-User-Data/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Data</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>No Filter</pd:to>
+        <pd:xpathDescription>All</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/Params)=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Filter</pd:from>
+        <pd:to>All Field List</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>Partial Field List</pd:to>
+        <pd:xpathDescription>Partial Filter</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-Partial-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>User Info Not Required</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>All Field List</pd:from>
+        <pd:to>Get User Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Partial Field List</pd:from>
+        <pd:to>Get User Filter</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Data</pd:from>
+        <pd:to>Empty Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Empty Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

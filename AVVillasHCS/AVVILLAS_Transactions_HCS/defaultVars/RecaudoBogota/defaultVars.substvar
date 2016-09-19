@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Bank_Code</name>
+			<value>B01</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473700324418</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Bank_ID</name>
+			<value>002</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473444166789</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Encoding</name>
+			<value>UTF-8</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472419501355</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Reservado</name>
+			<value>99999999</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473444166847</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

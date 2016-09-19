@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>FormatAR</name>
+    <resourceType>ae.shared.ParseSharedResource</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FormatType>Fixed format</FormatType>
+        <ColumnSeparator>,</ColumnSeparator>
+        <ColSeparatorRule>Treat all characters as entered as a single column separator string</ColSeparatorRule>
+        <LineSeparator>
+</LineSeparator>
+        <FillCharacter>Space</FillCharacter>
+        <LineLength>255</LineLength>
+        <OffsetString>ReturnCode(0,0)
+UserType(0,0)
+ClaimDate(0,0)
+UsageDate(0,0)
+ClearingDate(0,0)
+FCSCardNumber(61,16)
+TransactionSequenceNumber(0,0)
+CardTransactionNumber(0,0)
+AmountUsed(38,7)
+RemainingDailyBalance(0,0)
+DailyMaxDebitUse(0,0)
+TransportMeansGroupCd(0,0)
+TransportOperatorID(0,0)
+LineID(0,0)
+RouteID(0,0)
+RouteNm(0,0)
+StationBusStopID(117,7)
+StationBusStopNm(0,0)
+BusID(0,0)
+DeviceID(0,0)
+NumberTransfers(0,0)
+CardProfile(0,0)
+ReClaimCode(0,0)</OffsetString>
+        <DataFormat>
+            <xsd:element name="AR_Data">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ReturnCode" type="xsd:string"/>
+                        <xsd:element name="UserType" type="xsd:string"/>
+                        <xsd:element name="ClaimDate" type="xsd:string"/>
+                        <xsd:element name="UsageDate" type="xsd:string"/>
+                        <xsd:element name="ClearingDate" type="xsd:string"/>
+                        <xsd:element name="FCSCardNumber" type="xsd:string"/>
+                        <xsd:element name="TransactionSequenceNumber" type="xsd:string"/>
+                        <xsd:element name="CardTransactionNumber" type="xsd:string"/>
+                        <xsd:element name="AmountUsed" type="xsd:long"/>
+                        <xsd:element name="RemainingDailyBalance" type="xsd:long"/>
+                        <xsd:element name="DailyMaxDebitUse" type="xsd:long"/>
+                        <xsd:element name="TransportMeansGroupCd" type="xsd:string"/>
+                        <xsd:element name="TransportOperatorID" type="xsd:string"/>
+                        <xsd:element name="LineID" type="xsd:string"/>
+                        <xsd:element name="RouteID" type="xsd:string"/>
+                        <xsd:element name="RouteNm" type="xsd:string"/>
+                        <xsd:element name="StationBusStopID" type="xsd:string"/>
+                        <xsd:element name="StationBusStopNm" type="xsd:string"/>
+                        <xsd:element name="BusID" type="xsd:string"/>
+                        <xsd:element name="DeviceID" type="xsd:string"/>
+                        <xsd:element name="NumberTransfers" type="xsd:string"/>
+                        <xsd:element name="CardProfile" type="xsd:string"/>
+                        <xsd:element name="ReClaimCode" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </DataFormat>
+    </config>
+</BWSharedResource>

@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Host</name>
+			<value>190.144.156.157</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472357544124</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>yrpK6p*u</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472357544327</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Port</name>
+			<value>10022</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472357544171</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TimeOut</name>
+			<value>60000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1472359275093</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>pp_recbogprd01</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472357544249</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

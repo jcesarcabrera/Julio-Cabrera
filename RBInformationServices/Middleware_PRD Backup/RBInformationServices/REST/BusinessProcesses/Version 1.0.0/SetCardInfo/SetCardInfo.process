@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns3="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Request/SetCardRequest.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardInfo.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/PostData/CardList.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/PostDataInput/CardList.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Request/SetCardRequest.xsd" schemaLocation="/Schemas/Version 1.0.0/Request/SetCardRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/PostDataInput/CardList.xsd" schemaLocation="/Schemas/Version 1.0.0/PostDataInput/CardList.xsd"/>
+    <pd:name>REST/BusinessProcesses/Version 1.0.0/SetCardInfo/SetCardInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:SetCardRequest"/>
+    <pd:startX>27</pd:startX>
+    <pd:startY>70</pd:startY>
+    <pd:returnBindings>
+        <ResponseString>
+            <xsl:value-of select="$varProcessResponse/ResponseString"/>
+        </ResponseString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ResponseString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>981</pd:endX>
+    <pd:endY>241</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varProcessResponse>
+            <xsd:element name="ResponseString" type="xsd:string"/>
+        </varProcessResponse>
+        <varErrorMessage ref="pfx5:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1452096950052</pd:targetNamespace>
+    <pd:activity name="Parse JSON Post">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx6:CardList"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx4:SetCardRequest/pfx4:PostData"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Validate Token">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>161</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <processName>/GeneralProcesses/SecurityProcesses/DalValidateToken.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SecurityToken>
+                    <xsl:value-of select="$Start/pfx4:SetCardRequest/pfx4:SecurityToken"/>
+                </SecurityToken>
+                <ProcessName>
+                    <xsl:value-of select="&quot;SetCardInfo&quot;"/>
+                </ProcessName>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>669</pd:x>
+        <pd:y>242</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx5:Error"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$varErrorMessage/pfx5:Error"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>829</pd:x>
+        <pd:y>243</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>834</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid Token">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>164</pd:x>
+        <pd:y>244</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Validate-Token/root/pfx5:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch JSONParseException">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>490</pd:x>
+        <pd:y>379</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=JSONParseException namespace=http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render Unknown Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>670</pd:x>
+        <pd:y>388</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx5:Error"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx5:Error>
+                    <pfx5:ErrorCode>
+                        <xsl:value-of select="&quot;09&quot;"/>
+                    </pfx5:ErrorCode>
+                    <pfx5:ErrorMessage>
+                        <xsl:value-of select="concat(&quot;Invalid JSON Data&quot;,  $Catch-JSONParseException/ns3:JSONParseException/msgCode)"/>
+                    </pfx5:ErrorMessage>
+                </pfx5:Error>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Unknown Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>831</pd:x>
+        <pd:y>386</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Unknown-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>670</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx5:Error"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Set-Card-Info/pfx5:Error"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Set Card Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>502</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <processName>/GeneralProcesses/DataAccessProcesses/DalSetCardUsers.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each select="$Parse-JSON-Post/ns:ActivityOutputClass/pfx6:CardList/pfx6:Card">
+                    <Card>
+                        <User>
+                            <ns1:User>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Name">
+                                    <ns1:Name>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Name"/>
+                                    </ns1:Name>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:LastName">
+                                    <ns1:LastName>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:LastName"/>
+                                    </ns1:LastName>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:SecondLastName">
+                                    <ns1:SecondLastName>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:SecondLastName"/>
+                                    </ns1:SecondLastName>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:IdTypeCode">
+                                    <ns1:IdTypeCode>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:IdTypeCode"/>
+                                    </ns1:IdTypeCode>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:IdType">
+                                    <ns1:IdType>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:IdType"/>
+                                    </ns1:IdType>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:IdNumber">
+                                    <ns1:IdNumber>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:IdNumber"/>
+                                    </ns1:IdNumber>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:BirthDate">
+                                    <ns1:BirthDate>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:BirthDate"/>
+                                    </ns1:BirthDate>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Address">
+                                    <ns1:Address>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Address"/>
+                                    </ns1:Address>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:ScholarityCode">
+                                    <ns1:ScholarityCode>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:ScholarityCode"/>
+                                    </ns1:ScholarityCode>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Scholarity">
+                                    <ns1:Scholarity>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Scholarity"/>
+                                    </ns1:Scholarity>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:GenderCode">
+                                    <ns1:GenderCode>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:GenderCode"/>
+                                    </ns1:GenderCode>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Gender">
+                                    <ns1:Gender>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Gender"/>
+                                    </ns1:Gender>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:RhCode">
+                                    <ns1:RhCode>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:RhCode"/>
+                                    </ns1:RhCode>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:RH">
+                                    <ns1:RH>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:RH"/>
+                                    </ns1:RH>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Email">
+                                    <ns1:Email>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Email"/>
+                                    </ns1:Email>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Phone">
+                                    <ns1:Phone>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Phone"/>
+                                    </ns1:Phone>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Mobile">
+                                    <ns1:Mobile>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Mobile"/>
+                                    </ns1:Mobile>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Occupation">
+                                    <ns1:Occupation>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Occupation"/>
+                                    </ns1:Occupation>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:AuthorizeDataUse">
+                                    <ns1:AuthorizeDataUse>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:AuthorizeDataUse"/>
+                                    </ns1:AuthorizeDataUse>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:StatusCode">
+                                    <ns1:StatusCode>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:StatusCode"/>
+                                    </ns1:StatusCode>
+                                </xsl:if>
+                                <xsl:if test="pfx6:User/ns1:User/ns1:Status">
+                                    <ns1:Status>
+                                        <xsl:value-of select="pfx6:User/ns1:User/ns1:Status"/>
+                                    </ns1:Status>
+                                </xsl:if>
+                            </ns1:User>
+                        </User>
+                        <xsl:if test="exists( pfx6:Payer)">
+                            <Payer>
+                                <ns1:User>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Name">
+                                        <ns1:Name>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Name"/>
+                                        </ns1:Name>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:LastName">
+                                        <ns1:LastName>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:LastName"/>
+                                        </ns1:LastName>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:SecondLastName">
+                                        <ns1:SecondLastName>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:SecondLastName"/>
+                                        </ns1:SecondLastName>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:IdTypeCode">
+                                        <ns1:IdTypeCode>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:IdTypeCode"/>
+                                        </ns1:IdTypeCode>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:IdType">
+                                        <ns1:IdType>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:IdType"/>
+                                        </ns1:IdType>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:IdNumber">
+                                        <ns1:IdNumber>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:IdNumber"/>
+                                        </ns1:IdNumber>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:BirthDate">
+                                        <ns1:BirthDate>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:BirthDate"/>
+                                        </ns1:BirthDate>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Address">
+                                        <ns1:Address>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Address"/>
+                                        </ns1:Address>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:ScholarityCode">
+                                        <ns1:ScholarityCode>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:ScholarityCode"/>
+                                        </ns1:ScholarityCode>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Scholarity">
+                                        <ns1:Scholarity>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Scholarity"/>
+                                        </ns1:Scholarity>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:GenderCode">
+                                        <ns1:GenderCode>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:GenderCode"/>
+                                        </ns1:GenderCode>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Gender">
+                                        <ns1:Gender>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Gender"/>
+                                        </ns1:Gender>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:RhCode">
+                                        <ns1:RhCode>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:RhCode"/>
+                                        </ns1:RhCode>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:RH">
+                                        <ns1:RH>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:RH"/>
+                                        </ns1:RH>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Email">
+                                        <ns1:Email>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Email"/>
+                                        </ns1:Email>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Phone">
+                                        <ns1:Phone>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Phone"/>
+                                        </ns1:Phone>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Mobile">
+                                        <ns1:Mobile>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Mobile"/>
+                                        </ns1:Mobile>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Occupation">
+                                        <ns1:Occupation>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Occupation"/>
+                                        </ns1:Occupation>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:AuthorizeDataUse">
+                                        <ns1:AuthorizeDataUse>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:AuthorizeDataUse"/>
+                                        </ns1:AuthorizeDataUse>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:StatusCode">
+                                        <ns1:StatusCode>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:StatusCode"/>
+                                        </ns1:StatusCode>
+                                    </xsl:if>
+                                    <xsl:if test="pfx6:Payer/ns1:User/ns1:Status">
+                                        <ns1:Status>
+                                            <xsl:value-of select="pfx6:Payer/ns1:User/ns1:Status"/>
+                                        </ns1:Status>
+                                    </xsl:if>
+                                </ns1:User>
+                            </Payer>
+                        </xsl:if>
+                        <xsl:if test="exists(ns2:CardInfo)">
+                            <ns2:CardInfo>
+                                <xsl:if test="ns2:CardInfo/ns2:CardNumber">
+                                    <ns2:CardNumber>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:CardNumber"/>
+                                    </ns2:CardNumber>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:StatusCode">
+                                    <ns2:StatusCode>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:StatusCode"/>
+                                    </ns2:StatusCode>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:Status">
+                                    <ns2:Status>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:Status"/>
+                                    </ns2:Status>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:ProfileCode">
+                                    <ns2:ProfileCode>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:ProfileCode"/>
+                                    </ns2:ProfileCode>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:ProfileCode">
+                                    <ns2:Profile>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:ProfileCode"/>
+                                    </ns2:Profile>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:CardTypeCode">
+                                    <ns2:CardTypeCode>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:CardTypeCode"/>
+                                    </ns2:CardTypeCode>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:CardType">
+                                    <ns2:CardType>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:CardType"/>
+                                    </ns2:CardType>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:CardAcquisitionFormCode">
+                                    <ns2:CardAcquisitionFormCode>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:CardAcquisitionFormCode"/>
+                                    </ns2:CardAcquisitionFormCode>
+                                </xsl:if>
+                                <xsl:if test="ns2:CardInfo/ns2:CardAcquisitionForm">
+                                    <ns2:CardAcquisitionForm>
+                                        <xsl:value-of select="ns2:CardInfo/ns2:CardAcquisitionForm"/>
+                                    </ns2:CardAcquisitionForm>
+                                </xsl:if>
+                            </ns2:CardInfo>
+                        </xsl:if>
+                    </Card>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Validate Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Parse JSON Post</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate-Token/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Invalid Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Error</pd:from>
+        <pd:to>Response Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid Token</pd:from>
+        <pd:to>Render Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch JSONParseException</pd:from>
+        <pd:to>Render Unknown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Unknown Error</pd:from>
+        <pd:to>Response Unknown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Unknown Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON Post</pd:from>
+        <pd:to>Set Card Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>Response OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Set Card Info</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

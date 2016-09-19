@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>Commons/ZipFile.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="ZipFile">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputPathFile" type="xsd:string"/>
+                    <xsd:element name="outPathFile" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <ZipFile>
+            <OutputZipFile>
+                <xsl:value-of select="concat($Start/ZipFile/outPathFile, $Read-File/ns1:ReadActivityOutputTextClass/fileInfo/fileName, '.zip')"/>
+            </OutputZipFile>
+        </ZipFile>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ZipFile">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="OutputZipFile" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>399</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472747639595</pd:targetNamespace>
+    <pd:activity name="ZipFile">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>276</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <fileName>ZipFileZipFile</fileName>
+            <packageName>Commons.ZipFile</packageName>
+            <fullsource>package Commons.ZipFile;
+import java.util.*;
+import java.util.zip.*;
+import java.io.*;
+public class ZipFileZipFile{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String inputPathFile = "";
+	protected String outPathFile = "";
+	protected String dataFile = "";
+	protected String outTrue = "";
+	protected String outFalse = "";
+	public String getinputPathFile() {
+		return inputPathFile;
+	}
+	public void setinputPathFile(String val) {
+		inputPathFile = val;
+	}
+	public String getoutPathFile() {
+		return outPathFile;
+	}
+	public void setoutPathFile(String val) {
+		outPathFile = val;
+	}
+	public String getdataFile() {
+		return dataFile;
+	}
+	public void setdataFile(String val) {
+		dataFile = val;
+	}
+	public String getoutTrue() {
+		return outTrue;
+	}
+	public void setoutTrue(String val) {
+		outTrue = val;
+	}
+	public String getoutFalse() {
+		return outFalse;
+	}
+	public void setoutFalse(String val) {
+		outFalse = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	private static final int BUFFER_SIZE = 1024;
+	public ZipFileZipFile() {
+	}
+
+private static void addEntry(ZipOutputStream zipOutputStream, String entryName, byte[] entryData) throws IOException {
+        ZipEntry zipEntry = new ZipEntry(entryName);
+
+        zipEntry.setMethod(ZipEntry.STORED);
+        zipEntry.setSize(entryData.length);
+        zipEntry.setCompressedSize(entryData.length);
+
+        CRC32 crc = new CRC32();
+        crc.update(entryData);
+        zipEntry.setCrc(crc.getValue());
+
+        zipOutputStream.putNextEntry(zipEntry);
+        zipOutputStream.write(entryData);
+        zipOutputStream.closeEntry();
+    }     
+
+public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String inputPathFile
+	In  : String outPathFile
+	In  : String dataFile
+	Out : String outTrue
+	Out : String outFalse
+* Available Variables: DO NOT MODIFY *****/
+try {
+File file = new File(outPathFile);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(file));
+String texto="comprimido";
+outTrue=texto;
+        addEntry(zipOutputStream, inputPathFile, dataFile.getBytes());
+        zipOutputStream.close();
+
+
+
+/*String extension=""+inputPathFile.split("\\.")[inputPathFile.split("\\.").length-1];
+if(extension.equals("json")){		
+
+			outTrue="Comprimido!";
+}else if(extension.equals("zip")){
+			
+			outTrue="Descomprimido!";
+}****/
+		} catch (Exception e) {
+			
+StringWriter errors = new StringWriter();
+e.printStackTrace(new PrintWriter(errors));
+outFalse+= errors.toString();
+		}
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>outTrue</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outFalse</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>inputPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>dataFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>ZipFileZipFile</name>
+                    <byteCode>yv66vgAAADMAkQkAKgBPCQAqAFAJACoAUQkAKgBSCQAqAFMKACsAVAgAVQcAVgoACABXCgAIAFgKAAgAWQoACABaBwBbCgANAFQKAA0AXAoADQBdCgAIAF4KABcAXwoAFwBgCgAXAGEHAGIKABUAVwcAYwcAZAoAGABlCgAXAGYIAGcKAGgAaQoAKgBqCgAXAGsHAGwHAG0KACAAVAcAbgoAIgBvCgAfAHAHAHEKACUAVAoAJQByCgAgAHMKACUAcwcAdAcAdQEADWlucHV0UGF0aEZpbGUBABJMamF2YS9sYW5nL1N0cmluZzsBAAtvdXRQYXRoRmlsZQEACGRhdGFGaWxlAQAHb3V0VHJ1ZQEACG91dEZhbHNlAQALQlVGRkVSX1NJWkUBAAFJAQANQ29uc3RhbnRWYWx1ZQMAAAQAAQAQZ2V0aW5wdXRQYXRoRmlsZQEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEHNldGlucHV0UGF0aEZpbGUBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAA5nZXRvdXRQYXRoRmlsZQEADnNldG91dFBhdGhGaWxlAQALZ2V0ZGF0YUZpbGUBAAtzZXRkYXRhRmlsZQEACmdldG91dFRydWUBAApzZXRvdXRUcnVlAQALZ2V0b3V0RmFsc2UBAAtzZXRvdXRGYWxzZQEABjxpbml0PgEAAygpVgEACGFkZEVudHJ5AQA2KExqYXZhL3V0aWwvemlwL1ppcE91dHB1dFN0cmVhbTtMamF2YS9sYW5nL1N0cmluZztbQilWAQAKRXhjZXB0aW9ucwcAdgEABmludm9rZQEADVN0YWNrTWFwVGFibGUHAGwBAApTb3VyY2VGaWxlAQATWmlwRmlsZVppcEZpbGUuamF2YQwALAAtDAAuAC0MAC8ALQwAMAAtDAAxAC0MAEQARQEAAAEAFmphdmEvdXRpbC96aXAvWmlwRW50cnkMAEQAOwwAdwB4DAB5AHoMAHsAegEAE2phdmEvdXRpbC96aXAvQ1JDMzIMAHwAfQwAfgB/DACAAHoMAIEAggwAgwB9DACEAEUBAAxqYXZhL2lvL0ZpbGUBAB1qYXZhL3V0aWwvemlwL1ppcE91dHB1dFN0cmVhbQEAGGphdmEvaW8vRmls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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <inputPathFile>
+                    <xsl:value-of select="$Read-File/ns1:ReadActivityOutputTextClass/fileInfo/fileName"/>
+                </inputPathFile>
+                <outPathFile>
+                    <xsl:value-of select="concat($Start/ZipFile/outPathFile,$Read-File/ns1:ReadActivityOutputTextClass/fileInfo/fileName, '.zip')"/>
+                </outPathFile>
+                <dataFile>
+                    <xsl:value-of select="$Read-File/ns1:ReadActivityOutputTextClass/fileContent/textContent"/>
+                </dataFile>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>136</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns2:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$Start/ZipFile/inputPathFile"/>
+                </fileName>
+                <encoding>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Encoding"/>
+                </encoding>
+            </ns2:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ZipFile</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>ZipFile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

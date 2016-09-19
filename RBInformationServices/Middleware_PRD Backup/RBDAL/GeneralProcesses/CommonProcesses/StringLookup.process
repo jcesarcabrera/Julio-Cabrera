@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>GeneralProcesses/CommonProcesses/StringLookup.process</pd:name>
+    <pd:description>Look for a string value in a comma separated list. 
+Returns boolean response if value is found.</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="List" type="xsd:string"/>
+                    <xsd:element name="Value" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>32</pd:startX>
+    <pd:startY>70</pd:startY>
+    <pd:returnBindings>
+        <Found>
+            <xsl:value-of select="if (count($Parse-XML/Parameters[item= tib:trim(lower-case($Start/root/Value))]) !=0) then true() else false()"/>
+        </Found>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Found" type="xsd:boolean"/>
+    </pd:endType>
+    <pd:endX>457</pd:endX>
+    <pd:endY>73</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450479258542</pd:targetNamespace>
+    <pd:activity name="Tokenize Parameters">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>167</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <fileName>StringLookupTokenizeParameters</fileName>
+            <packageName>GeneralProcesses.CommonProcesses.StringLookup</packageName>
+            <fullsource>package GeneralProcesses.CommonProcesses.StringLookup;
+import java.util.*;
+import java.io.*;
+public class StringLookupTokenizeParameters{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String List = "";
+	protected String ListXML = "";
+	public String getList() {
+		return List;
+	}
+	public void setList(String val) {
+		List = val;
+	}
+	public String getListXML() {
+		return ListXML;
+	}
+	public void setListXML(String val) {
+		ListXML = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public StringLookupTokenizeParameters() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String List
+	Out : String ListXML
+* Available Variables: DO NOT MODIFY *****/
+
+List&lt;String&gt; items = Arrays.asList(List.split(","));
+StringBuilder sb = new StringBuilder();
+String item;
+
+int i;
+
+sb.append("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;");
+sb.append("&lt;Parameters&gt;");
+
+for (i = 0; i &lt; items.size(); i++)
+{
+	item = (String)items.get(i);
+	sb.append("&lt;item&gt;" + item.toLowerCase().trim() + "&lt;/item&gt; ");
+}
+sb.append("&lt;/Parameters&gt;");
+
+ListXML = sb.toString();
+
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>List</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>ListXML</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>StringLookupTokenizeParameters</name>
+                    <byteCode>yv66vgAAADMAVgkAFgAuCQAWAC8KABcAMAgAMQgAMgoADwAzCgA0ADUHADYKAAgAMAgANwoACAA4CAA5CwA6ADsLADoAPAcAPQgAPgoADwA/CgAPAEAIAEEKAAgAQggAQwcARAcARQEABExpc3QBABJMamF2YS9sYW5nL1N0cmluZzsBAAdMaXN0WE1MAQAHZ2V0TGlzdAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAB3NldExpc3QBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAApnZXRMaXN0WE1MAQAKc2V0TGlzdFhNTAEABjxpbml0PgEAAygpVgEABmludm9rZQEADVN0YWNrTWFwVGFibGUHAEQHAEYHADYBAApFeGNlcHRpb25zBwBHAQAKU291cmNlRmlsZQEAI1N0cmluZ0xvb2t1cFRva2VuaXplUGFyYW1ldGVycy5qYXZhDAAYABkMABoAGQwAIwAkAQAAAQABLAwASABJBwBKDABLAEwBABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgEAJjw/eG1sIHZlcnNpb249IjEuMCIgZW5jb2Rpbmc9IlVURi04Ij8+DABNAE4BAAw8UGFyYW1ldGVycz4HAEYMAE8AUAwAUQBSAQAQamF2YS9sYW5nL1N0cmluZwEABjxpdGVtPgwAUwAcDABUABwBAAg8L2l0ZW0+IAwAVQAcAQANPC9QYXJhbWV0ZXJzPgEATEdlbmVyYWxQcm9jZXNzZXMvQ29tbW9uUHJvY2Vzc2VzL1N0cmluZ0xvb2t1cC9TdHJpbmdMb29rdXBUb2tlbml6ZVBhcmFtZXRlcnMBABBqYXZhL2xhbmcvT2JqZWN0AQAOamF2YS91dGlsL0xpc3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAFc3BsaXQBACcoTGphdmEvbGFuZy9TdHJpbmc7KVtMamF2YS9sYW5nL1N0cmluZzsBABBqYXZhL3V0aWwvQXJyYXlzAQAGYXNMaXN0AQAlKFtMamF2YS9sYW5nL09iamVjdDspTGphdmEvdXRpbC9MaXN0OwEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEABHNpemUBAAMoKUkBAANnZXQBABUoSSlMamF2YS9sYW5nL09iamVjdDsBAAt0b0xvd2VyQ2FzZQEABHRyaW0BAAh0b1N0cmluZwAhABYAFwAAAAIABAAYABkAAAAEABoAGQAAAAYAAQAbABwAAQAdAAAAHQABAAEAAAAFKrQAAbAAAAABAB4AAAAGAAEAAAAJAAEAHwAgAAEAHQAAACIAAgACAAAABiortQABsQAAAAEAHgAAAAoAAgAAAAwABQANAAEAIQAcAAEAHQAAAB0AAQABAAAABSq0AAKwAAAAAQAeAAAABgABAAAADwABACIAIAABAB0AAAAiAAIAAgAAAAYqK7UAArEAAAABAB4AAAAKAAIAAAASAAUAEwABACMAJAABAB0AAAA1AAIAAQAAABEqtwADKhIEtQABKhIEtQACsQAAAAEAHgAAABIABAAAABUABAAGAAoABwAQABYAAQAlACQAAgAdAAAA0QADAAUAAAB2KrQAARIFtgAGuAAHTLsACFm3AAlNLBIKtgALVywSDLYAC1cDNgQVBCu5AA0BAKIAOCsVBLkADgIAwAAPTiy7AAhZtwAJEhC2AAsttgARtgAStgALEhO2AAu2ABS2AAtXhAQBp//DLBIVtgALVyostgAUtQACsQAAAAIAHgAAAC4ACwAAAB0ADQAeABUAIwAcACQAIwAmADEAKAA9ACkAYAAmAGYAKwBtAC0AdQAvACYAAAAVAAL/ACYABQcAJwcAKAcAKQABAAA/ACoAAAAEAAEAKwABACwAAAACAC0=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <List>
+                    <xsl:value-of select="$Start/root/List"/>
+                </List>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>306</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Parameters">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="item" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Tokenize-Parameters/javaCodeActivityOutput/ListXML"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Tokenize Parameters</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Tokenize Parameters</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

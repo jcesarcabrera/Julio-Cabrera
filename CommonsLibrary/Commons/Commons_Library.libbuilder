@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <name name="Commons_Library">
+        <version>15</version>
+        <author>Julio Cabrera</author>
+        <fileLocation>C:\Users\Catalina Montero\Documents\Tarjeta Híbrida\Library\Commons_Library.projlib</fileLocation>
+        <resources>/Audit_Management/Insert_Error.process,/Audit_Management/Insert_Log.process,/Audit_Management/Schemas/AUDIT.xsd,/Audit_Management/Schemas/Errors_Audit_Save.xsd,/Commons/MailSend.process,/Commons/PGP_Cifrado.process,/Commons/PGP_Descifrado.process,/Commons/SendMailAttachment.process,/Commons/Unzip.process,/Commons/ZipFile.process,/Connections/JDBCTIBCO.sharedjdbc,/Connections/SFTP Connection.sharedsftp</resources>
+    </name>
+</Repository:repository>

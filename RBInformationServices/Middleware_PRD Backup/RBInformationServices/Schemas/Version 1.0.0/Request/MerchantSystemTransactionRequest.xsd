@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/MerchantSystemTransactionRequest.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/MerchantSystemTransactionRequest.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="MerchantSystemTransactionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TransactionId"/>
+				<xs:element ref="TransactionAmount"/>
+				<xs:element ref="PosId"/>
+				<xs:element ref="SecurityToken"/>
+				<xs:element ref="Version" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransactionId" type="xs:string"/>
+	<xs:element name="TransactionAmount" type="xs:string"/>
+	<xs:element name="PosId" type="xs:string"/>
+	<xs:element name="SecurityToken" type="xs:string"/>
+	<xs:element name="Version" type="xs:string"/>
+</xs:schema>

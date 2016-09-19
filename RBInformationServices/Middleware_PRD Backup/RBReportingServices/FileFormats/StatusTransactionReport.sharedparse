@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>StatusTransactionReport</name>
+    <resourceType>ae.shared.ParseSharedResource</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FormatType>Delimiter separated</FormatType>
+        <ColumnSeparator>,</ColumnSeparator>
+        <ColSeparatorRule>Treat all characters as entered as a single column separator string</ColSeparatorRule>
+        <LineSeparator>
+</LineSeparator>
+        <FillCharacter>Space</FillCharacter>
+        <LineLength>2</LineLength>
+        <DataFormat>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="code_bank" type="xsd:string"/>
+                        <xsd:element name="name" type="xsd:string"/>
+                        <xsd:element name="HybridCard_card_number" type="xsd:string"/>
+                        <xsd:element name="hc_created_at" type="xsd:string"/>
+                        <xsd:element name="created_At" type="xsd:string"/>
+                        <xsd:element name="Status" type="xsd:string"/>
+                        <xsd:element name="tx_clearing_date" type="xsd:string"/>
+                        <xsd:element name="tx_card_transaction_number" type="xsd:string"/>
+                        <xsd:element name="tx_transport_means_group_cd" type="xsd:string"/>
+                        <xsd:element name="tx_card_profile" type="xsd:string"/>
+                        <xsd:element name="tx_transport_operator_id" type="xsd:string"/>
+                        <xsd:element name="tx_remaining_daily_balance" type="xsd:string"/>
+                        <xsd:element name="tx_reclaim_code" type="xsd:string"/>
+                        <xsd:element name="tx_number_transfers" type="xsd:string"/>
+                        <xsd:element name="tx_user_type" type="xsd:string"/>
+                        <xsd:element name="tx_station_bus_stop_id" type="xsd:string"/>
+                        <xsd:element name="tx_station_bus_stop_name" type="xsd:string"/>
+                        <xsd:element name="tx_bus_id" type="xsd:string"/>
+                        <xsd:element name="tx_amount_used" type="xsd:string"/>
+                        <xsd:element name="tx_usage_date" type="xsd:string"/>
+                        <xsd:element name="tx_transaction_sequence_number" type="xsd:string"/>
+                        <xsd:element name="tx_line_id" type="xsd:string"/>
+                        <xsd:element name="tx_line_name" type="xsd:string"/>
+                        <xsd:element name="tx_route_id" type="xsd:string"/>
+                        <xsd:element name="tx_route_name" type="xsd:string"/>
+                        <xsd:element name="tx_claim_date" type="xsd:string"/>
+                        <xsd:element name="tx_daily_max_debit_use" type="xsd:string"/>
+                        <xsd:element name="tx_device_id" type="xsd:string"/>
+                        <xsd:element name="tx_unique_id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </DataFormat>
+    </config>
+</BWSharedResource>

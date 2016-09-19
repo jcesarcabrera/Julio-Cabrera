@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>EndPoint</name>
+			<value>http://sugar.aws.rbsas.co/service/v4_1/rest.php</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1453415547311</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>0e32db56303c4444b42dfe682f92cbbc</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1453415547361</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>admin</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1452273122490</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Version</name>
+			<value>1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1452273122522</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

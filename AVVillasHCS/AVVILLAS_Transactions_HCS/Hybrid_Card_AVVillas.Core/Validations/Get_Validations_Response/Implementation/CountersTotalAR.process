@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="nsUsosResponseBank">
+    <xsd:import namespace="nsUsosResponseBank" schemaLocation="/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Schemas/BankValidationsResponse.xsd"/>
+    <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Implementation/CountersTotalAR.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:body" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>81</pd:startY>
+    <pd:returnBindings>
+        <Output>
+            <CountAcept>
+                <xsl:value-of select="$TotalAR/Input/CountAcept"/>
+            </CountAcept>
+            <CountRech>
+                <xsl:value-of select="$TotalAR/Input/CountRech"/>
+            </CountRech>
+            <TotalAcept>
+                <xsl:value-of select="$TotalAR/Input/TotalAcept"/>
+            </TotalAcept>
+            <TotalRech>
+                <xsl:value-of select="$TotalAR/Input/TotalRech"/>
+            </TotalRech>
+            <serietarjeta>
+                <xsl:value-of select="$Base64/Base64/Base64"/>
+            </serietarjeta>
+        </Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CountAcept" type="xsd:int"/>
+                    <xsd:element name="CountRech" type="xsd:int"/>
+                    <xsd:element name="TotalAcept" type="xsd:string"/>
+                    <xsd:element name="TotalRech" type="xsd:string"/>
+                    <xsd:element name="serietarjeta" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>758</pd:endX>
+    <pd:endY>81</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Base64>
+            <xsd:element name="Base64">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Base64" type="xsd:base64Binary"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Base64>
+        <Counters>
+            <xsd:element name="counters">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="indicador02" type="xsd:int"/>
+                        <xsd:element name="indicador04" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Counters>
+        <Total>
+            <xsd:element name="Input">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Acept" type="xsd:int"/>
+                        <xsd:element name="Rech" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Total>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1437012206863</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>9</pd:y>
+        <pd:width>332</pd:width>
+        <pd:height>144</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/Input/pfx:body</pd:over>
+            <pd:iterationElementSlot>iterator</pd:iterationElementSlot>
+            <pd:indexSlot>index</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Counter</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>CoverHEX</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Counter</pd:from>
+            <pd:to>OutTotal</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>OutTotal</pd:from>
+            <pd:to>CoverHEX</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Counter">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>338</pd:x>
+            <pd:y>81</pd:y>
+            <config>
+                <variableName>Counters</variableName>
+            </config>
+            <pd:inputBindings>
+                <counters>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="$iterator/pfx:body/pfx:IndicadorRespuesta='02'">
+                            <indicador02>
+                                <xsl:value-of select="$Counters/counters/indicador02+1"/>
+                            </indicador02>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <indicador02>
+                                <xsl:value-of select="$Counters/counters/indicador02"/>
+                            </indicador02>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="$iterator/pfx:body/pfx:IndicadorRespuesta!='02'">
+                            <indicador04>
+                                <xsl:value-of select="$Counters/counters/indicador04+1"/>
+                            </indicador04>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <indicador04>
+                                <xsl:value-of select="$Counters/counters/indicador04"/>
+                            </indicador04>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </counters>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="CoverHEX">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>527</pd:x>
+            <pd:y>81</pd:y>
+            <config>
+                <variableName>Base64</variableName>
+            </config>
+            <pd:inputBindings>
+                <Base64>
+                    <Base64>
+                        <xsl:value-of select="tib:base64-to-hex($iterator/pfx:body/pfx:SerialTarjeta)"/>
+                    </Base64>
+                </Base64>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="OutTotal">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>428</pd:x>
+            <pd:y>81</pd:y>
+            <config>
+                <variableName>Total</variableName>
+            </config>
+            <pd:inputBindings>
+                <Input>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="$iterator/pfx:body/pfx:IndicadorRespuesta='02'">
+                            <Acept>
+                                <xsl:value-of select="$Total/Input/Acept+$iterator/pfx:body/pfx:MontodeUso"/>
+                            </Acept>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <Acept>
+                                <xsl:value-of select="$Total/Input/Acept"/>
+                            </Acept>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="$iterator/pfx:body/pfx:IndicadorRespuesta!='02'">
+                            <Rech>
+                                <xsl:value-of select="$Total/Input/Rech+$iterator/pfx:body/pfx:MontodeUso"/>
+                            </Rech>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <Rech>
+                                <xsl:value-of select="$Total/Input/Rech"/>
+                            </Rech>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Initialize">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>115</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <variableName>Counters</variableName>
+        </config>
+        <pd:inputBindings>
+            <counters>
+                <indicador02>
+                    <xsl:value-of select="0"/>
+                </indicador02>
+                <indicador04>
+                    <xsl:value-of select="0"/>
+                </indicador04>
+            </counters>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="INTotal">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <variableName>Total</variableName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <Acept>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="0"/>
+                </Acept>
+                <Rech>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="0"/>
+                </Rech>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="TotalAR">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>674</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Input">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="CountAcept" type="xsd:int"/>
+                            <xsd:element name="CountRech" type="xsd:int"/>
+                            <xsd:element name="TotalAcept" type="xsd:int"/>
+                            <xsd:element name="TotalRech" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <CountAcept>
+                    <xsl:value-of select="$Counters/counters/indicador02"/>
+                </CountAcept>
+                <CountRech>
+                    <xsl:value-of select="$Counters/counters/indicador04"/>
+                </CountRech>
+                <TotalAcept>
+                    <xsl:value-of select="$Total/Input/Acept"/>
+                </TotalAcept>
+                <TotalRech>
+                    <xsl:value-of select="$Total/Input/Rech"/>
+                </TotalRech>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Initialize</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Initialize</pd:from>
+        <pd:to>INTotal</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>INTotal</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>TotalAR</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>TotalAR</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

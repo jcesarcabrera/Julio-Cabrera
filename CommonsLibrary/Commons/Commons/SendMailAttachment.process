@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.cafam.com.co/medications/commons/Datalogs" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="http://www.tibco.com/namespaces/tnt/plugins/file">
+    <pd:name>Commons/SendMailAttachment.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Mail">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="mail_to" type="xsd:string"/>
+                    <xsd:element name="subject" type="xsd:string"/>
+                    <xsd:element name="fullfilename" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                    <xsd:element name="id_proceso" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>51</pd:startX>
+    <pd:startY>71</pd:startY>
+    <pd:returnBindings>
+        <Error_Msg>
+            <xsl:choose>
+                <xsl:when test="$MailSend/Error/CodeError!=&quot; &quot;">
+                    <Code_Error>
+                        <xsl:value-of select="$MailSend/Error/CodeError"/>
+                    </Code_Error>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Code_Error>
+                        <xsl:value-of select="&quot; &quot;"/>
+                    </Code_Error>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:choose>
+                <xsl:when test="$MailSend/Error/Message_Error!=&quot; &quot;">
+                    <Message_Error>
+                        <xsl:value-of select="$MailSend/Error/Message_Error"/>
+                    </Message_Error>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Message_Error>
+                        <xsl:value-of select="&quot; &quot;"/>
+                    </Message_Error>
+                </xsl:otherwise>
+            </xsl:choose>
+        </Error_Msg>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Error_Msg">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Code_Error" type="xsd:string"/>
+                    <xsd:element name="Message_Error" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>589</pd:endX>
+    <pd:endY>71</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1455724335610</pd:targetNamespace>
+    <pd:activity name="EndLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>480</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Hibrida&quot;, &quot; | &quot;, $_processContext/ns1:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="$Start/Mail/message"/>
+                </ns12:message>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>373</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$Start/Mail/mail_to"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="$Start/Mail/subject"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="$Start/Mail/message"/>
+                </message>
+                <Attachment>
+                    <content-type>
+                        <xsl:value-of select="'text/csv'"/>
+                    </content-type>
+                    <attachmentName>
+                        <xsl:value-of select="$Read-File/pfx:ReadActivityOutputTextClass/fileInfo/fileName"/>
+                    </attachmentName>
+                    <attachmentText>
+                        <xsl:value-of select="$Read-File/pfx:ReadActivityOutputTextClass/fileContent/textContent"/>
+                    </attachmentText>
+                </Attachment>
+                <id_proceso>
+                    <xsl:value-of select="$Start/Mail/id_proceso"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>262</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$Start/Mail/fullfilename"/>
+                </fileName>
+            </ns:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="StartLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>150</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Hibrida&quot;, &quot; | &quot;, $_processContext/ns1:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="$Start/Mail/message"/>
+                </ns12:message>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>MailSend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>StartLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>StartLog</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend</pd:from>
+        <pd:to>EndLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>EndLog</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

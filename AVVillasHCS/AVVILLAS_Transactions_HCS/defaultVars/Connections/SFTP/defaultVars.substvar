@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Host</name>
+			<value>200.14.232.175</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472594801187</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>qazx12345*</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472594369168</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Port</name>
+			<value>22</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472576893632</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TimeOut</name>
+			<value>60000</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1472359275093</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>recaudo_bogotat</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472594801202</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/DepositMessage.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/DepositMessage.xsd"/>
+    <pd:name>GeneralProcesses/SubProcesses/DalSetMerchantSystemTransaction/CreateMessageData.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TransactionId" type="xsd:string"/>
+                    <xsd:element name="TransactionAmount" type="xsd:string"/>
+                    <xsd:element name="PosId" type="xsd:string"/>
+                    <xsd:element name="MerchantCode" type="xsd:string"/>
+                    <xsd:element name="MerchantTransactionNumber" type="xsd:string"/>
+                    <xsd:element name="BusinessCode" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>36</pd:startX>
+    <pd:startY>67</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error = &quot;false&quot;">
+                <DataDump>
+                    <xsl:value-of select="$Serialize-Request-Message-No-CRC/root/RequestMessage"/>
+                </DataDump>
+            </xsl:if>
+            <xsl:if test="$varError/Error = &quot;true&quot;">
+                <xsl:copy-of select="$Map-Error-Message/pfx2:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="DataDump" type="xsd:string" minOccurs="0"/>
+                    <xsd:element ref="pfx2:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>754</pd:endX>
+    <pd:endY>69</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1462897392285</pd:targetNamespace>
+    <pd:activity name="Map Request Message Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>310</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <element ref="ns:MerchantSystemTransaction"/>
+        </config>
+        <pd:inputBindings>
+            <ns:MerchantSystemTransaction>
+                <ns:Common>
+                    <ns:MessageId>
+                        <xsl:value-of select="&quot;F1200&quot;"/>
+                    </ns:MessageId>
+                    <ns:MessageVersion>
+                        <xsl:value-of select="&quot;1&quot;"/>
+                    </ns:MessageVersion>
+                    <ns:MessageRevision>
+                        <xsl:value-of select="&quot;0&quot;"/>
+                    </ns:MessageRevision>
+                    <ns:BusinessCode>
+                        <xsl:value-of select="$Start/root/BusinessCode"/>
+                    </ns:BusinessCode>
+                    <ns:MerchantTransactionNumber>
+                        <xsl:value-of select="$Start/root/MerchantTransactionNumber"/>
+                    </ns:MerchantTransactionNumber>
+                    <ns:TransmissionDate>
+                        <xsl:value-of select="tib:format-dateTime(&quot;YYYYMMdd&quot;, current-dateTime())"/>
+                    </ns:TransmissionDate>
+                    <ns:TransmissionTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;HHmmss&quot;, current-dateTime())"/>
+                    </ns:TransmissionTime>
+                    <ns:MerchantType>
+                        <xsl:value-of select="&quot;01&quot;"/>
+                    </ns:MerchantType>
+                    <ns:MerchantCode>
+                        <xsl:value-of select="$Start/root/MerchantCode"/>
+                    </ns:MerchantCode>
+                    <ns:ResponseMerchantCode>
+                        <xsl:value-of select="$Start/root/MerchantCode"/>
+                    </ns:ResponseMerchantCode>
+                    <ns:RepeatNumber>
+                        <xsl:value-of select="&quot;1&quot;"/>
+                    </ns:RepeatNumber>
+                    <ns:MerchantSystemTraceAuditNumber>
+                        <xsl:value-of select="$Start/root/TransactionId"/>
+                    </ns:MerchantSystemTraceAuditNumber>
+                    <ns:MerchantArea>
+                        <xsl:value-of select="&quot;                      &quot;"/>
+                    </ns:MerchantArea>
+                    <ns:ResponseCode>
+                        <xsl:value-of select="&quot;0000&quot;"/>
+                    </ns:ResponseCode>
+                    <ns:VanArea>
+                        <xsl:value-of select="&quot;                    &quot;"/>
+                    </ns:VanArea>
+                </ns:Common>
+                <ns:FinancialTransaction>
+                    <ns:PrimaryTransactionNumber>
+                        <xsl:value-of select="&quot;000000000000000&quot;"/>
+                    </ns:PrimaryTransactionNumber>
+                    <ns:TransactionDate>
+                        <xsl:value-of select="tib:format-dateTime(&quot;YYYYMMdd&quot;, current-dateTime())"/>
+                    </ns:TransactionDate>
+                    <ns:TransactionTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;HHmmss&quot;, current-dateTime())"/>
+                    </ns:TransactionTime>
+                    <ns:TransactionType>
+                        <xsl:value-of select="&quot;10&quot;"/>
+                    </ns:TransactionType>
+                    <ns:PaymentType>
+                        <xsl:value-of select="&quot;01&quot;"/>
+                    </ns:PaymentType>
+                    <ns:OriginTransactionNumber>
+                        <xsl:value-of select="&quot;000000000000000&quot;"/>
+                    </ns:OriginTransactionNumber>
+                    <ns:BankCode>
+                        <xsl:value-of select="&quot;001&quot;"/>
+                    </ns:BankCode>
+                    <ns:TransactionAmount>
+                        <xsl:value-of select="tib:pad-front($Start/root/TransactionAmount, '12', '0')"/>
+                    </ns:TransactionAmount>
+                    <ns:NegativeBalanceAfterTransaction>
+                        <xsl:value-of select="&quot;+&quot;"/>
+                    </ns:NegativeBalanceAfterTransaction>
+                    <ns:AccountBalanceAfterTransaction>
+                        <xsl:value-of select="&quot;000000000000&quot;"/>
+                    </ns:AccountBalanceAfterTransaction>
+                    <ns:BankBranchCode>
+                        <xsl:value-of select="&quot;000000&quot;"/>
+                    </ns:BankBranchCode>
+                    <ns:DepositorName>
+                        <xsl:value-of select="&quot;                              &quot;"/>
+                    </ns:DepositorName>
+                    <ns:CmsCode>
+                        <xsl:value-of select="$Start/root/PosId"/>
+                    </ns:CmsCode>
+                    <ns:ProcessingCode>
+                        <xsl:value-of select="&quot;01&quot;"/>
+                    </ns:ProcessingCode>
+                    <ns:RFU>
+                        <xsl:value-of select="&quot;                                &quot;"/>
+                    </ns:RFU>
+                </ns:FinancialTransaction>
+            </ns:MerchantSystemTransaction>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Serialize Request Message No CRC">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>467</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="RequestMessage" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <RequestMessage>
+                    <xsl:value-of select="concat(&#xA;tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MessageId)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MessageVersion)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MessageRevision)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:BusinessCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MerchantTransactionNumber)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:TransmissionDate)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:TransmissionTime)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MerchantType)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MerchantCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:ResponseMerchantCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:RepeatNumber)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MerchantSystemTraceAuditNumber)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:MerchantArea)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:ResponseCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:Common/ns:VanArea)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:PrimaryTransactionNumber)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:TransactionDate)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:TransactionTime)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:TransactionType)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:PaymentType)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:OriginTransactionNumber)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:BankCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:TransactionAmount)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:NegativeBalanceAfterTransaction)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:AccountBalanceAfterTransaction)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:BankBranchCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:DepositorName)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:CmsCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:ProcessingCode)&#xA;,tib:string-to-hex($Map-Request-Message-Data/ns:MerchantSystemTransaction/ns:FinancialTransaction/ns:RFU)&#xA;)"/>
+                </RequestMessage>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Transaction Amount to HEX">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>154</pd:x>
+        <pd:y>76</pd:y>
+        <config>
+            <processName>/GeneralProcesses/CommonProcesses/ConvertInt2Hex.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <IntNumber>
+                    <xsl:value-of select="number($Start/root/TransactionAmount)"/>
+                </IntNumber>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>616</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>357</pd:x>
+        <pd:y>203</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>467</pd:x>
+        <pd:y>204</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Error Message">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>592</pd:x>
+        <pd:y>205</pd:y>
+        <config>
+            <element ref="pfx2:Error"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Error>
+                <pfx2:ErrorCode>
+                    <xsl:value-of select="&quot;18&quot;"/>
+                </pfx2:ErrorCode>
+                <pfx2:ErrorMessage>
+                    <xsl:value-of select="&quot;Error con los datos del mensaje de petición de recarga Merchant Protocol&quot;"/>
+                </pfx2:ErrorMessage>
+            </pfx2:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Transaction Amount to HEX</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transaction Amount to HEX</pd:from>
+        <pd:to>Map Request Message Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Serialize Request Message No CRC</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Map Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Request Message Data</pd:from>
+        <pd:to>Serialize Request Message No CRC</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

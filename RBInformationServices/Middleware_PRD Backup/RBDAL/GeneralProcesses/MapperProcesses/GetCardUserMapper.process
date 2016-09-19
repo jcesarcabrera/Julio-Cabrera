@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:pfx="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd" schemaLocation="/CanonicalModel 1.0.0/Core/CardUser.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/CardUser.xsd"/>
+    <pd:name>GeneralProcesses/MapperProcesses/GetCardUserMapper.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:CardUser"/>
+    <pd:startX>71</pd:startX>
+    <pd:startY>78</pd:startY>
+    <pd:returnBindings>
+        <pfx2:User>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Name">
+                <pfx2:Name>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Name"/>
+                </pfx2:Name>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:LastName">
+                <pfx2:LastName>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:LastName"/>
+                </pfx2:LastName>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:SecondLastName">
+                <pfx2:SecondLastName>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:SecondLastName"/>
+                </pfx2:SecondLastName>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:IdTypeCode">
+                <pfx2:IdTypeCode>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:IdTypeCode"/>
+                </pfx2:IdTypeCode>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:IdType">
+                <pfx2:IdType>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:IdType"/>
+                </pfx2:IdType>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:IdNumber">
+                <pfx2:IdNumber>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:IdNumber"/>
+                </pfx2:IdNumber>
+            </xsl:if>
+            <xsl:if test="exists($Start/pfx:CardUser/pfx:BirthDate)">
+                <pfx2:BirthDate>
+                    <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime($Start/pfx:CardUser/pfx:BirthDate),&#xA;&#x9;tib:get-month-from-dateTime($Start/pfx:CardUser/pfx:BirthDate),&#xA;&#x9;tib:get-day-from-dateTime($Start/pfx:CardUser/pfx:BirthDate),&#xA;&#x9;tib:get-hours-from-dateTime($Start/pfx:CardUser/pfx:BirthDate),&#xA;&#x9;tib:get-minutes-from-dateTime($Start/pfx:CardUser/pfx:BirthDate),&#xA;&#x9;tib:get-seconds-from-dateTime($Start/pfx:CardUser/pfx:BirthDate)&#xA;)"/>
+                </pfx2:BirthDate>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Address">
+                <pfx2:Address>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Address"/>
+                </pfx2:Address>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:ScholarityCode">
+                <pfx2:ScholarityCode>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:ScholarityCode"/>
+                </pfx2:ScholarityCode>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Scholarity">
+                <pfx2:Scholarity>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Scholarity"/>
+                </pfx2:Scholarity>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:GenderCode">
+                <pfx2:GenderCode>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:GenderCode"/>
+                </pfx2:GenderCode>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Gender">
+                <pfx2:Gender>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Gender"/>
+                </pfx2:Gender>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:RhCode">
+                <pfx2:RhCode>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:RhCode"/>
+                </pfx2:RhCode>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:RH">
+                <pfx2:RH>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:RH"/>
+                </pfx2:RH>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Email">
+                <pfx2:Email>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Email"/>
+                </pfx2:Email>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Phone">
+                <pfx2:Phone>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Phone"/>
+                </pfx2:Phone>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Mobile">
+                <pfx2:Mobile>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Mobile"/>
+                </pfx2:Mobile>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Occupation">
+                <pfx2:Occupation>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Occupation"/>
+                </pfx2:Occupation>
+            </xsl:if>
+            <xsl:if test="$Start/pfx:CardUser/pfx:AuthorizeDataUse">
+                <pfx2:AuthorizeDataUse>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:AuthorizeDataUse"/>
+                </pfx2:AuthorizeDataUse>
+            </xsl:if>
+            <xsl:if test="exists($Start/pfx:CardUser/pfx:LastUpdate)">
+                <pfx2:LastUpdate>
+                    <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime($Start/pfx:CardUser/pfx:LastUpdate),&#xA;&#x9;tib:get-month-from-dateTime($Start/pfx:CardUser/pfx:LastUpdate),&#xA;&#x9;tib:get-day-from-dateTime($Start/pfx:CardUser/pfx:LastUpdate),&#xA;&#x9;tib:get-hours-from-dateTime($Start/pfx:CardUser/pfx:LastUpdate),&#xA;&#x9;tib:get-minutes-from-dateTime($Start/pfx:CardUser/pfx:LastUpdate),&#xA;&#x9;tib:get-seconds-from-dateTime($Start/pfx:CardUser/pfx:LastUpdate)&#xA;)"/>
+                </pfx2:LastUpdate>
+            </xsl:if>
+            <pfx2:StatusCode>
+                <xsl:value-of select="$Start/pfx:CardUser/pfx:StatusCode"/>
+            </pfx2:StatusCode>
+            <xsl:if test="$Start/pfx:CardUser/pfx:Status">
+                <pfx2:Status>
+                    <xsl:value-of select="$Start/pfx:CardUser/pfx:Status"/>
+                </pfx2:Status>
+            </xsl:if>
+        </pfx2:User>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:User"/>
+    <pd:endX>338</pd:endX>
+    <pd:endY>81</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1462577538792</pd:targetNamespace>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

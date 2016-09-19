@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>HcsUsers</name>
+			<value>farias@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1467390232426</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Host</name>
+			<value>smtp.gmail.com:587</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1467389052338</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>lxlomqqftoeyzvvc</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1467303397809</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>User</name>
+			<value>notificaciones.pyrbmo@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1467303397748</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBCTIBCO</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+        <maxConnections>%%Connections/JDBC/Maximun_Connections%%</maxConnections>
+        <loginTimeout>%%Connections/JDBC/TimeOut%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>%%Connections/JDBC/URL%%</location>
+        <user>%%Connections/JDBC/UserName%%</user>
+        <password>%%Connections/JDBC/Password%%</password>
+    </config>
+</BWSharedResource>

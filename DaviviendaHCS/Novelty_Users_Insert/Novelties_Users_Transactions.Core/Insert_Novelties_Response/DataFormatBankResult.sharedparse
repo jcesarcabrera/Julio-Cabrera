@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>DataFormatBankResult</name>
+    <resourceType>ae.shared.ParseSharedResource</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FormatType>Fixed format</FormatType>
+        <ColumnSeparator>,</ColumnSeparator>
+        <ColSeparatorRule>Treat all characters as entered as a single column separator string</ColSeparatorRule>
+        <LineSeparator>
+</LineSeparator>
+        <FillCharacter>Space</FillCharacter>
+        <LineLength>144</LineLength>
+        <OffsetString>document_id(0,16)
+card_number(16,32)
+names(32,62)
+last_name(62,82)
+second_last_name(82,102)
+address(102,142)
+status(142,144)</OffsetString>
+        <DataFormat>
+            <xsd:element name="Novelties_Response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="document_id" type="xsd:string"/>
+                        <xsd:element name="card_number" type="xsd:string"/>
+                        <xsd:element name="names" type="xsd:string"/>
+                        <xsd:element name="last_name" type="xsd:string"/>
+                        <xsd:element name="second_last_name" type="xsd:string"/>
+                        <xsd:element name="address" type="xsd:string"/>
+                        <xsd:element name="status" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </DataFormat>
+    </config>
+</BWSharedResource>
