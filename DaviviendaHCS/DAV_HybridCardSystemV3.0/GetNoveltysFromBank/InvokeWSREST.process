@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns22="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>GetNoveltysFromBank/InvokeWSREST.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Parameters">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="URI" type="xsd:string"/>
+                    <xsd:element name="FileName" type="xsd:string"/>
+                    <xsd:element name="JSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>147</pd:startY>
+    <pd:returnBindings>
+        <StatusCode>
+            <xsl:value-of select="$InvokeRESTAPI/ns1:RESTOutput/StatusCode"/>
+        </StatusCode>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="StatusCode" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1034</pd:endX>
+    <pd:endY>151</pd:endY>
+    <pd:errorSchemas>
+        <Error>
+            <xsd:element name="ErrorDescription" type="xsd:string"/>
+        </Error>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <Flag>
+            <xsd:element name="root" type="xsd:string"/>
+        </Flag>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1472407152529</pd:targetNamespace>
+    <pd:group name="Retries">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>653</pd:width>
+        <pd:height>270</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>idx</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$idx&gt;=$_globalVariables/ns3:GlobalVariables/SendNoveltys/REST/MaxRetries or $Flag/root='OK'</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>InvokeRESTAPI</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>OKFlag</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>ErrorFlag</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>InvokeRESTAPI</pd:from>
+            <pd:to>OKFlag</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ErrorFlag</pd:from>
+            <pd:to>LogError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LogError</pd:from>
+            <pd:to>MailSendError</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MailSendError</pd:from>
+            <pd:to>MailSendErrorFCS</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert_Error</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MailSendErrorFCS</pd:from>
+            <pd:to>Insert_Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="InvokeRESTAPI">
+            <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+            <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+            <pd:x>307</pd:x>
+            <pd:y>64</pd:y>
+            <config>
+                <enableProtocolUI>None</enableProtocolUI>
+                <restMethodUI>POST</restMethodUI>
+                <restResponseType>JSON</restResponseType>
+                <authChoiceUI>Basic Authentication</authChoiceUI>
+                <WADLPaths/>
+                <WADLBaseURL/>
+                <restMethodIDUI/>
+                <username>%%SendNoveltys/REST/UserName%%</username>
+                <password>%%SendNoveltys/REST/Password%%</password>
+                <restURI/>
+                <richOutputEnableUI>true</richOutputEnableUI>
+                <restInputReferNode>
+                    <xsd:element name="Parameters">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Query" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Header" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="Content-Disposition" type="xsd:string" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Body" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Form" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Text" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Binary" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" minOccurs="0">
+                                                            <xsd:complexType>
+                                                                <xsd:choice>
+                                                                    <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                    <xsd:element name="text" type="xsd:string"/>
+                                                                    <xsd:element name="fileName" type="xsd:string"/>
+                                                                </xsd:choice>
+                                                            </xsd:complexType>
+                                                        </xsd:element>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </restInputReferNode>
+                <restOutputReferNode>
+                    <xsd:element name="header">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="date" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="set-cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-length" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="resmsg" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="rescd" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="requestid" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-powered-by" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </restOutputReferNode>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput>
+                    <URI>
+                        <xsl:value-of select="$Start/Parameters/URI"/>
+                    </URI>
+                    <Timeout>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendNoveltys/REST/TimeOut"/>
+                    </Timeout>
+                    <ns1:Parameters>
+                        <Header>
+                            <Content-Type>
+                                <xsl:value-of select="'application/json'"/>
+                            </Content-Type>
+                            <Accept>
+                                <xsl:value-of select="'application/octet-stream'"/>
+                            </Accept>
+                            <Content-Disposition>
+                                <xsl:value-of select="concat('attachment; filename=&quot;',  $Start/Parameters/FileName  ,'&quot;')"/>
+                            </Content-Disposition>
+                        </Header>
+                        <Body>
+                            <Text>
+                                <type>
+                                    <xsl:value-of select="'application/json'"/>
+                                </type>
+                                <content>
+                                    <xsl:value-of select="$Start/Parameters/JSON"/>
+                                </content>
+                            </Text>
+                        </Body>
+                    </ns1:Parameters>
+                </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>247</pd:x>
+            <pd:y>215</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>807</pd:x>
+            <pd:y>217</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendNoveltys/REST/SleepTime"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="OKFlag">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>634</pd:x>
+            <pd:y>61</pd:y>
+            <config>
+                <variableName>Flag</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="'OK'"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="ErrorFlag">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>324</pd:x>
+            <pd:y>215</pd:y>
+            <config>
+                <variableName>Flag</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="$Flag/root+1"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LogError">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>403</pd:x>
+            <pd:y>215</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns22:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </message>
+                </ns22:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="MailSendError">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>489</pd:x>
+            <pd:y>215</pd:y>
+            <config>
+                <processName>/GetNoveltysFromBank/MailSend.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <input>
+                    <subject>
+                        <xsl:value-of select="'Error en procesamiento envio de novedades invocacion al webservice de fcs fallida'"/>
+                    </subject>
+                    <message>
+                        <xsl:value-of select="concat($_processContext/ns2:ProcessContext/EngineName,': ',$_error/ns2:ErrorReport/StackTrace)"/>
+                    </message>
+                    <to>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendNoveltys/Mail/ErrorTo"/>
+                    </to>
+                </input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Insert_Error">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>725</pd:x>
+            <pd:y>217</pd:y>
+            <config>
+                <processName>/Audit_Management/Insert_Error.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <ns4:Errors_Save>
+                    <ns4:error_message>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    </ns4:error_message>
+                    <ns4:id_process>
+                        <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                    </ns4:id_process>
+                </ns4:Errors_Save>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="MailSendErrorFCS">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>608</pd:x>
+            <pd:y>217</pd:y>
+            <config>
+                <processName>/GetNoveltysFromBank/MailSend.process</processName>
+                <spawn>true</spawn>
+            </config>
+            <pd:inputBindings>
+                <input>
+                    <subject>
+                        <xsl:value-of select="'Error en procesamiento envio de novedades invocacion al webservice de fcs fallida'"/>
+                    </subject>
+                    <message>
+                        <xsl:value-of select="concat($_processContext/ns2:ProcessContext/EngineName,': ',$_error/ns2:ErrorReport/StackTrace)"/>
+                    </message>
+                    <to>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendNoveltys/Mail/ErrorToFCS"/>
+                    </to>
+                </input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>1058</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <faultName>Error</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <data>
+                    <ErrorDescription>
+                        <xsl:value-of select="concat('No fue posible invocar al servicio web numero de intentos excedido: ',$Catch/exceptiondata)"/>
+                    </ErrorDescription>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Initial">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>122</pd:x>
+        <pd:y>146</pd:y>
+        <config>
+            <variableName>Flag</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="1"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>931</pd:x>
+        <pd:y>151</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx:LOGS_SAVE>
+                <pfx:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </pfx:process>
+                <pfx:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Hibirida Davivienda&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </pfx:project>
+                <pfx:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx:datetime>
+                <pfx:level>
+                    <xsl:value-of select="'Info'"/>
+                </pfx:level>
+                <pfx:message>
+                    <xsl:value-of select="'Finaliza invocacion al webservice de fcs envio de novedades'"/>
+                </pfx:message>
+                <pfx:detail>
+                    <xsl:value-of select="tib:render-xml($InvokeRESTAPI/ns1:RESTOutput)"/>
+                </pfx:detail>
+                <pfx:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </pfx:id_process>
+            </pfx:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Initial</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retries</pd:from>
+        <pd:to>Insert_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Initial</pd:from>
+        <pd:to>Retries</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retries</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Flag/root!='OK'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

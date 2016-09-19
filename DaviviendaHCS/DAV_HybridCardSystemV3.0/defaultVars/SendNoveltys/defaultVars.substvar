@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>NewItem</name>
+			<value>no value</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472417108114</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ProjectName</name>
+			<value>Tarjeta Hibirida Davivienda</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473098850606</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Timer</name>
+			<value>2015 august 15 00:00:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472416799051</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

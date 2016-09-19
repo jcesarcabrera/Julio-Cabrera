@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>URI</name>
+			<value>http://10.50.98.21:81/InterfaceServer/rest/dailydl/upload</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472419697303</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>URIResult</name>
+			<value>http://10.50.98.21:81/InterfaceServer/rest/dailydl/download</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472507224935</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>TiempoNovedadesDeBloqueo</name>
+			<value>45</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1437661979353</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Timer</name>
+			<value>2015 august 15 00:00:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1439905226825</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

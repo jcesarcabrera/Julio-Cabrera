@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:Utilities="java://co.com.bus.util.Utilities">
+    <pd:name>GetNoveltysFromBank/UnitTest/GenerateDailyReportNovelties.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="date" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>41</pd:startX>
+    <pd:startY>161</pd:startY>
+    <pd:returnBindings>
+        <Accumulate>
+            <xsl:value-of select=""/>
+        </Accumulate>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1108</pd:endX>
+    <pd:endY>165</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <date>
+            <xsd:element name="root" type="xsd:string"/>
+        </date>
+        <accumulate>
+            <xsd:element name="root" type="xsd:string"/>
+        </accumulate>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1473268873149</pd:targetNamespace>
+    <pd:group name="Group (1)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>17</pd:y>
+        <pd:width>784</pd:width>
+        <pd:height>285</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>idd</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>tib:compare-date($date/root, tib:add-to-date(tib:format-date('yyyy-MM-dd',current-date()),0,0,1))=0</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>JDBCQuery</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AssignDate</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>JDBCQuery</pd:from>
+            <pd:to>ResetData</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Group</pd:from>
+            <pd:to>WriteFile</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>WriteFile</pd:from>
+            <pd:to>AssignDate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ResetData</pd:from>
+            <pd:to>Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="JDBCQuery">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>333</pd:x>
+            <pd:y>165</pd:y>
+            <config>
+                <timeout>120</timeout>
+                <commit>false</commit>
+                <maxRows>0</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>select registro, card_number, processed_at, 
+case 
+ when status_novelty=00 then 'BLOQUEO_PERMANENTE'  
+ when status_novelty=01 then 'ACTIVACION'
+ when status_novelty=17 then 'BLOQUEO_TEMPORAL'
+ when status_novelty=18 then 'DESBLOQUE'
+ when status_novelty=25 then 'ASCENSO_NIVEL_CUPO'
+ELSE status_novelty
+END as status
+from
+  (
+  select min(registro) as seq, card_number as cn2, processed_at as date
+  from
+    (
+    select card_number as cn, max(processed_at) as max_date 
+    from Prueba_noveltyReceiverBankFile2 
+    where processed_at &lt;= ?
+    group by card_number
+    ) as max_nov
+    ,Prueba_noveltyReceiverBankFile2 as tot_nov
+  where max_nov.cn = tot_nov.card_number and max_nov.max_date = tot_nov.processed_at
+  group by card_number, processed_at
+  ) as ultima_novedad
+  , Prueba_noveltyReceiverBankFile2 as total_novedades
+where
+  ultima_novedad.seq = total_novedades.registro
+order by processed_at desc</statement>
+                <jdbcSharedConfig>/GetNoveltysFromBank/JDBCTIBCO-PR.sharedjdbc</jdbcSharedConfig>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>Date</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>registro</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>card_number</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>processed_at</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>status</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <Date>
+                        <xsl:value-of select="Utilities:replace($date/root,'-','')"/>
+                    </Date>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:group name="Group">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>541</pd:x>
+            <pd:y>106</pd:y>
+            <pd:width>289</pd:width>
+            <pd:height>177</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$JDBCQuery/resultSet/Record</pd:over>
+                <pd:iterationElementSlot>row</pd:iterationElementSlot>
+                <pd:indexSlot>idq</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>RenderData</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Assign</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>RenderData</pd:from>
+                <pd:to>Assign</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Assign">
+                <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+                <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+                <pd:x>743</pd:x>
+                <pd:y>198</pd:y>
+                <config>
+                    <variableName>accumulate</variableName>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <xsl:value-of select="concat($accumulate/root,$RenderData/Text)"/>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="RenderData">
+                <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+                <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+                <pd:x>635</pd:x>
+                <pd:y>198</pd:y>
+                <config>
+                    <ParseSharedConfig>/GetNoveltysFromBank/UnitTest/DailyReportNovelties.sharedparse</ParseSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <Rows>
+                        <root>
+                            <card_number>
+                                <xsl:value-of select="$row/Record/card_number"/>
+                            </card_number>
+                            <processed_at>
+                                <xsl:value-of select="$row/Record/processed_at"/>
+                            </processed_at>
+                            <status>
+                                <xsl:value-of select="$row/Record/status"/>
+                            </status>
+                        </root>
+                    </Rows>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="WriteFile">
+            <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+            <pd:x>878</pd:x>
+            <pd:y>168</pd:y>
+            <config>
+                <encoding>text</encoding>
+                <compressFile>None</compressFile>
+            </config>
+            <pd:inputBindings>
+                <ns0:WriteActivityInputTextClass>
+                    <fileName>
+                        <xsl:value-of select="concat('C:\RBFiles\ReportingNovelties\','Report_novelties_',$date/root,'.csv')"/>
+                    </fileName>
+                    <textContent>
+                        <xsl:value-of select="concat('Numero_Tarjeta;Fecha_Procesado;Estado',&quot;&#xA;&quot;,$accumulate/root)"/>
+                    </textContent>
+                </ns0:WriteActivityInputTextClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AssignDate">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>970</pd:x>
+            <pd:y>168</pd:y>
+            <config>
+                <variableName>date</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="tib:add-to-date($date/root, 0,0,1)"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="ResetData">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>442</pd:x>
+            <pd:y>170</pd:y>
+            <config>
+                <variableName>accumulate</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="''"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="AssignInitialDate">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>123</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <variableName>date</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="$Start/date"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>215</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param" type="xsd:string"/>
+                            <xsd:element name="param2" type="xsd:string"/>
+                            <xsd:element name="param1" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <param>
+                    <xsl:value-of select="tib:add-to-date(tib:format-date('yyyy-MM-dd',current-date()),0,0,1)"/>
+                </param>
+                <param2>
+                    <xsl:value-of select="$date/root"/>
+                </param2>
+                <param1>
+                    <xsl:value-of select="tib:compare-date($date/root, tib:add-to-date(tib:format-date('yyyy-MM-dd',current-date()),0,0,1))=0"/>
+                </param1>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>AssignInitialDate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (1)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AssignInitialDate</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>Group (1)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

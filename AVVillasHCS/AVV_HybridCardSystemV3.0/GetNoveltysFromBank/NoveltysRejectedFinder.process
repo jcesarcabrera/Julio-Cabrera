@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult64.sharedparse"/>
+    <pd:name>GetNoveltysFromBank/NoveltysRejectedFinder.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>242</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1217</pd:endX>
+    <pd:endY>36</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Accumulate>
+            <xsd:element name="root" type="xsd:string"/>
+        </Accumulate>
+        <Validate>
+            <xsd:element name="root" type="xsd:string"/>
+        </Validate>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1473115196266</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>611</pd:x>
+        <pd:y>56</pd:y>
+        <pd:width>286</pd:width>
+        <pd:height>182</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$RejectedRows/Rows/root</pd:over>
+            <pd:iterationElementSlot>rows</pd:iterationElementSlot>
+            <pd:indexSlot>idx</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>RenderData</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AccumulateRows</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RenderData</pd:from>
+            <pd:to>AccumulateRows</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="RenderData">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>688</pd:x>
+            <pd:y>154</pd:y>
+            <config>
+                <ParseSharedConfig>/GetNoveltysFromBank/DataFormatReport.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <root>
+                        <xsl:variable name="var" select="$rows/root/card_number"/>
+                        <document_id>
+                            <xsl:value-of select="$rows/root/document_id"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="$rows/root/card_number"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="$rows/root/names"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="$rows/root/last_name"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="$rows/root/second_last_name"/>
+                        </second_last_name>
+                        <operacion>
+                            <xsl:value-of select="$ParseEEFile/Output/Rows/root/estado[1][../card_number=$var]"/>
+                        </operacion>
+                        <rechazo>
+                            <xsl:value-of select="$rows/root/status"/>
+                        </rechazo>
+                    </root>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AccumulateRows">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>800</pd:x>
+            <pd:y>154</pd:y>
+            <config>
+                <variableName>Accumulate</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="concat($Accumulate/root,$RenderData,&quot;&#xA;&quot;)"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="ListEEFile">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>102</pd:x>
+        <pd:y>329</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEEDecryp,'EE',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*')"/>
+                </fileName>
+            </ns:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ListERFile">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>103</pd:x>
+        <pd:y>169</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileER,'ER',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*')"/>
+                </fileName>
+            </ns:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ParseEEFile">
+        <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+        <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+        <pd:x>296</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <InputType>File</InputType>
+            <Encoding>ASCII</Encoding>
+            <ParseSharedConfig>/GetNoveltysFromBank/DataFormatNoveltyFile64.sharedparse</ParseSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <fileName>
+                    <xsl:value-of select="$ListEEFile/ns:ListFilesActivityOutput/files/fileInfo[1]/fullName"/>
+                </fileName>
+                <noOfRecords>
+                    <xsl:value-of select="-1"/>
+                </noOfRecords>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ParseERFile">
+        <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+        <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+        <pd:x>408</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <InputType>File</InputType>
+            <Encoding>ASCII</Encoding>
+            <ParseSharedConfig>/GetNoveltysFromBank/DataFormatBankResult64.sharedparse</ParseSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <fileName>
+                    <xsl:value-of select="$ListERFile/ns:ListFilesActivityOutput/files/fileInfo[1]/fullName"/>
+                </fileName>
+                <noOfRecords>
+                    <xsl:value-of select="-1"/>
+                </noOfRecords>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="RejectedRows">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>153</pd:y>
+        <config>
+            <element ref="pfx:Rows"/>
+        </config>
+        <pd:inputBindings>
+            <Rows>
+                <xsl:for-each select="$ParseERFile/Output/Rows/root[status!='02']">
+                    <root>
+                        <document_id>
+                            <xsl:value-of select="document_id"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="card_number"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="names"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="last_name"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="second_last_name"/>
+                        </second_last_name>
+                        <address>
+                            <xsl:value-of select="address"/>
+                        </address>
+                        <status>
+                            <xsl:value-of select="status"/>
+                        </status>
+                    </root>
+                </xsl:for-each>
+            </Rows>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ValidateExistsFiles">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>171</pd:x>
+        <pd:y>246</pd:y>
+        <config>
+            <variableName>Validate</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="if (count($ListEEFile/ns:ListFilesActivityOutput/files/fileInfo)>0 and count($ListERFile/ns:ListFilesActivityOutput/files/fileInfo)>0) then&#xA;'OK'&#xA;else&#xA;'ERROR'"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="WriteRejectedReport">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>968</pd:x>
+        <pd:y>153</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+        </config>
+        <pd:inputBindings>
+            <ns:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/ReportingHCS/LocalDirectories/RejectedPath,'rejected_novelties_',tib:format-dateTime('yyyyMMdd',current-dateTime()),'.csv')"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="concat(&quot;Documento;Numero tarjeta;Nombres;Primer apellido;Segundo apellido;Operación;Codigo rechazo FCS&quot;,&quot;&#xA;&quot;,$Accumulate/root)"/>
+                </textContent>
+            </ns:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ValidateRowsFiles">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>524</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <variableName>Validate</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="if (count($ParseEEFile/Output/Rows/root)=count($ParseERFile/Output/Rows/root)) then&#xA;'OK'&#xA;else&#xA;'ERROR'"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ListERFile</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WriteRejectedReport</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>WriteRejectedReport</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ListERFile</pd:from>
+        <pd:to>ValidateExistsFiles</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ListEEFile</pd:from>
+        <pd:to>ValidateExistsFiles</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RejectedRows</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ListEEFile</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValidateExistsFiles</pd:from>
+        <pd:to>ParseEEFile</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate/root='OK'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseEEFile</pd:from>
+        <pd:to>ParseERFile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseERFile</pd:from>
+        <pd:to>ValidateRowsFiles</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValidateExistsFiles</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValidateRowsFiles</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValidateRowsFiles</pd:from>
+        <pd:to>RejectedRows</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate/root='OK'</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

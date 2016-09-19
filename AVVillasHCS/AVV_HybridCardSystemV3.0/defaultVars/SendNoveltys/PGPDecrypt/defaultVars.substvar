@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Exe</name>
+			<value>C:\PGP\GnuPG\pub\gpg2.exe</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472418140171</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Phrase</name>
+			<value>daviviendarb1234</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472418140309</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>User</name>
+			<value>mvelasco</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472418448607</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserEncrypt</name>
+			<value>intercambioseguro</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472577851268</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

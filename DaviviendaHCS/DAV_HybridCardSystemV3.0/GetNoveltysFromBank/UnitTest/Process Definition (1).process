@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>GetNoveltysFromBank/UnitTest/Process Definition (1).process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>90</pd:startX>
+    <pd:startY>57</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>719</pd:endX>
+    <pd:endY>42</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <acc>
+            <xsd:element name="root" type="xsd:string"/>
+        </acc>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1473720140710</pd:targetNamespace>
+    <pd:activity name="GetLinesFile">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>197</pd:x>
+        <pd:y>57</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/GetLinesFile.process</processName>
+        </config>
+        <pd:inputBindings>
+            <FileName>
+                <xsl:value-of select="'C:\nprieto\fileEE\enviasfcs_20160913.txt'"/>
+            </FileName>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>280</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>273</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$GetLinesFile/Rows/line</pd:over>
+            <pd:iterationElementSlot>row</pd:iterationElementSlot>
+            <pd:indexSlot>idx</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Render Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render Data</pd:from>
+            <pd:to>Assign</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Render Data">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>337</pd:x>
+            <pd:y>68</pd:y>
+            <config>
+                <ParseSharedConfig>/GetNoveltysFromBank/Data Format.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <root>
+                        <document_id>
+                            <xsl:value-of select="''"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="substring($row/line, 1, 16)"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="''"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="''"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="''"/>
+                        </second_last_name>
+                        <address>
+                            <xsl:value-of select="''"/>
+                        </address>
+                        <estado>
+                            <xsl:value-of select="substring($row/line, 17, 2)"/>
+                        </estado>
+                        <document_type>
+                            <xsl:value-of select="''"/>
+                        </document_type>
+                        <gender>
+                            <xsl:value-of select="''"/>
+                        </gender>
+                        <email>
+                            <xsl:value-of select="''"/>
+                        </email>
+                        <phone>
+                            <xsl:value-of select="''"/>
+                        </phone>
+                        <mobile>
+                            <xsl:value-of select="''"/>
+                        </mobile>
+                        <occupation>
+                            <xsl:value-of select="''"/>
+                        </occupation>
+                    </root>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Assign">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>451</pd:x>
+            <pd:y>61</pd:y>
+            <config>
+                <variableName>acc</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="concat($acc/root,$Render-Data/Text,&quot;&#xA;&quot;)"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Write File">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>635</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+        </config>
+        <pd:inputBindings>
+            <ns:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="'C:\nprieto\fileEE\camilo.txt'"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="$acc/root"/>
+                </textContent>
+            </ns:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetLinesFile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetLinesFile</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Write File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write File</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

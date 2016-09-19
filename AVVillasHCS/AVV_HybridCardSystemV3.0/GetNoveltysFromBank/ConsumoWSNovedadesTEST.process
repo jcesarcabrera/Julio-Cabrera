@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="nsNovedadesResponseBank" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:Utilities="java://co.com.bus.util.Utilities" xmlns:ns7="http://www.recaudo.bogota.com/schemas/ws/GetWSNovedades" xmlns:pfx="http://www.tibco.com/schemas/Canonico RB/Esquemas/Schema.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="nsResultFileRequestFcs" xmlns:pfx5="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="nsDebitListRequestFileFcs" xmlns:pfx3="nsBlackListRequestFileFcs" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Request/DebitListRequestFile.xsd" xmlns:pfx8="http://www.recaudo.bogota.com/schemas/CanonicoRB" xmlns:pfx7="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/Canonico RB/Esquemas/Schema.xsd" schemaLocation="/Esquemas/CanonicoRecaudoBogota.xsd"/>
+    <xsd:import namespace="nsBlackListRequestFileFcs"/>
+    <xsd:import namespace="nsDebitListRequestFileFcs"/>
+    <xsd:import namespace="http://www.recaudo.bogota.com/schemas/CanonicoRB"/>
+    <pd:name>ServicesEnvioNovedades/NovedadesEnvioAuto/UnitTest/ConsumoWSNovedadesTEST.process</pd:name>
+    <pd:description>Proceso que prepara las novedades para enviarlas al sistema FCS a tra ves de su API Rest</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>125</pd:startX>
+    <pd:startY>116</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>533</pd:endX>
+    <pd:endY>119</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <tmpjson>
+            <xsd:element name="root" type="xsd:string"/>
+        </tmpjson>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1433823223222</pd:targetNamespace>
+    <pd:activity name="Read-FileWS-1">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>117</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="'C:\nprieto\formatjson\003.DailyDebitList.20160823114800tmp.json'"/>
+                </fileName>
+            </pfx5:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>323</pd:x>
+        <pd:y>116</pd:y>
+        <config>
+            <variableName>tmpjson</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="Utilities:replaceCharacters(Utilities:replaceCharacters($Read-FileWS-1/ns4:ReadActivityOutputTextClass/fileContent/textContent, &quot;&#xA;&quot;, &quot;&quot;), &quot; &quot;,&quot;&quot;)"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write-File-1">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>440</pd:x>
+        <pd:y>117</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+            <append>false</append>
+        </config>
+        <pd:inputBindings>
+            <ns4:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="'C:\nprieto\formatjson\003.DailyDebitList.20160823114800.json'"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="$tmpjson/root"/>
+                </textContent>
+            </ns4:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Read-FileWS-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write-File-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read-FileWS-1</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Write-File-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

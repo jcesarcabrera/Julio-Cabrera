@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>SFTPInterface</name>
+    <resourceType>ae.shared.SFTPuserChannel</resourceType>
+    <config>
+        <Timeout>60000</Timeout>
+        <Port>%%SendNoveltys/SFTP/Port%%</Port>
+        <PrivKeyVerification>false</PrivKeyVerification>
+        <StrictHostkeyCheck>false</StrictHostkeyCheck>
+        <Host>%%SendNoveltys/SFTP/Host%%</Host>
+        <UserName>%%SendNoveltys/SFTP/UserName%%</UserName>
+        <Password>%%SendNoveltys/SFTP/Password%%</Password>
+    </config>
+</BWSharedResource>
