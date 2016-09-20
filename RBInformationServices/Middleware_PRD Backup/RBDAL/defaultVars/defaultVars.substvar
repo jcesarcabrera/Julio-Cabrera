@@ -129,5 +129,13 @@
 			<type>String</type>
 			<modTime>1450473118262</modTime>
 		</globalVariable>
+		<globalVariable>
+			<name>validCharacters</name>
+			<value>ºª\!|@·#$%&amp;¬/()='?¡¿*`+´ç¨Ç-_^*</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474394237255</modTime>
+		</globalVariable>
 	</globalVariables>
 </repository>

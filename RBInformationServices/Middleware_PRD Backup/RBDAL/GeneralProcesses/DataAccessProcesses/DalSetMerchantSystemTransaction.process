@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:pfx="http://www.tibco.com/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.tibco.com/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd"/>
     <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd"/>
     <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
@@ -92,16 +92,16 @@
         <pd:inputBindings>
             <ns2:MerchantSystemTransaction>
                 <ns2:TransactionId>
-                    <xsl:value-of select="$Start/root/TransactionId"/>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
                 </ns2:TransactionId>
                 <ns2:MerchantCode>
                     <xsl:value-of select="$Get-Recharge-Network-Info/resultSet/Record[1]/MerchantCode"/>
                 </ns2:MerchantCode>
                 <ns2:PosId>
-                    <xsl:value-of select="$Start/root/PosId"/>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/PosId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
                 </ns2:PosId>
                 <ns2:TransactionAmount>
-                    <xsl:value-of select="$Start/root/TransactionAmount"/>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionAmount, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 12), 12, '0')"/>
                 </ns2:TransactionAmount>
                 <ns2:BusinessCode>
                     <xsl:value-of select="$Start/root/BusinessCode"/>

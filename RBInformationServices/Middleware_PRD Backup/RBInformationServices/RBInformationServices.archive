@@ -10,7 +10,7 @@
             <authorProperty>Julio Cabrera</authorProperty>
             <processProperty>/REST/StarterProcesses/RestService.process,/REST/StarterProcesses/TimerMerchantClosing.process,/REST/StarterProcesses/TimerMerchantOpening.process</processProperty>
         </processArchive>
-        <versionProperty>10</versionProperty>
+        <versionProperty>11</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>RBInformationServices</name>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\Administrator\Documents\RBInformationServices.ear</fileLocationProperty>
+        <fileLocationProperty>C:\WorkSpaceRB\RBInformationServices\Deployments\RBInformationServices.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

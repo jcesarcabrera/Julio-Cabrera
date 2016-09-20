@@ -1,39 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>REST/BusinessProcesses/Version 1.0.0/SetMerchantSystemTransaction/BusinessOpening.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>61</pd:startX>
     <pd:startY>118</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>598</pd:endX>
-    <pd:endY>122</pd:endY>
+    <pd:endX>783</pd:endX>
+    <pd:endY>119</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.rbsas.co/1463526630515</pd:targetNamespace>
-    <pd:activity name="Get Recharge Networks List">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>182</pd:x>
-        <pd:y>127</pd:y>
-        <config>
-            <processName>/GeneralProcesses/DataAccessProcesses/DalGetRechargeNetworks.process</processName>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="Log Error">
-        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
-        <pd:resourceType>ae.activities.null</pd:resourceType>
-        <pd:x>184</pd:x>
-        <pd:y>291</pd:y>
-        <config/>
-        <pd:inputBindings/>
-    </pd:activity>
     <pd:group name="Open Businesses">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>293</pd:x>
-        <pd:y>37</pd:y>
+        <pd:x>401</pd:x>
+        <pd:y>35</pd:y>
         <pd:width>199</pd:width>
         <pd:height>154</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -68,8 +50,8 @@
         <pd:activity name="Open Business">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>394</pd:x>
-            <pd:y>121</pd:y>
+            <pd:x>502</pd:x>
+            <pd:y>118</pd:y>
             <config>
                 <processName>/GeneralProcesses/DataAccessProcesses/DalSetMerchantSystemTransaction.process</processName>
             </config>
@@ -94,6 +76,113 @@
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
+    <pd:activity name="Get Recharge Networks List">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>182</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <processName>/GeneralProcesses/DataAccessProcesses/DalGetRechargeNetworks.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>329</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns4:Errors_Save>
+                <ns4:error_message>
+                    <xsl:value-of select="$Get-Recharge-Networks-List/root/ns3:Error/ns3:ErrorMessage"/>
+                </ns4:error_message>
+                <ns4:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns4:id_process>
+            </ns4:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="End_Opening_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>678</pd:x>
+        <pd:y>119</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns1:LOGS_SAVE>
+                <ns1:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId))"/>
+                </ns1:process>
+                <ns1:project>
+                    <xsl:value-of select="&quot;RBInformationServices | BusinessOpening&quot;"/>
+                </ns1:project>
+                <ns1:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns1:datetime>
+                <ns1:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns1:level>
+                <ns1:message>
+                    <xsl:value-of select="concat(&quot;Finaliza el proceso de apertura BusinessOpening: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                </ns1:message>
+                <ns1:detail>
+                    <xsl:value-of select="tib:render-xml($Open-Business/root/ns2:MerchantSystemTransaction)"/>
+                </ns1:detail>
+                <ns1:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns1:id_process>
+            </ns1:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log Error">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>184</pd:x>
+        <pd:y>291</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Start_Opening_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>306</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns1:LOGS_SAVE>
+                <ns1:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId))"/>
+                </ns1:process>
+                <ns1:project>
+                    <xsl:value-of select="&quot;RBInformationServices | BusinessOpening&quot;"/>
+                </ns1:project>
+                <ns1:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns1:datetime>
+                <ns1:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns1:level>
+                <ns1:message>
+                    <xsl:value-of select="concat(&quot;Inicia el proceso de apertura BusinessOpening: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                </ns1:message>
+                <ns1:detail>
+                    <xsl:value-of select="$Get-Recharge-Networks-List/root/RechargeNetworksList/userId[1]"/>
+                </ns1:detail>
+                <ns1:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns1:id_process>
+            </ns1:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Get Recharge Networks List</pd:to>
@@ -110,14 +199,14 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log Error</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Insert_Error</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Get Recharge Networks List</pd:from>
-        <pd:to>Open Businesses</pd:to>
+        <pd:to>Start_Opening_Log</pd:to>
         <pd:xpathDescription>OK</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -126,8 +215,29 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Open Businesses</pd:from>
+        <pd:to>End_Opening_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start_Opening_Log</pd:from>
+        <pd:to>Open Businesses</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>End_Opening_Log</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
