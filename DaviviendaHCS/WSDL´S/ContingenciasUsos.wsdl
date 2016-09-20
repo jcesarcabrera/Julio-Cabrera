@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:ns1="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd2" xmlns:tns="http://xmlns.example.com/1474384987739" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns0="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="Untitled" targetNamespace="http://xmlns.example.com/1474384987739">
+    <wsdl:types>
+        <xs:schema xmlns="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd2" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="Contingencias">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="ns1:Mensaje"/>
+                        <xs:element ref="ns1:FechaConsulta"/>
+                        <xs:element ref="ns1:Estado"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Estado" type="xs:string"/>
+            <xs:element name="FechaConsulta" type="xs:string"/>
+            <xs:element name="Mensaje" type="xs:string"/>
+        </xs:schema>
+        <xs:schema xmlns="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="Contingencias">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="ns0:FechaConsulta"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FechaConsulta" type="xs:string"/>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="ContingenciasMain">
+        <wsdl:port name="intfwsContingenciasMainEndpoint0" binding="tns:intfwsContingenciasMainEndpoint0Binding">
+            <soap:address location="http://localhost:8990/Hybrid_Card_Davivienda/ContingenciasUsos"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="ContingenciasUsos">
+        <wsdl:operation name="ContingenciasMainOp">
+            <wsdl:input message="tns:Contingencias"/>
+            <wsdl:output message="tns:Contingencias2"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="intfwsContingenciasMainEndpoint0Binding" type="tns:ContingenciasUsos">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ContingenciasMainOp">
+            <soap:operation style="document" soapAction="/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Interface/intfContingenciasMain-service.serviceagent/intfwsContingenciasMainEndpoint0/ContingenciasMainOp"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="Contingencias">
+        <wsdl:part name="parameters" element="ns0:Contingencias"/>
+    </wsdl:message>
+    <wsdl:message name="Contingencias2">
+        <wsdl:part name="parameters" element="ns1:Contingencias"/>
+    </wsdl:message>
+</wsdl:definitions>

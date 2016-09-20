@@ -12,6 +12,7 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element name="fullNameInputFile" type="xsd:string"/>
+                    <xsd:element name="Fecha_Contingencia" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -317,7 +318,7 @@
         <pd:inputBindings>
             <FileName>
                 <FileName>
-                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Contingencias/Local_Path, &#xA;$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Validations_Request/Validations_FileName_Prefix,&#xA;$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Bank_Code,&#xA;tib:format-dateTime('yyyyMMddHHmmss', tib:add-to-dateTime(current-dateTime(), 0,0,-1,0,0,0)))"/>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Contingencias/Local_Path, &#xA;$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Validations_Request/Validations_FileName_Prefix,&#xA;$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Bank_Code,&#xA;$Start/input/Fecha_Contingencia,&#xA;tib:format-dateTime(&quot;HHmmss&quot;,current-dateTime()))"/>
                 </FileName>
             </FileName>
         </pd:inputBindings>
@@ -339,7 +340,7 @@
                     <xsl:value-of select="$FileName/FileName/FileName"/>
                 </fileName>
                 <textContent>
-                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Reservado, &#xA;tib:pad-front($Parse-JSON/ns2:ActivityOutputClass/ns1:JSON/ns1:header/ns1:TotalBodyRecordsCount, 8, '0'),&#xA;tib:pad-front($Sumatory/Output/SumTotal, 13, '0'),&#xA;tib:format-date(&quot;yyyyMMdd&quot;, tib:add-to-date(current-date(), 0, 0, -1)),&#xA;tib:pad('0', 82, '0'),&quot;&#xA;&quot;)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Reservado, &#xA;tib:pad-front($Parse-JSON/ns2:ActivityOutputClass/ns1:JSON/ns1:header/ns1:TotalBodyRecordsCount, 8, '0'),&#xA;tib:pad-front($Sumatory/Output/SumTotal, 13, '0'),&#xA;$Start/input/Fecha_Contingencia,&#xA;tib:pad('0', 82, '0'),&quot;&#xA;&quot;)"/>
                 </textContent>
                 <encoding>
                     <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Encoding"/>
@@ -359,16 +360,16 @@
         <pd:inputBindings>
             <input>
                 <to>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_globalVariables/ns5:GlobalVariables/Mail/Errors_Mail_To"/>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;Errores presentados al cargar archivos de usos&quot;"/>
+                    <xsl:value-of select="&quot;Errores presentados al cargar archivos de usos&quot;"/>
                 </subject>
                 <message>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="concat(&quot;&lt;html>&lt;head>&lt;title>Se han presentado errores al procesar el archivo de usos&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$_error_Send_PGP_File/ActivityErrors/*,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se han presentado errores al procesar el archivo de usos&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$_error/ns4:ErrorReport/StackTrace,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
                 </message>
                 <id_proceso>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
                 </id_proceso>
             </input>
         </pd:inputBindings>
@@ -458,7 +459,7 @@
             <persistTimestamp>false</persistTimestamp>
             <Overwrite>true</Overwrite>
             <logout>true</logout>
-            <SharedUserData>/Connections/SFTP Connection.sharedsftp</SharedUserData>
+            <SharedUserData>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Interface/SFTP Test.sharedsftp</SharedUserData>
         </config>
         <pd:inputBindings>
             <SFTPPutInputDataFile>
@@ -469,16 +470,16 @@
                     <xsl:value-of select="$PGPCifrado/Cifred_File/FileName"/>
                 </LocalFileName>
                 <Host>
-                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/Host"/>
+                    <xsl:value-of select="&quot;localhost&quot;"/>
                 </Host>
                 <Port>
-                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/Port"/>
+                    <xsl:value-of select="&quot;22&quot;"/>
                 </Port>
                 <UserName>
-                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/UserName"/>
+                    <xsl:value-of select="&quot;jcesarcabrera&quot;"/>
                 </UserName>
                 <Password>
-                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/Password"/>
+                    <xsl:value-of select="&quot;wolf2284&quot;"/>
                 </Password>
                 <Timeout>
                     <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/TimeOut"/>

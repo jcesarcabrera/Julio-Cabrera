@@ -2,10 +2,28 @@
 <pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Contingencias.process</pd:name>
     <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="FechaContingencia" type="xsd:string"/>
+    </pd:startType>
     <pd:startX>27</pd:startX>
     <pd:startY>62</pd:startY>
-    <pd:returnBindings/>
+    <pd:returnBindings>
+        <ContingenciasOUT>
+            <Archivo_Creado>
+                <xsl:value-of select="$ValidacionJSONClaimData/output/fullname"/>
+            </Archivo_Creado>
+        </ContingenciasOUT>
+    </pd:returnBindings>
     <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ContingenciasOUT">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Archivo_Creado" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
     <pd:endX>455</pd:endX>
     <pd:endY>62</pd:endY>
     <pd:errorSchemas/>
@@ -17,9 +35,13 @@
         <pd:x>132</pd:x>
         <pd:y>61</pd:y>
         <config>
-            <processName>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations.process</processName>
+            <processName>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Get_Validations_Contingencia.process</processName>
         </config>
-        <pd:inputBindings/>
+        <pd:inputBindings>
+            <Fecha_Contingencia>
+                <xsl:value-of select="$Start/FechaContingencia"/>
+            </Fecha_Contingencia>
+        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="ValidacionJSONClaimData">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
@@ -34,6 +56,9 @@
                 <fullNameInputFile>
                     <xsl:value-of select="$Unzip/root/outputPathFile"/>
                 </fullNameInputFile>
+                <Fecha_Contingencia>
+                    <xsl:value-of select="$Start/FechaContingencia"/>
+                </Fecha_Contingencia>
             </input>
         </pd:inputBindings>
     </pd:activity>
