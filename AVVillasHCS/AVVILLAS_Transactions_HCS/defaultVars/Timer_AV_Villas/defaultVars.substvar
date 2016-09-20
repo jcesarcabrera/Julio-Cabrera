@@ -33,13 +33,5 @@
 			<type>String</type>
 			<modTime>1473785785446</modTime>
 		</globalVariable>
-		<globalVariable>
-			<name>Timer_Contingencia</name>
-			<value>no value</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1473443688398</modTime>
-		</globalVariable>
 	</globalVariables>
 </repository>

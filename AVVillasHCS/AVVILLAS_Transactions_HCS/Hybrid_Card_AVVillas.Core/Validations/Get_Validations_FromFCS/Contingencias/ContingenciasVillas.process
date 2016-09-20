@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
-    <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/TimerContingencias.process</pd:name>
-    <pd:startName>TimerContingencia</pd:startName>
-    <pd:startX>0</pd:startX>
-    <pd:startY>0</pd:startY>
-    <pd:returnBindings/>
-    <pd:starter name="TimerContingencia">
-        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
-        <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>58</pd:x>
-        <pd:y>53</pd:y>
-        <config>
-            <StartTime>%%Timer_AV_Villas/Timer_Contingencia%%</StartTime>
-            <Frequency>true</Frequency>
-            <TimeInterval>1</TimeInterval>
-            <FrequencyIndex>Second</FrequencyIndex>
-        </config>
-        <pd:inputBindings/>
-    </pd:starter>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd2" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd" schemaLocation="/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/ContingenciasIN.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/Davivienda_Transactions_HCS/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/Schema.xsd2" schemaLocation="/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/ContingenciasOUT.xsd"/>
+    <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/ContingenciasVillas.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Contingencias"/>
+    <pd:startX>55</pd:startX>
+    <pd:startY>51</pd:startY>
+    <pd:returnBindings>
+        <xsl:choose>
+            <xsl:when test="empty($_error/ns:ErrorReport)">
+                <pfx2:Contingencias>
+                    <pfx2:Mensaje>
+                        <xsl:value-of select="concat(&quot;Se ha generado correctamente el archivo de contingencias para el banco AV Villas en la siguiente ruta: &quot;, $Contingencias/ArchivoContingencia)"/>
+                    </pfx2:Mensaje>
+                    <pfx2:FechaConsulta>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx2:FechaConsulta>
+                    <pfx2:Estado>
+                        <xsl:value-of select="concat(&quot;Correcto,  | &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                    </pfx2:Estado>
+                </pfx2:Contingencias>
+            </xsl:when>
+            <xsl:otherwise>
+                <pfx2:Contingencias>
+                    <pfx2:Mensaje>
+                        <xsl:value-of select="concat(&quot;Ha ocurrido un error al generar el archivo de contingencia para el banco AV Villas: &quot;, $_error/ns:ErrorReport/Msg)"/>
+                    </pfx2:Mensaje>
+                    <pfx2:FechaConsulta>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx2:FechaConsulta>
+                    <pfx2:Estado>
+                        <xsl:value-of select="concat(&quot;Error: &quot;, $_error/ns:ErrorReport/StackTrace)"/>
+                    </pfx2:Estado>
+                </pfx2:Contingencias>
+            </xsl:otherwise>
+        </xsl:choose>
+    </pd:returnBindings>
     <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:Contingencias"/>
     <pd:endX>552</pd:endX>
     <pd:endY>53</pd:endY>
     <pd:errorSchemas/>
@@ -38,12 +58,18 @@
     <pd:activity name="Contingencias">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>281</pd:x>
-        <pd:y>53</pd:y>
+        <pd:x>288</pd:x>
+        <pd:y>54</pd:y>
         <config>
             <processName>/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/Contingencias.process</processName>
         </config>
-        <pd:inputBindings/>
+        <pd:inputBindings>
+            <pfx:Contingencias>
+                <pfx:FechaConsulta>
+                    <xsl:value-of select="$Start/pfx:Contingencias/pfx:FechaConsulta"/>
+                </pfx:FechaConsulta>
+            </pfx:Contingencias>
+        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="End_log">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
@@ -137,13 +163,6 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>TimerContingencia</pd:from>
-        <pd:to>Start_Log</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Start_Log</pd:from>
         <pd:to>Contingencias</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -167,6 +186,13 @@
     <pd:transition>
         <pd:from>Insert_Error</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Start_Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

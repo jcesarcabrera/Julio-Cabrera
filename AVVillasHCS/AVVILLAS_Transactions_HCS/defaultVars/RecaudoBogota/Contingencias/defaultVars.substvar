@@ -2,6 +2,22 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>HTTP_Host</name>
+			<value>localhost</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474404578624</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>HTTP_Port</name>
+			<value>8990</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474404578593</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Local_Path</name>
 			<value>C:\ArchivosRecaudo2\AVVillas\Contigencias\</value>
 			<deploymentSettable>true</deploymentSettable>

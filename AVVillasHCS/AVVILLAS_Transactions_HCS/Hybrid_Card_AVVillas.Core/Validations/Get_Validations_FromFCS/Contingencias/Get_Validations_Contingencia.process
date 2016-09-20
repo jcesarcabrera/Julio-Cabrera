@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns13="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
+    <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/Get_Validations_Contingencia.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Fecha_Contingencia" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>163</pd:startY>
+    <pd:returnBindings>
+        <ZipFile>
+            <ZipFile_FullName>
+                <xsl:value-of select="$WriteWS/ns12:WriteActivityOutputClass/fileInfo/fullName"/>
+            </ZipFile_FullName>
+            <ZipFile_FileName>
+                <xsl:value-of select="$WriteWS/ns12:WriteActivityOutputClass/fileInfo/fileName"/>
+            </ZipFile_FileName>
+            <Rest_StatusCode>
+                <xsl:value-of select="$Invoke-FCS/ns1:RESTOutput/StatusCode"/>
+            </Rest_StatusCode>
+            <Rest_Response_ReasonPhrase>
+                <xsl:value-of select="$Invoke-FCS/ns1:RESTOutput/ReasonPhrase"/>
+            </Rest_Response_ReasonPhrase>
+        </ZipFile>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ZipFile">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ZipFile_FullName" type="xsd:string"/>
+                    <xsd:element name="ZipFile_FileName" type="xsd:string"/>
+                    <xsd:element name="Rest_StatusCode" type="xsd:string"/>
+                    <xsd:element name="Rest_Response_ReasonPhrase" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>966</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Retries>
+            <xsd:element name="Retries" type="xsd:string"/>
+        </Retries>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1472479389063</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>213</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>347</pd:width>
+        <pd:height>311</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>Intentos</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$Retries/Retries=6 or $Invoke-FCS/ns1:RESTOutput/StatusCode='200'</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>ClaimData</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>WriteWS</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Retries-Counter</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Invoke FCS</pd:from>
+            <pd:to>WriteWS</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ClaimData</pd:from>
+            <pd:to>Invoke FCS</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch_FCS</pd:from>
+            <pd:to>MailSend-Retries</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep</pd:from>
+            <pd:to>Retries-Counter</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MailSend-Retries</pd:from>
+            <pd:to>Sleep</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="ClaimData">
+            <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+            <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+            <pd:x>278</pd:x>
+            <pd:y>67</pd:y>
+            <config>
+                <SchemaType>xsdType</SchemaType>
+                <BadgerfishCheck>false</BadgerfishCheck>
+                <removeRootElementForInput>true</removeRootElementForInput>
+                <ValidateIntputEnable>true</ValidateIntputEnable>
+                <ActivityInputEditor>
+                    <xsd:element name="Input">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ClaimDate" type="xsd:string"/>
+                                <xsd:element name="RequestID" type="xsd:string"/>
+                                <xsd:element name="BankID" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </ActivityInputEditor>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInputClass>
+                    <Input>
+                        <ClaimDate>
+                            <xsl:value-of select="$Start/Fecha_Contingencia"/>
+                        </ClaimDate>
+                        <RequestID>
+                            <xsl:value-of select="tib:format-dateTime('yyyyMMddHHmmss', current-dateTime())"/>
+                        </RequestID>
+                        <BankID>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/RecaudoBogota/Bank_ID"/>
+                        </BankID>
+                    </Input>
+                </ns1:ActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Invoke FCS">
+            <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+            <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+            <pd:x>381</pd:x>
+            <pd:y>65</pd:y>
+            <config>
+                <enableProtocolUI>None</enableProtocolUI>
+                <restMethodUI>POST</restMethodUI>
+                <restResponseType>Binary</restResponseType>
+                <authChoiceUI>Basic Authentication</authChoiceUI>
+                <WADLPaths/>
+                <WADLBaseURL/>
+                <restMethodIDUI/>
+                <username>%%Connections/FCS_Service/User%%</username>
+                <password>%%Connections/FCS_Service/Password%%</password>
+                <restURI/>
+                <richOutputEnableUI>true</richOutputEnableUI>
+                <restInputReferNode>
+                    <xsd:element name="Parameters">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Query" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Header" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Body" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Form" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Text" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Binary" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" minOccurs="0">
+                                                            <xsd:complexType>
+                                                                <xsd:choice>
+                                                                    <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                    <xsd:element name="text" type="xsd:string"/>
+                                                                    <xsd:element name="fileName" type="xsd:string"/>
+                                                                </xsd:choice>
+                                                            </xsd:complexType>
+                                                        </xsd:element>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </restInputReferNode>
+                <restOutputReferNode>
+                    <xsd:element name="header">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="date" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="set-cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-length" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-range" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="last-modifie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="filenm" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-powered-by" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="resmsg" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="rescd" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </restOutputReferNode>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput>
+                    <URI>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Connections/FCS_Service/Request_URI/ClaimData"/>
+                    </URI>
+                    <Timeout>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Connections/FCS_Service/TimeOut"/>
+                    </Timeout>
+                    <ns1:Parameters>
+                        <Body>
+                            <Text>
+                                <type>
+                                    <xsl:value-of select="'application/json'"/>
+                                </type>
+                                <content>
+                                    <xsl:value-of select="$ClaimData/ns1:ActivityOutputClass/jsonString"/>
+                                </content>
+                            </Text>
+                        </Body>
+                    </ns1:Parameters>
+                </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="WriteWS">
+            <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+            <pd:x>487</pd:x>
+            <pd:y>65</pd:y>
+            <config>
+                <encoding>binary</encoding>
+                <compressFile>None</compressFile>
+                <append>false</append>
+                <createMissingDirectories>true</createMissingDirectories>
+            </config>
+            <pd:inputBindings>
+                <ns12:WriteActivityInputBinaryClass>
+                    <fileName>
+                        <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/RecaudoBogota/Validations_Request/Validations_File_Local_Zipped_Path, $Invoke-FCS/ns1:RESTOutput/ns1:header/filenm)"/>
+                    </fileName>
+                    <binaryContent>
+                        <xsl:value-of select="$Invoke-FCS/ns1:RESTOutput/body/binaryContent"/>
+                    </binaryContent>
+                </ns12:WriteActivityInputBinaryClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Retries-Counter">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>393</pd:x>
+            <pd:y>165</pd:y>
+            <config>
+                <variableName>Retries</variableName>
+            </config>
+            <pd:inputBindings>
+                <Retries>
+                    <xsl:value-of select="$Retries/Retries + 1"/>
+                </Retries>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch_FCS">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>281</pd:x>
+            <pd:y>157</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>394</pd:x>
+            <pd:y>257</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Timer_AV_Villas/Retries_Intervals"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="MailSend-Retries">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>286</pd:x>
+            <pd:y>257</pd:y>
+            <config>
+                <processName>/Commons/MailSend.process</processName>
+            </config>
+            <pd:inputBindings>
+                <input>
+                    <to>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/Errors_Mail_To"/>
+                    </to>
+                    <subject>
+                        <xsl:value-of select="&quot;Error al invocar FCS para usos&quot;"/>
+                    </subject>
+                    <message>
+                        <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Ha ocurrido un error al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error, reintento: &quot;,$Retries/Retries, &quot;&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                    </message>
+                    <id_proceso>
+                        <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                    </id_proceso>
+                </input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>632</pd:x>
+        <pd:y>35</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Invoke_EndLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>856</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns13:LOGS_SAVE>
+                <ns13:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns13:process>
+                <ns13:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns13:project>
+                <ns13:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns13:datetime>
+                <ns13:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns13:level>
+                <ns13:message>
+                    <xsl:value-of select="&quot;Se recibe del FCS para usos&quot;"/>
+                </ns13:message>
+                <ns13:detail>
+                    <xsl:value-of select="concat($Invoke-FCS/ns1:RESTOutput/StatusCode, &quot; | &quot;, $Invoke-FCS/ns1:RESTOutput/ReasonPhrase)"/>
+                </ns13:detail>
+                <ns13:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns13:id_process>
+            </ns13:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InvokeLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>737</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <spawn>true</spawn>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns13:LOGS_SAVE>
+                <ns13:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns13:process>
+                <ns13:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns13:project>
+                <ns13:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns13:datetime>
+                <ns13:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns13:level>
+                <ns13:message>
+                    <xsl:value-of select="&quot;Se envía petición al FCS para usos&quot;"/>
+                </ns13:message>
+                <ns13:detail>
+                    <xsl:value-of select="tib:render-xml($ClaimData/ns1:ActivityOutputClass/jsonString)"/>
+                </ns13:detail>
+                <ns13:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns13:id_process>
+            </ns13:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>633</pd:x>
+        <pd:y>296</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Ha ocurrido de conexión con el FCS al traer los usos del día: &quot;, $_error/ns2:ErrorReport/StackTrace)"/>
+                </message>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>630</pd:x>
+        <pd:y>167</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>728</pd:x>
+        <pd:y>35</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Retries">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>125</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <variableName>Retries</variableName>
+        </config>
+        <pd:inputBindings>
+            <Retries>
+                <xsl:value-of select="0"/>
+            </Retries>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend_MaxRetries">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>762</pd:x>
+        <pd:y>296</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/Errors_Mail_To"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="&quot;Se ha superado el número de reintentos al invocar FCS para usos&quot;"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se ha superado el número de reintentos al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                </message>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>InvokeLog</pd:from>
+        <pd:to>Invoke_EndLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invoke_EndLog</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Retries</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retries</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>InvokeLog</pd:to>
+        <pd:xpathDescription>Ok</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:xpathDescription>Retries=6</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Retries/Retries=6</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>MailSend_MaxRetries</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend_MaxRetries</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
