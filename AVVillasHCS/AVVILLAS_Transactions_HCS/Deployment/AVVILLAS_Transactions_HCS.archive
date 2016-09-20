@@ -8,9 +8,9 @@
         <processArchive name="AVVILLAS_Transactions_HCS">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Julio Cabrera</authorProperty>
-            <processProperty>/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process</processProperty>
+            <processProperty>/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/Interface/intfContingenciasVillas-service.serviceagent</processProperty>
         </processArchive>
-        <versionProperty>5</versionProperty>
+        <versionProperty>2</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>AVVILLAS_Transactions_HCS</name>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\Catalina Montero\Documents\Deployments\AVVILLAS_Transactions_HCS.ear</fileLocationProperty>
+        <fileLocationProperty>C:\WorkSpaceRB\AVVillasHCS\Deployments\AVVillas_HCS_Transactions.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
