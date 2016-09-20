@@ -294,15 +294,17 @@ WHERE A.CARD_NUM = ?</statement>
                     </ns:CardType>
                 </xsl:if>
                 <xsl:choose>
-                    <xsl:when test="empty($Card-Basic-Info/resultSet/Record[1]/AFT_CARD_BAL)">
+                    <xsl:when test="empty($Card-Basic-Info/resultSet/Record[last()]/AFT_CARD_BAL)">
                         <ns:PrepaidBalance>
                             <xsl:value-of select="0.0"/>
                         </ns:PrepaidBalance>
                     </xsl:when>
                     <xsl:otherwise>
-                        <ns:PrepaidBalance>
-                            <xsl:value-of select="$Card-Basic-Info/resultSet/Record[1]/AFT_CARD_BAL"/>
-                        </ns:PrepaidBalance>
+                        <xsl:if test="$Card-Basic-Info/resultSet/Record[last()]/AFT_CARD_BAL">
+                            <ns:PrepaidBalance>
+                                <xsl:value-of select="$Card-Basic-Info/resultSet/Record[last()]/AFT_CARD_BAL"/>
+                            </ns:PrepaidBalance>
+                        </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
                 <ns:PospaidBalance>

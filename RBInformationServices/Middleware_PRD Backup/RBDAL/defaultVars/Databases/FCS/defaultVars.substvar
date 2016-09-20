@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Host</name>
-			<value>10.50.1.22</value>
+			<value>10.50.128.135</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1474221454052</modTime>
+			<modTime>1474410947092</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Instance</name>
@@ -27,11 +27,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!xwsysbKlDxpUBLte5OjRdEqZW8EqnTaDeZc+xOUpwm0=</value>
+			<value>#!c5f3N4iPFQYA80tQ3xNV41BXyfVUP47gNi3YzZLgFy0=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>
-			<modTime>1474221454084</modTime>
+			<modTime>1474410947127</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Port</name>
