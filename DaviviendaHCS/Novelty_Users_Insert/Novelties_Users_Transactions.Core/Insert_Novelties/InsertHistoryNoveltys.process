@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>Novelties_Users_Transactions.Core/Insert_Novelties/InsertHistoryNoveltys.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>71</pd:startX>
@@ -133,7 +133,7 @@
                 <pd:x>573</pd:x>
                 <pd:y>111</pd:y>
                 <config>
-                    <timeout>10</timeout>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                     <commit>false</commit>
                     <emptyStrAsNil>false</emptyStrAsNil>
                     <statement>INSERT INTO "bd_pruebasPR"."dbo"."Prueba_noveltyReceiverBankFile2" ("card_number", "processed_at", "status_novelty") VALUES (?, ?, ?)</statement>

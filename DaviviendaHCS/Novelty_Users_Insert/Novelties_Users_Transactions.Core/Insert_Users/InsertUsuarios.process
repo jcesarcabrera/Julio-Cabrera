@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <pd:name>Novelties_Users_Transactions.Core/Insert_Users/InsertUsuarios.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>83</pd:startX>
@@ -140,7 +140,7 @@
                 <pd:x>490</pd:x>
                 <pd:y>109</pd:y>
                 <config>
-                    <timeout>60</timeout>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                     <commit>false</commit>
                     <emptyStrAsNil>false</emptyStrAsNil>
                     <statement>INSERT INTO "bd_pruebasPR"."dbo"."hcusers" ("TransportCardNumber", "DocumentType", "DocumentID", "Names", "LastName1", "LastName2", "Address", "Genre", "Email", "Phone", "MobilePhone", "Occupation", "DateTimeEEFile") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)</statement>

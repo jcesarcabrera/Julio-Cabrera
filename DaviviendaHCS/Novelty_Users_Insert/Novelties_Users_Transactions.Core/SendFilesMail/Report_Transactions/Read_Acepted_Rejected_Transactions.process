@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx7="nsUsosResponseBank" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx7="nsUsosResponseBank" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="nsUsosResponseBank" schemaLocation="/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/Schemas/BankValidationsResponse.xsd"/>
     <pd:name>Novelties_Users_Transactions.Core/SendFilesMail/Report_Transactions/Read_Acepted_Rejected_Transactions.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -138,9 +138,9 @@
             <pd:x>1085</pd:x>
             <pd:y>163</pd:y>
             <config>
-                <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+                <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                 <commit>false</commit>
-                <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+                <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
                 <statement>select transactions.transactionsequencenumber, transactions.usagedate, transactions.fcscardnumber, transactions.amountused, transactions.stationbusstopnm, transactions.stationbusstopid, hcusers.DocumentID, hcusers.Names, hcusers.LastName1, hcusers.LastName2, Prueba_noveltyReceiverBankFile2.status_novelty from transactions, hcusers, Prueba_noveltyReceiverBankFile2 where transactions.FCSCardNumber=hcusers.TransportCardNumber and transactions.FCSCardNumber=Prueba_noveltyReceiverBankFile2.card_number and transactions.FCSCardNumber=? and transactions.ClearingDate=?;</statement>
@@ -328,9 +328,9 @@
             <pd:x>1263</pd:x>
             <pd:y>469</pd:y>
             <config>
-                <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+                <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                 <commit>false</commit>
-                <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+                <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
                 <statement>select transactions.transactionsequencenumber, transactions.usagedate, transactions.fcscardnumber, transactions.amountused, transactions.stationbusstopnm, transactions.stationbusstopid, hcusers.DocumentID, hcusers.Names, hcusers.LastName1, hcusers.LastName2, Prueba_noveltyReceiverBankFile2.processed_at from transactions, hcusers, Prueba_noveltyReceiverBankFile2 where transactions.FCSCardNumber=hcusers.TransportCardNumber and transactions.FCSCardNumber=Prueba_noveltyReceiverBankFile2.card_number and transactions.FCSCardNumber=? and Prueba_noveltyReceiverBankFile2.processed_at &lt;=?;</statement>
@@ -704,9 +704,9 @@
         <pd:x>1852</pd:x>
         <pd:y>332</pd:y>
         <config>
-            <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
             <commit>false</commit>
-            <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+            <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
             <statement>select count(*) from Novelties_Response where status='02' and processed_at=?</statement>
@@ -737,9 +737,9 @@
         <pd:x>1850</pd:x>
         <pd:y>245</pd:y>
         <config>
-            <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
             <commit>false</commit>
-            <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+            <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
             <statement>select * from Novelties_Response where status!='02' and processed_at=?</statement>
@@ -798,9 +798,9 @@
         <pd:x>2022</pd:x>
         <pd:y>332</pd:y>
         <config>
-            <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
             <commit>false</commit>
-            <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+            <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
             <statement>select count(*) from Novelties_Response where processed_at=?</statement>
@@ -886,9 +886,9 @@
         <pd:x>642</pd:x>
         <pd:y>230</pd:y>
         <config>
-            <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
             <commit>false</commit>
-            <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+            <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
             <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
         </config>
         <pd:inputBindings>
@@ -905,9 +905,9 @@
         <pd:x>1146</pd:x>
         <pd:y>302</pd:y>
         <config>
-            <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
             <commit>false</commit>
-            <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+            <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
             <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
         </config>
         <pd:inputBindings>
@@ -1213,9 +1213,9 @@
             <pd:x>1506</pd:x>
             <pd:y>174</pd:y>
             <config>
-                <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+                <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                 <commit>false</commit>
-                <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+                <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
                 <statement>select Novelties_Response.document_id, Novelties_Response.card_number, Novelties_Response.names, Novelties_Response.last_name, Novelties_Response.second_last_name, Prueba_noveltyReceiverBankFile2.status_novelty, Novelties_Response.status from Novelties_Response,  Prueba_noveltyReceiverBankFile2 where Novelties_Response.processed_at=Prueba_noveltyReceiverBankFile2.processed_at and Novelties_Response.card_number=Prueba_noveltyReceiverBankFile2.card_number and Novelties_Response.status!='02' and Prueba_noveltyReceiverBankFile2.card_number=? and Novelties_Response.processed_at=?</statement>
@@ -1388,9 +1388,9 @@
             <pd:x>1686</pd:x>
             <pd:y>380</pd:y>
             <config>
-                <timeout>%%Connections/JDBC/TimeOut%%</timeout>
+                <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                 <commit>false</commit>
-                <maxRows>%%Connections/JDBC/Max_Rows%%</maxRows>
+                <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
                 <statement>select transactionsresponse.TransactionSequenceNumber, transactionsresponse.UsageDate, transactionsresponse.FCSCardNumber, transactionsresponse.AmountUsed, transactionsresponse.BusStopNm, transactionsresponse.BusStopID, hcusers.DocumentID, hcusers.Names, hcusers.LastName1, hcusers.LastName2, Prueba_noveltyReceiverBankFile2.processed_at from TransactionsResponse, hcusers, Prueba_noveltyReceiverBankFile2 where TransactionsResponse.FCSCardNumber=hcusers.TransportCardNumber and TransactionsResponse.FCSCardNumber=Prueba_noveltyReceiverBankFile2.card_number and TransactionsResponse.FCSCardNumber=? and transactionsresponse.ResponseCode!='02' and ARFileName=?</statement>
