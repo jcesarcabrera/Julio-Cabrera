@@ -4,12 +4,12 @@
     <resourceType>ae.shared.JDBCSharedResource</resourceType>
     <config>
         <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
-        <maxConnections>%%Connections/JDBC/Maximun_Connections%%</maxConnections>
-        <loginTimeout>%%Connections/JDBC/TimeOut%%</loginTimeout>
+        <maxConnections>%%Connections/MiddlewareDB/Maximun_Connections%%</maxConnections>
+        <loginTimeout>%%Connections/MiddlewareDB/TimeOut%%</loginTimeout>
         <connectionType>JDBC</connectionType>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
-        <location>%%Connections/JDBC/URL%%</location>
-        <user>%%Connections/JDBC/UserName%%</user>
-        <password>%%Connections/JDBC/Password%%</password>
+        <location>jdbc:sqlserver://%%Connections/MiddlewareDB/Host%%:%%Connections/MiddlewareDB/Port%%;databaseName=%%Connections/MiddlewareDB/Database%%</location>
+        <user>%%Connections/MiddlewareDB/UserName%%</user>
+        <password>%%Connections/MiddlewareDB/Password%%</password>
     </config>
 </BWSharedResource>

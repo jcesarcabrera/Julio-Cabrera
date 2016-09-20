@@ -2,12 +2,29 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>Database</name>
+			<value>bd_pruebasPR</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474380793635</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Host</name>
+			<value>middlewaredbpro.cr0k1tnuhdai.us-west-2.rds.amazonaws.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<constraint></constraint>
+			<modTime>1474380793618</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Max_Rows</name>
 			<value>0</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1472409581635</modTime>
+			<modTime>1474380793693</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Maximun_Connections</name>
@@ -15,7 +32,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1472748577303</modTime>
+			<modTime>1474380793711</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
@@ -23,7 +40,15 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472409768683</modTime>
+			<modTime>1474380793734</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Port</name>
+			<value>1433</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474380793656</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TimeOut</name>
@@ -31,16 +56,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Integer</type>
-			<modTime>1472492661498</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>URL</name>
-			<value>jdbc:sqlserver://middlewaredbpro.cr0k1tnuhdai.us-west-2.rds.amazonaws.com:1433;databaseName=bd_pruebasPR</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<constraint></constraint>
-			<modTime>1472748577272</modTime>
+			<modTime>1474380793673</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>UserName</name>
@@ -48,7 +64,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472409768707</modTime>
+			<modTime>1474380793753</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

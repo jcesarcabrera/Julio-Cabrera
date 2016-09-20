@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
     <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process</pd:name>
     <pd:startName>Timer</pd:startName>
     <pd:startX>0</pd:startX>
@@ -57,7 +57,7 @@
         <pd:inputBindings>
             <ns12:Errors_Save>
                 <ns12:error_message>
-                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    <xsl:value-of select="concat($_error/ns1:ErrorReport/Msg, &quot; ª &quot;, $_error/ns1:ErrorReport/StackTrace)"/>
                 </ns12:error_message>
                 <ns12:id_process>
                     <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
