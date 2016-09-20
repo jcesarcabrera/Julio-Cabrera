@@ -34,6 +34,14 @@
 			<modTime>1450473118254</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ErrorsMailTo</name>
+			<value>wkling@rbsas.co, jcabrera@rbsas.co, conectividadrb@rbsas.co, sistema.recaudo@rbsas.co, analistasSC@rbsas.co, soporteespecializado@rbsas.co</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474399032602</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>HawkEnabled</name>
 			<value>false</value>
 			<deploymentSettable>true</deploymentSettable>

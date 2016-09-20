@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
     <pd:name>REST/BusinessProcesses/Version 1.0.0/SetMerchantSystemTransaction/BusinessClosing.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>61</pd:startX>
@@ -124,20 +124,20 @@
     <pd:activity name="Insert_Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>604</pd:x>
-        <pd:y>243</pd:y>
+        <pd:x>487</pd:x>
+        <pd:y>283</pd:y>
         <config>
             <processName>/Audit_Management/Insert_Error.process</processName>
         </config>
         <pd:inputBindings>
-            <ns1:Errors_Save xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
-                <ns1:error_message>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Get-Recharge-Networks-List/root/ns3:Error/ns3:ErrorMessage"/>
-                </ns1:error_message>
-                <ns1:id_process>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$_processContext/ns:ProcessContext/ProcessId"/>
-                </ns1:id_process>
-            </ns1:Errors_Save>
+            <ns12:Errors_Save>
+                <ns12:error_message>
+                    <xsl:value-of select="$Get-Recharge-Networks-List/root/ns3:Error/ns3:ErrorMessage"/>
+                </ns12:error_message>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:Errors_Save>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Log Error">
@@ -199,7 +199,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log Error</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Insert_Error</pd:to>
         <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -231,6 +231,13 @@
         <pd:from>End_Closing_Log</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>

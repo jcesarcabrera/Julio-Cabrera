@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.tibco.com/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.tibco.com/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd"/>
     <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd"/>
     <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
@@ -81,121 +81,6 @@
         <varErrorMessage ref="pfx3:Error"/>
     </pd:processVariables>
     <pd:targetNamespace>http://xmlns.rbsas.co/1462464738975</pd:targetNamespace>
-    <pd:activity name="Mapper">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>319</pd:x>
-        <pd:y>64</pd:y>
-        <config>
-            <processName>/GeneralProcesses/MapperProcesses/SetMerchantSystemTransaction.process</processName>
-        </config>
-        <pd:inputBindings>
-            <ns2:MerchantSystemTransaction>
-                <ns2:TransactionId>
-                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
-                </ns2:TransactionId>
-                <ns2:MerchantCode>
-                    <xsl:value-of select="$Get-Recharge-Network-Info/resultSet/Record[1]/MerchantCode"/>
-                </ns2:MerchantCode>
-                <ns2:PosId>
-                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/PosId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
-                </ns2:PosId>
-                <ns2:TransactionAmount>
-                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionAmount, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 12), 12, '0')"/>
-                </ns2:TransactionAmount>
-                <ns2:BusinessCode>
-                    <xsl:value-of select="$Start/root/BusinessCode"/>
-                </ns2:BusinessCode>
-                <ns2:UserId>
-                    <xsl:value-of select="$Start/root/UserId"/>
-                </ns2:UserId>
-            </ns2:MerchantSystemTransaction>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Catch">
-        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
-        <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>1021</pd:x>
-        <pd:y>831</pd:y>
-        <pd:handler>true</pd:handler>
-        <config>
-            <catchAll>true</catchAll>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
-    <pd:activity name="Mapper Error">
-        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
-        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>318</pd:x>
-        <pd:y>344</pd:y>
-        <config>
-            <variableName>varErrorMessage</variableName>
-        </config>
-        <pd:inputBindings>
-            <xsl:copy-of select="$Mapper/root/pfx3:Error"/>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Unknown Error Message">
-        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
-        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>1515</pd:x>
-        <pd:y>840</pd:y>
-        <config>
-            <variableName>varErrorMessage</variableName>
-        </config>
-        <pd:inputBindings>
-            <pfx3:Error>
-                <pfx3:ErrorCode>
-                    <xsl:value-of select="&quot;99&quot;"/>
-                </pfx3:ErrorCode>
-                <pfx3:ErrorMessage>
-                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
-                </pfx3:ErrorMessage>
-            </pfx3:Error>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Other Error">
-        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
-        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>320</pd:x>
-        <pd:y>690</pd:y>
-        <config>
-            <variableName>varError</variableName>
-        </config>
-        <pd:inputBindings>
-            <Error>
-                <xsl:value-of select="true()"/>
-            </Error>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Unknown Error">
-        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
-        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>1645</pd:x>
-        <pd:y>833</pd:y>
-        <config>
-            <variableName>varError</variableName>
-        </config>
-        <pd:inputBindings>
-            <Error>
-                <xsl:value-of select="true()"/>
-            </Error>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Code F1200">
-        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
-        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>468</pd:x>
-        <pd:y>67</pd:y>
-        <config>
-            <variableName>varMessageId</variableName>
-        </config>
-        <pd:inputBindings>
-            <MessageId>
-                <xsl:value-of select="&quot;F1200&quot;"/>
-            </MessageId>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:group name="Retransmission Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
@@ -1475,13 +1360,30 @@ rfu = responseMessage.substring(224, 256);}
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
-    <pd:activity name="To End">
-        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
-        <pd:resourceType>ae.activities.null</pd:resourceType>
-        <pd:x>1734</pd:x>
-        <pd:y>306</pd:y>
-        <config/>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>908</pd:x>
+        <pd:y>831</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
         <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Code F1200">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>468</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <variableName>varMessageId</variableName>
+        </config>
+        <pd:inputBindings>
+            <MessageId>
+                <xsl:value-of select="&quot;F1200&quot;"/>
+            </MessageId>
+        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Get Recharge Network Info">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
@@ -1519,6 +1421,111 @@ FROM Users WHERE userId = ?</statement>
                     <xsl:value-of select="$Start/root/UserId"/>
                 </userId>
             </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Init">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>117</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <variableName>varMessageSucceed</variableName>
+        </config>
+        <pd:inputBindings>
+            <Succeed>
+                <xsl:value-of select="false()"/>
+            </Succeed>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1039</pd:x>
+        <pd:y>831</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ErrorsMailTo"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="&quot;Error en Servicio Merchant System&quot;"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Ha ocurrido un error en el servicio Merchant System&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Error presentado: &quot;,&#xA; $_error/ns3:ErrorReport/Msg, &quot; &quot; ,&#xA;tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;,$_error/ns3:ErrorReport/StackTrace,&quot;&lt;/p>&quot;,&#xA;&quot;&lt;/body>&lt;/html>&quot;)"/>
+                </message>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>319</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/GeneralProcesses/MapperProcesses/SetMerchantSystemTransaction.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:MerchantSystemTransaction>
+                <ns2:TransactionId>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
+                </ns2:TransactionId>
+                <ns2:MerchantCode>
+                    <xsl:value-of select="$Get-Recharge-Network-Info/resultSet/Record[1]/MerchantCode"/>
+                </ns2:MerchantCode>
+                <ns2:PosId>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/PosId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
+                </ns2:PosId>
+                <ns2:TransactionAmount>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionAmount, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 12), 12, '0')"/>
+                </ns2:TransactionAmount>
+                <ns2:BusinessCode>
+                    <xsl:value-of select="$Start/root/BusinessCode"/>
+                </ns2:BusinessCode>
+                <ns2:UserId>
+                    <xsl:value-of select="$Start/root/UserId"/>
+                </ns2:UserId>
+            </ns2:MerchantSystemTransaction>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>344</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Mapper/root/pfx3:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Message Sent to FCS">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1176</pd:x>
+        <pd:y>839</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Other Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>320</pd:x>
+        <pd:y>690</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Set Next Transaction Number">
@@ -1587,26 +1594,45 @@ FROM Users WHERE userId = ?</statement>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Message Sent to FCS">
+    <pd:activity name="To End">
         <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
         <pd:resourceType>ae.activities.null</pd:resourceType>
-        <pd:x>1176</pd:x>
-        <pd:y>839</pd:y>
+        <pd:x>1734</pd:x>
+        <pd:y>306</pd:y>
         <config/>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="Init">
+    <pd:activity name="Unknown Error">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>117</pd:x>
-        <pd:y>64</pd:y>
+        <pd:x>1645</pd:x>
+        <pd:y>833</pd:y>
         <config>
-            <variableName>varMessageSucceed</variableName>
+            <variableName>varError</variableName>
         </config>
         <pd:inputBindings>
-            <Succeed>
-                <xsl:value-of select="false()"/>
-            </Succeed>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1515</pd:x>
+        <pd:y>840</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Error>
+                <pfx3:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx3:ErrorCode>
+                <pfx3:ErrorMessage>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                </pfx3:ErrorMessage>
+            </pfx3:Error>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -1706,7 +1732,7 @@ FROM Users WHERE userId = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
-        <pd:to>Message Sent to FCS</pd:to>
+        <pd:to>MailSend</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -1737,6 +1763,13 @@ FROM Users WHERE userId = ?</statement>
     <pd:transition>
         <pd:from>Init</pd:from>
         <pd:to>Get Recharge Network Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend</pd:from>
+        <pd:to>Message Sent to FCS</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

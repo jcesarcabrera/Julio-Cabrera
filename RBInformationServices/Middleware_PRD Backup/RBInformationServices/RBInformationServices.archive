@@ -10,7 +10,7 @@
             <authorProperty>Julio Cabrera</authorProperty>
             <processProperty>/REST/StarterProcesses/RestService.process,/REST/StarterProcesses/TimerMerchantClosing.process,/REST/StarterProcesses/TimerMerchantOpening.process</processProperty>
         </processArchive>
-        <versionProperty>11</versionProperty>
+        <versionProperty>12</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>RBInformationServices</name>
