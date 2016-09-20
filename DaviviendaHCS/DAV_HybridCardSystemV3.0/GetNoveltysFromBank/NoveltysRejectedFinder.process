@@ -3,7 +3,6 @@
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult.sharedparse"/>
     <pd:name>GetNoveltysFromBank/NoveltysRejectedFinder.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startType/>
     <pd:startX>27</pd:startX>
     <pd:startY>242</pd:startY>
     <pd:returnBindings/>
@@ -118,7 +117,7 @@
     <pd:activity name="ListEEFile">
         <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
         <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
-        <pd:x>102</pd:x>
+        <pd:x>101</pd:x>
         <pd:y>329</pd:y>
         <config>
             <mode>files-and-directories</mode>
@@ -126,7 +125,7 @@
         <pd:inputBindings>
             <ns:ListFilesActivityConfig>
                 <fileName>
-                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEEDecryp,'EE',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*')"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEEDecryp,'EE',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*')&#xA;{--'C:\RBFiles\FileEEDecryp\EEB0320160919003918'--}"/>
                 </fileName>
             </ns:ListFilesActivityConfig>
         </pd:inputBindings>
@@ -142,7 +141,7 @@
         <pd:inputBindings>
             <ns:ListFilesActivityConfig>
                 <fileName>
-                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileER,'ER',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*')"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileER,'ER',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*')&#xA;{--'C:\RBFiles\FileER\ERB0320160919013024'--}"/>
                 </fileName>
             </ns:ListFilesActivityConfig>
         </pd:inputBindings>

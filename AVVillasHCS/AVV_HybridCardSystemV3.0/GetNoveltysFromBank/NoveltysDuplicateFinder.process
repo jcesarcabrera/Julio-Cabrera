@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult64.sharedparse" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFile64.sharedparse" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFile.sharedparse" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/Data Format.sharedparse">
-    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse"/>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult64.sharedparse" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFile64.sharedparse" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFile.sharedparse" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/Data Format.sharedparse">
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult64.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult64.sharedparse"/>
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFile64.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatNoveltyFile64.sharedparse"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse"/>
     <pd:name>GetNoveltysFromBank/NoveltysDuplicateFinder.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>27</pd:startX>
@@ -13,7 +13,7 @@
     <pd:endY>350</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables>
-        <Counter ref="pfx2:Rows"/>
+        <Counter ref="pfx3:Rows"/>
         <accumulate>
             <xsd:element name="root" type="xsd:string"/>
         </accumulate>
@@ -58,7 +58,7 @@
         <pd:activity name="Assign">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>373</pd:x>
+            <pd:x>374</pd:x>
             <pd:y>223</pd:y>
             <config>
                 <variableName>Counter</variableName>

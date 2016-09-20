@@ -76,7 +76,7 @@
             <pd:x>346</pd:x>
             <pd:y>122</pd:y>
             <config>
-                <processName>/ServicesEnvioNovedades/NovedadesEnvioAuto/UnitTest/GetLinesFile.process</processName>
+                <processName>/GetNoveltysFromBank/GetLinesFile.process</processName>
             </config>
             <pd:inputBindings>
                 <FileName>
@@ -136,7 +136,7 @@
                     <timeout>10</timeout>
                     <commit>false</commit>
                     <emptyStrAsNil>false</emptyStrAsNil>
-                    <jdbcSharedConfig>/ServicesEnvioNovedades/NovedadesEnvioAuto/UnitTest/JDBCTIBCO-QA.sharedjdbc</jdbcSharedConfig>
+                    <jdbcSharedConfig>/GetNoveltysFromBank/JDBCTIBCO-QA.sharedjdbc</jdbcSharedConfig>
                     <statement>INSERT INTO "bd_pruebasQA"."dbo"."Prueba_noveltyReceiverBankFile" ("card_number", "processed_at", "status_novelty") VALUES (?, ?, ?)</statement>
                     <Prepared_Param_DataType>
                         <parameter>
@@ -175,7 +175,7 @@
                 <config>
                     <InputType>String</InputType>
                     <Encoding>ASCII</Encoding>
-                    <ParseSharedConfig>/ServicesEnvioNovedades/NovedadesEnvioAuto/UnitTest/Data Format.sharedparse</ParseSharedConfig>
+                    <ParseSharedConfig>/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse</ParseSharedConfig>
                 </config>
                 <pd:inputBindings>
                     <Input>

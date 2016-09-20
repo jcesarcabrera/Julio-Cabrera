@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResultNot64.sharedparse" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse">
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult64.sharedparse"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResultNot64.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResultNot64.sharedparse"/>
     <pd:name>GetNoveltysFromBank/NoveltysRejectedFinder.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>27</pd:startX>
@@ -194,7 +195,7 @@
         <pd:x>526</pd:x>
         <pd:y>153</pd:y>
         <config>
-            <element ref="pfx:Rows"/>
+            <element ref="pfx2:Rows"/>
         </config>
         <pd:inputBindings>
             <Rows>
