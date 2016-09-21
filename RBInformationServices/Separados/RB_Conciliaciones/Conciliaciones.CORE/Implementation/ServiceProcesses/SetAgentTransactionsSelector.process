@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/AgentTransactionsRequest.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Request/SetCardRequest.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Request/SetCardRequest.xsd" schemaLocation="/Schemas/Version 1.0.0/Request/SetCardRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" schemaLocation="/Conciliaciones.CORE/Schemas/DateRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Conciliaciones.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <pd:name>Conciliaciones.CORE/Implementation/ServiceProcesses/SetAgentTransactionsSelector.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:DateRequest"/>
+    <pd:startX>28</pd:startX>
+    <pd:startY>164</pd:startY>
+    <pd:returnBindings>
+        <ResponseString>
+            <xsl:value-of select="$varResponseString/ResponseString"/>
+        </ResponseString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ResponseString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>687</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varResponseString>
+            <xsd:element name="ResponseString" type="xsd:string"/>
+        </varResponseString>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1457981094296</pd:targetNamespace>
+    <pd:activity name="Default Version">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>162</pd:x>
+        <pd:y>49</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Validate Version">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>239</pd:x>
+        <pd:y>166</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Call SetAgentTransactions">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>399</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <processName>/Conciliaciones.CORE/Implementation/SetAgentTransactions/SetAgentTransactions.process</processName>
+            <processNameXPath>if (tib:trim($Start/pfx4:DateRequest/pfx4:Version)="1.0.0") then "/Conciliaciones.CORE/Implementation/SetAgentTransactions/SetAgentTransactions.process" else "/Conciliaciones.CORE/Implementation/SetAgentTransactions/SetAgentTransactions.process"</processNameXPath>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/pfx4:DateRequest"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Process Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>563</pd:x>
+        <pd:y>166</pd:y>
+        <config>
+            <variableName>varResponseString</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Call-SetAgentTransactions/ResponseString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>565</pd:x>
+        <pd:y>301</pd:y>
+        <config>
+            <variableName>varResponseString</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>301</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx3:Error"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx3:Error>
+                    <pfx3:ErrorCode>
+                        <xsl:value-of select="&quot;07&quot;"/>
+                    </pfx3:ErrorCode>
+                    <pfx3:ErrorMessage>
+                        <xsl:value-of select="&quot;Versión inválida&quot;"/>
+                    </pfx3:ErrorMessage>
+                </pfx3:Error>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Validate Version</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Default Version</pd:to>
+        <pd:xpathDescription>Default</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/pfx4:DateRequest/pfx4:Version)=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Default Version</pd:from>
+        <pd:to>Call SetAgentTransactions</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Version</pd:from>
+        <pd:to>Call SetAgentTransactions</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/pfx4:DateRequest/pfx4:Version)="1.0.0"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Version</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>Error Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call SetAgentTransactions</pd:from>
+        <pd:to>Process Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Process Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

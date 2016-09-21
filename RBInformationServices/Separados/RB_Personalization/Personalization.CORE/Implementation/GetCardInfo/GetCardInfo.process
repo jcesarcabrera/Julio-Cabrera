@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:ns6="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:ns7="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://rbsas.co/schemas/CardInformationServices/REST/Schemas/Schema.xsd" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardInfo.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" xmlns:ns3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardInfoRequest.xsd" xmlns:pfx3="http://www.tibco.com/schemas/RBInformationServices/Schemas/Request/Schema.xsd2" xmlns:pfx2="http://rbsas.co/schemas/CardInformationServices/REST/Schemas/CardInformation.xsd" xmlns:pfx9="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx8="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/Card.xsd" xmlns:pfx7="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardRequest.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd">
+    <xsd:import namespace="http://rbsas.co/schemas/CardInformationServices/REST/Schemas/CardInformation.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" schemaLocation="/Schemas/General/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" schemaLocation="/Schemas/Response/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardInfoRequest.xsd" schemaLocation="/Schemas/Version 1.0/Request/CardInfoRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardRequest.xsd" schemaLocation="/Personalization.CORE/Schemas/CardRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/Card.xsd" schemaLocation="/Personalization.CORE/Schemas/Card.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/GetCardInfo.process</pd:name>
+    <pd:description>Gather information from multiple sources to assemble a 
+composite message which includes a consolidate view of any
+card in the system given its card serial number</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx7:CardRequest"/>
+    <pd:startX>54</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <ResponseString>
+            <xsl:value-of select="$varProcessResponse/ResponseString"/>
+        </ResponseString>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ResponseString" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1579</pd:endX>
+    <pd:endY>364</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varPermissionException ref="pfx9:Error"/>
+        <varUserException ref="pfx9:Error"/>
+        <varProcessResponse>
+            <xsd:element name="ResponseString" type="xsd:string"/>
+        </varProcessResponse>
+        <varErrorResponse ref="pfx9:Error"/>
+        <varTransactionException ref="pfx9:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1438617392291</pd:targetNamespace>
+    <pd:activity name="Validate Token">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>52</pd:x>
+        <pd:y>204</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/SecurityProcesses/DalValidateToken.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <SecurityToken>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:SecurityToken"/>
+                </SecurityToken>
+                <ProcessName>
+                    <xsl:value-of select="&quot;GetCardInfo&quot;"/>
+                </ProcessName>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1197</pd:x>
+        <pd:y>363</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>false</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx8:Card"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx8:Card>
+                    <pfx8:ErrorCount>
+                        <xsl:value-of select="1"/>
+                    </pfx8:ErrorCount>
+                    <pfx8:Errors>
+                        <xsl:copy-of select="$varErrorResponse/pfx9:Error"/>
+                    </pfx8:Errors>
+                </pfx8:Card>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1054</pd:x>
+        <pd:y>471</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render Card Info">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1339</pd:x>
+        <pd:y>40</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx8:Card"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Consolidate-Info/pfx8:Card"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get User Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>660</pd:x>
+        <pd:y>42</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/SubGetUserInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardNumber>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:CardNumber"/>
+                </CardNumber>
+                <Params>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:Parameters"/>
+                </Params>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1470</pd:x>
+        <pd:y>40</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Card-Info/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Response Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1464</pd:x>
+        <pd:y>365</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Other Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1466</pd:x>
+        <pd:y>472</pd:y>
+        <config>
+            <variableName>varProcessResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <ResponseString>
+                <xsl:value-of select="$Render-Unknown-Error/ns:ActivityOutputClass/jsonString"/>
+            </ResponseString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Consolidate Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1227</pd:x>
+        <pd:y>41</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/SubMapCardInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:variable name="varHasUserException" select="$varUserException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot;"/>
+            <xsl:variable name="varHasTransactionException" select="$varTransactionException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; "/>
+            <xsl:variable name="varHasPermissionException" select="$varPermissionException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot;"/>
+            <xsl:variable name="varHasExceptions" select="($varUserException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; and $varUserException/pfx9:Error/pfx9:ErrorCode !=&quot;98&quot;) or&#xA;($varTransactionException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; and $varTransactionException/pfx9:Error/pfx9:ErrorCode !=&quot;98&quot;) or&#xA;($varPermissionException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; and $varPermissionException/pfx9:Error/pfx9:ErrorCode !=&quot;98&quot;)"/>
+            <root>
+                <xsl:copy-of select="$Get-Card-Info/root/ns5:CardInfo"/>
+                <HasUser>
+                    <xsl:value-of select="not($varHasUserException)"/>
+                </HasUser>
+                <xsl:if test="not($varHasUserException)">
+                    <xsl:copy-of select="$Get-User-Info/root/ns6:User"/>
+                </xsl:if>
+                <HasTransactions>
+                    <xsl:value-of select="not($varHasTransactionException)"/>
+                </HasTransactions>
+                <xsl:if test="not($varHasTransactionException)">
+                    <xsl:copy-of select="$Get-Transaction-Info/root/Transactions"/>
+                </xsl:if>
+                <HasPermissions>
+                    <xsl:value-of select="not($varHasPermissionException)"/>
+                </HasPermissions>
+                <xsl:if test="not($varHasPermissionException)">
+                    <xsl:copy-of select="$Get-Permissions-Info/root/Permissions"/>
+                </xsl:if>
+                <HasExceptions>
+                    <xsl:value-of select="$varHasExceptions"/>
+                </HasExceptions>
+                <xsl:if test="$varHasExceptions=&quot;true&quot;">
+                    <Errors>
+                        <xsl:if test="$varHasUserException=&quot;true&quot; and $varUserException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; and $varUserException/pfx9:Error/pfx9:ErrorCode !=&quot;98&quot;">
+                            <xsl:copy-of select="$varUserException/pfx9:Error"/>
+                        </xsl:if>
+                        <xsl:if test="$varHasTransactionException=&quot;true&quot; and $varTransactionException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; and $varTransactionException/pfx9:Error/pfx9:ErrorCode !=&quot;98&quot;">
+                            <xsl:copy-of select="$varTransactionException/pfx9:Error"/>
+                        </xsl:if>
+                        <xsl:if test="$varHasPermissionException=&quot;true&quot; and $varPermissionException/pfx9:Error/pfx9:ErrorCode !=&quot;00&quot; and $varPermissionException/pfx9:Error/pfx9:ErrorCode !=&quot;98&quot;">
+                            <xsl:copy-of select="$varPermissionException/pfx9:Error"/>
+                        </xsl:if>
+                    </Errors>
+                </xsl:if>
+                <Params>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:Parameters"/>
+                </Params>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid Token">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>52</pd:x>
+        <pd:y>364</pd:y>
+        <config>
+            <variableName>varErrorResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Validate-Token/root/pfx9:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Card Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>519</pd:x>
+        <pd:y>275</pd:y>
+        <config>
+            <variableName>varErrorResponse</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-Card-Info/root/pfx9:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Card Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>519</pd:x>
+        <pd:y>41</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/DalGetCardInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardNumber>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:CardNumber"/>
+                </CardNumber>
+                <Filter>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:Parameters"/>
+                </Filter>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Unknown Error">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1202</pd:x>
+        <pd:y>482</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx8:Card"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx8:Card>
+                    <pfx8:ErrorCount>
+                        <xsl:value-of select="1"/>
+                    </pfx8:ErrorCount>
+                    <pfx8:Errors>
+                        <pfx9:Error>
+                            <pfx9:ErrorCode>
+                                <xsl:value-of select="&quot;99&quot;"/>
+                            </pfx9:ErrorCode>
+                            <pfx9:ErrorMessage>
+                                <xsl:value-of select="$_error/ns7:ErrorReport/StackTrace"/>
+                            </pfx9:ErrorMessage>
+                        </pfx9:Error>
+                    </pfx8:Errors>
+                </pfx8:Card>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Transaction Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>842</pd:x>
+        <pd:y>48</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/SubGetTransactionInfo.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardNumber>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:CardNumber"/>
+                </CardNumber>
+                <Params>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:Parameters"/>
+                </Params>
+                <xsl:if test="exists($Start/pfx7:CardRequest/pfx7:StartDate)">
+                    <StartDate>
+                        <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:StartDate"/>
+                    </StartDate>
+                </xsl:if>
+                <xsl:if test="exists($Start/pfx7:CardRequest/pfx7:StartDate)">
+                    <EndDate>
+                        <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:EndDate"/>
+                    </EndDate>
+                </xsl:if>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="User Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>659</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <variableName>varUserException</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-User-Info/root/pfx9:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Transaction Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>845</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <variableName>varTransactionException</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-Transaction-Info/root/pfx9:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Init User Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>157</pd:x>
+        <pd:y>40</pd:y>
+        <config>
+            <variableName>varUserException</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx9:Error>
+                <pfx9:ErrorCode>
+                    <xsl:value-of select="&quot;00&quot;"/>
+                </pfx9:ErrorCode>
+                <pfx9:ErrorMessage>
+                    <xsl:value-of select="&quot;No Error&quot;"/>
+                </pfx9:ErrorMessage>
+            </pfx9:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Init Transaction Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>273</pd:x>
+        <pd:y>48</pd:y>
+        <config>
+            <variableName>varTransactionException</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx9:Error>
+                <pfx9:ErrorCode>
+                    <xsl:value-of select="&quot;00&quot;"/>
+                </pfx9:ErrorCode>
+                <pfx9:ErrorMessage>
+                    <xsl:value-of select="&quot;No Error&quot;"/>
+                </pfx9:ErrorMessage>
+            </pfx9:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Permissions Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1046</pd:x>
+        <pd:y>47</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/SubGetCardPermissions.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardTypeCode>
+                    <xsl:value-of select="$Get-Card-Info/root/ns5:CardInfo/ns5:CardTypeCode"/>
+                </CardTypeCode>
+                <xsl:choose>
+                    <xsl:when test="exists($Start/pfx7:CardRequest/pfx7:ServiceId)">
+                        <ServiceId>
+                            <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:ServiceId"/>
+                        </ServiceId>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ServiceId>
+                            <xsl:value-of select="0"/>
+                        </ServiceId>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <Params>
+                    <xsl:value-of select="$Start/pfx7:CardRequest/pfx7:Parameters"/>
+                </Params>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Permission Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1041</pd:x>
+        <pd:y>215</pd:y>
+        <config>
+            <variableName>varPermissionException</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-Permissions-Info/root/pfx9:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Init Permission Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>390</pd:x>
+        <pd:y>48</pd:y>
+        <config>
+            <variableName>varPermissionException</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx9:Error>
+                <pfx9:ErrorCode>
+                    <xsl:value-of select="&quot;00&quot;"/>
+                </pfx9:ErrorCode>
+                <pfx9:ErrorMessage>
+                    <xsl:value-of select="&quot;No Error&quot;"/>
+                </pfx9:ErrorMessage>
+            </pfx9:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Consolidate Info</pd:from>
+        <pd:to>Render Card Info</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Error</pd:from>
+        <pd:to>Response Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render Unknown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Other Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Info</pd:from>
+        <pd:to>User Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Card Info</pd:from>
+        <pd:to>Response OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Response OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Invalid Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid Token</pd:from>
+        <pd:to>Render Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Card Error</pd:from>
+        <pd:to>Render Error</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Card Info</pd:from>
+        <pd:to>Card Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Card Info</pd:from>
+        <pd:to>Get User Info</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Card-Info/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Unknown Error</pd:from>
+        <pd:to>Other Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transaction Info</pd:from>
+        <pd:to>Get Permissions Info</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Transaction-Info/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>User Error</pd:from>
+        <pd:to>Get Transaction Info</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Info</pd:from>
+        <pd:to>Get Transaction Info</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-User-Info/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transaction Info</pd:from>
+        <pd:to>Transaction Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transaction Error</pd:from>
+        <pd:to>Get Permissions Info</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Validate Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Init User Error</pd:from>
+        <pd:to>Init Transaction Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Token</pd:from>
+        <pd:to>Init User Error</pd:to>
+        <pd:xpathDescription>Token OK</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate-Token/root/ValidSecurityToken = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Init Transaction Error</pd:from>
+        <pd:to>Init Permission Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Permissions Info</pd:from>
+        <pd:to>Permission Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Permission Error</pd:from>
+        <pd:to>Consolidate Info</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Permissions Info</pd:from>
+        <pd:to>Consolidate Info</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Permissions-Info/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Init Permission Error</pd:from>
+        <pd:to>Get Card Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

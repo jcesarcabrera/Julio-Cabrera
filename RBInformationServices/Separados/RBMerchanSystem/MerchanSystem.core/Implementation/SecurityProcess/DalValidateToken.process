@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/MerchanSystem.core/Schemas/Error.xsd"/>
+    <pd:name>MerchanSystem.core/Implementation/SecurityProcess/DalValidateToken.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="SecurityToken" type="xsd:string"/>
+                    <xsd:element name="ProcessName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>36</pd:startX>
+    <pd:startY>46</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:choose>
+                <xsl:when test="$varError/Error=&quot;false&quot;">
+                    <ValidSecurityToken>
+                        <xsl:value-of select="true()"/>
+                    </ValidSecurityToken>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ValidSecurityToken>
+                        <xsl:value-of select="false()"/>
+                    </ValidSecurityToken>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:if test="not(($Get-Security-Token/resultSet/outputSet/userId/@xsi:nil=(&quot;true&quot;)) or ($Get-Security-Token/resultSet/outputSet/userId/@xsi:nil=(&quot;1&quot;)))">
+                    <UserId>
+                        <xsl:value-of select="$Get-Security-Token/resultSet/outputSet/userId"/>
+                    </UserId>
+                </xsl:if>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx2:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="ValidSecurityToken" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="UserId" type="xsd:int" minOccurs="0"/>
+                    <xsd:element ref="pfx2:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>530</pd:endX>
+    <pd:endY>48</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx2:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450907682237</pd:targetNamespace>
+    <pd:activity name="Get Security Token">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>191</pd:x>
+        <pd:y>47</pd:y>
+        <config>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+            <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/MerchanSystem.core/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <schema>dbo</schema>
+            <catalog>MiddlewareDB</catalog>
+            <ProcedureName>sp_validateSecurityToken;1</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@securityToken</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@processName</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@userId</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@authorization</colName>
+                    <colType>2</colType>
+                    <dataType>-7</dataType>
+                    <typeName>bit</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <securityToken>
+                        <xsl:value-of select="$Start/root/SecurityToken"/>
+                    </securityToken>
+                    <processName>
+                        <xsl:value-of select="$Start/root/ProcessName"/>
+                    </processName>
+                    <userId>
+                        <xsl:value-of select="0"/>
+                    </userId>
+                    <authorization>
+                        <xsl:value-of select="0"/>
+                    </authorization>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>395</pd:x>
+        <pd:y>48</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>146</pd:x>
+        <pd:y>280</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Unkown Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>263</pd:x>
+        <pd:y>283</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unkown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>398</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Error>
+                <pfx2:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx2:ErrorCode>
+                <pfx2:ErrorMessage>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </pfx2:ErrorMessage>
+            </pfx2:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>194</pd:x>
+        <pd:y>181</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>398</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:Error>
+                <pfx2:ErrorCode>
+                    <xsl:value-of select="&quot;01&quot;"/>
+                </pfx2:ErrorCode>
+                <pfx2:ErrorMessage>
+                    <xsl:value-of select="&quot;Token Inválido&quot;"/>
+                </pfx2:ErrorMessage>
+            </pfx2:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Security Token</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Security Token</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Security-Token/resultSet/outputSet/authorization = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Unkown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unkown Error</pd:from>
+        <pd:to>Unkown Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unkown Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Security Token</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

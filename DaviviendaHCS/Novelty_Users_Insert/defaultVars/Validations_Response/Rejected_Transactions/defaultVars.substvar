@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Detail_Rejected_Prefix</name>
-			<value>Detail_Rejected_</value>
+			<value>_Detalle_Informe_Davivienda</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473260371880</modTime>
+			<modTime>1474472238869</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Extension</name>

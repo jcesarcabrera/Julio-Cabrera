@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardPermission.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" schemaLocation="/Schemas/Response/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" schemaLocation="/Schemas/General/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardPermission.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardPermission.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd" schemaLocation="/Personalization.CORE/Schemas/CardPermission.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/SubGetCardPermissions.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardTypeCode" type="xsd:string"/>
+                    <xsd:element name="ServiceId" type="xsd:byte"/>
+                    <xsd:element name="Params" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>49</pd:startX>
+    <pd:startY>141</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:copy-of select="$Get-Permissions-Data/root/Permissions"/>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx5:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="Permissions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx6:Permission" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx5:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>760</pd:endX>
+    <pd:endY>141</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx5:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450129767161</pd:targetNamespace>
+    <pd:activity name="No Filter">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>107</pd:x>
+        <pd:y>43</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Check All Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>257</pd:x>
+        <pd:y>143</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;AllPermissions&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Permissions Data">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>435</pd:x>
+        <pd:y>150</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/DalGetCardPermissions.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardTypeCode>
+                    <xsl:value-of select="$Start/root/CardTypeCode"/>
+                </CardTypeCode>
+                <ServiceId>
+                    <xsl:value-of select="$Start/root/ServiceId"/>
+                </ServiceId>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AssignOK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>631</pd:x>
+        <pd:y>142</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>438</pd:x>
+        <pd:y>300</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>629</pd:x>
+        <pd:y>298</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-Permissions-Data/root/pfx5:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Data">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>431</pd:x>
+        <pd:y>437</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Empty Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>628</pd:x>
+        <pd:y>447</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx5:Error>
+                <pfx5:ErrorCode>
+                    <xsl:value-of select="&quot;98&quot;"/>
+                </pfx5:ErrorCode>
+                <pfx5:ErrorMessage>
+                    <xsl:value-of select="&quot;No Permissions Info Required&quot;"/>
+                </pfx5:ErrorMessage>
+            </pfx5:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Permission Info Not Required">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>256</pd:x>
+        <pd:y>443</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Check Partial Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>295</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;Permissions&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Check All Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>No Filter</pd:to>
+        <pd:xpathDescription>All</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Start/root/Params)=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Filter</pd:from>
+        <pd:to>Get Permissions Data</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>Get Permissions Data</pd:to>
+        <pd:xpathDescription>All Filter</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-All-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>Check Partial Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Permission Info Not Required</pd:from>
+        <pd:to>No Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Data</pd:from>
+        <pd:to>Empty Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Empty Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Permissions Data</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Permissions Data</pd:from>
+        <pd:to>AssignOK</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Permissions-Data/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AssignOK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>Get Permissions Data</pd:to>
+        <pd:xpathDescription>Partial Filter</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-Partial-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>Permission Info Not Required</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

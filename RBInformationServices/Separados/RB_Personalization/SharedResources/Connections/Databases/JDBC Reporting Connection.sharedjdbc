@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC Reporting Connection</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>tibcosoftwareinc.jdbc.oracle.OracleDriver</driver>
+        <maxConnections>%%Databases/Reporting/MaxConnections%%</maxConnections>
+        <loginTimeout>%%Databases/Reporting/Timeout%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:tibcosoftwareinc:oracle://%%Databases/Reporting/Host%%:%%Databases/Reporting/Port%%;SID=%%Databases/Reporting/Instance%%</location>
+        <password>%%Databases/Reporting/Password%%</password>
+        <user>%%Databases/Reporting/Username%%</user>
+    </config>
+</BWSharedResource>

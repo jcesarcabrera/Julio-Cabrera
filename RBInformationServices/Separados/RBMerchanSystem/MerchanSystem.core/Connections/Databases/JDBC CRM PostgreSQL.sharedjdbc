@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC CRM PostgreSQL</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>tibcosoftwareinc.jdbc.oracle.OracleDriver</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:postgresql://172.30.1.17:9876/unificacion</location>
+        <user>unificacion</user>
+        <password>#!MW8/ZjV4NggnnqQWclcULyufBmZqzn5LVIJgBsM0pzT7zovl5dADxg==</password>
+    </config>
+</BWSharedResource>

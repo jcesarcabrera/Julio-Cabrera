@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/TokenRequest.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/TokenRequest.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="TokenRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UserName"/>
+				<xs:element ref="Password"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UserName" type="xs:string"/>
+	<xs:element name="Password" type="xs:string"/>
+</xs:schema>

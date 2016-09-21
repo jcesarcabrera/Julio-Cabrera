@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/UserFilter.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Control/UserFilter.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd" schemaLocation="/Schemas/Control/CardInfoFilter.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Control/UserFilter.xsd" schemaLocation="/Schemas/Version 1.0/Control/UserFilter.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/UserFilter.xsd" schemaLocation="/Personalization.CORE/Schemas/UserFilter.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/SubGetUserFilter.process</pd:name>
+    <pd:description/>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FieldList" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>47</pd:startX>
+    <pd:startY>823</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Add-Filter/pfx4:User"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx4:User"/>
+    <pd:endX>1079</pd:endX>
+    <pd:endY>825</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varLastUpdate>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varLastUpdate>
+        <varOccupation>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varOccupation>
+        <varLastName>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varLastName>
+        <varBenefits>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varBenefits>
+        <varBirthDate>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varBirthDate>
+        <varMobile>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varMobile>
+        <varScholarity>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varScholarity>
+        <varIdTypeCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varIdTypeCode>
+        <varSecondLastName>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varSecondLastName>
+        <varAuthorizeDataUse>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varAuthorizeDataUse>
+        <varAddress>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varAddress>
+        <varIdType>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varIdType>
+        <varRhCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varRhCode>
+        <varGenderCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varGenderCode>
+        <varStatus>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varStatus>
+        <varGender>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varGender>
+        <varName>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varName>
+        <varScholarityCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varScholarityCode>
+        <varIdNumber>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varIdNumber>
+        <varEmail>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varEmail>
+        <varStatusCode>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varStatusCode>
+        <varRH>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varRH>
+        <varPhone>
+            <xsd:element name="FilterOn" type="xsd:boolean"/>
+        </varPhone>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1449687973749</pd:targetNamespace>
+    <pd:activity name="Field List">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>184</pd:x>
+        <pd:y>825</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <value>
+                    <xsl:value-of select="&quot;Name&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;LastName&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;SecondLastName&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;IdTypeCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;IdType&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;IdNumber&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;BirthDate&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Address&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;ScholarityCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Scholarity&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;GenderCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Gender&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;RhCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;RH&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Email&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Phone&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Mobile&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Occupation&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;AuthorizeDataUse&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;LastUpdate&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;StatusCode&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Status&quot;"/>
+                </value>
+                <value>
+                    <xsl:value-of select="&quot;Benefits&quot;"/>
+                </value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Create Filter">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>294</pd:x>
+        <pd:y>2</pd:y>
+        <pd:width>582</pd:width>
+        <pd:height>1630</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Field-List/root/value</pd:over>
+            <pd:iterationElementSlot>Field</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>Filter</pd:outSlot>
+            <pd:activityOutputName>Add Filter</pd:activityOutputName>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Check Filter</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Out</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Check Filter</pd:from>
+            <pd:to>In</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Name</pd:to>
+            <pd:xpathDescription>Name</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "name"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>LastName</pd:to>
+            <pd:xpathDescription>LastName</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "lastname"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>SecondLastName</pd:to>
+            <pd:xpathDescription>SecondLastName</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "secondlastname"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>IdNumber</pd:to>
+            <pd:xpathDescription>IdNumber</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "idnumber"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Address</pd:to>
+            <pd:xpathDescription>Address</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "address"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Scholarity</pd:to>
+            <pd:xpathDescription>Scholarity</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "scholarity"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Gender</pd:to>
+            <pd:xpathDescription>Gender</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "gender"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Name</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LastName</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SecondLastName</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IdNumber</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Address</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Scholarity</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Gender</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>No match</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>No match</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Email</pd:to>
+            <pd:xpathDescription>Email</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "email"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Phone</pd:to>
+            <pd:xpathDescription>Phone</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "phone"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Mobile</pd:to>
+            <pd:xpathDescription>Mobile</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "mobile"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Occupation</pd:to>
+            <pd:xpathDescription>Occupation</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "occupation"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>AuthorizeDataUse</pd:to>
+            <pd:xpathDescription>AuthorizeDataUse</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "authorizedatause"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>LastUpdate</pd:to>
+            <pd:xpathDescription>LastUpdate</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "lastupdate"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Benefits</pd:to>
+            <pd:xpathDescription>Benefits</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "benefits"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Email</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Phone</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Mobile</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Occupation</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AuthorizeDataUse</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>LastUpdate</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Benefits</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>IdTypeCode</pd:to>
+            <pd:xpathDescription>IdTypeCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "idtypecode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IdTypeCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>ScholarityCode</pd:to>
+            <pd:xpathDescription>ScholarityCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "scholaritycode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ScholarityCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>BirthDate</pd:to>
+            <pd:xpathDescription>BirthDate</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "birthdate"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>BirthDate</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>GenderCode</pd:to>
+            <pd:xpathDescription>GenderCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "gendercode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GenderCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>StatusCode</pd:to>
+            <pd:xpathDescription>StatusCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "statuscode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>Status</pd:to>
+            <pd:xpathDescription>Status</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "status"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>RhCode</pd:to>
+            <pd:xpathDescription>RhCode</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "rhcode"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>RH</pd:to>
+            <pd:xpathDescription>RH</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "rh"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RhCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RH</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>StatusCode</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Status</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>In</pd:from>
+            <pd:to>IdType</pd:to>
+            <pd:xpathDescription>IdType</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>lower-case($Field/value) = "idtype"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>IdType</pd:from>
+            <pd:to>Out</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Check Filter">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>374</pd:x>
+            <pd:y>826</pd:y>
+            <config>
+                <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <List>
+                        <xsl:value-of select="$Start/root/FieldList"/>
+                    </List>
+                    <Value>
+                        <xsl:value-of select="$Field/value"/>
+                    </Value>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Name">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>327</pd:x>
+            <pd:y>59</pd:y>
+            <config>
+                <variableName>varName</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LastName">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>402</pd:x>
+            <pd:y>96</pd:y>
+            <config>
+                <variableName>varLastName</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SecondLastName">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>477</pd:x>
+            <pd:y>132</pd:y>
+            <config>
+                <variableName>varSecondLastName</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="IdNumber">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>642</pd:x>
+            <pd:y>317</pd:y>
+            <config>
+                <variableName>varIdNumber</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Address">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>706</pd:x>
+            <pd:y>446</pd:y>
+            <config>
+                <variableName>varAddress</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Scholarity">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>722</pd:x>
+            <pd:y>596</pd:y>
+            <config>
+                <variableName>varScholarity</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Gender">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>731</pd:x>
+            <pd:y>749</pd:y>
+            <config>
+                <variableName>varGender</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="In">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>464</pd:x>
+            <pd:y>826</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Out">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>790</pd:x>
+            <pd:y>824</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="No match">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>333</pd:x>
+            <pd:y>1578</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Email">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>719</pd:x>
+            <pd:y>993</pd:y>
+            <config>
+                <variableName>varEmail</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Phone">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>705</pd:x>
+            <pd:y>1071</pd:y>
+            <config>
+                <variableName>varPhone</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Mobile">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>689</pd:x>
+            <pd:y>1146</pd:y>
+            <config>
+                <variableName>varMobile</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Occupation">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>671</pd:x>
+            <pd:y>1227</pd:y>
+            <config>
+                <variableName>varOccupation</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AuthorizeDataUse">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>629</pd:x>
+            <pd:y>1289</pd:y>
+            <config>
+                <variableName>varAuthorizeDataUse</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="LastUpdate">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>576</pd:x>
+            <pd:y>1352</pd:y>
+            <config>
+                <variableName>varLastUpdate</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Benefits">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>390</pd:x>
+            <pd:y>1522</pd:y>
+            <config>
+                <variableName>varBenefits</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="IdTypeCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>543</pd:x>
+            <pd:y>191</pd:y>
+            <config>
+                <variableName>varIdTypeCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="ScholarityCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>716</pd:x>
+            <pd:y>524</pd:y>
+            <config>
+                <variableName>varScholarityCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="BirthDate">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>683</pd:x>
+            <pd:y>379</pd:y>
+            <config>
+                <variableName>varBirthDate</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GenderCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>728</pd:x>
+            <pd:y>672</pd:y>
+            <config>
+                <variableName>varGenderCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="StatusCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>515</pd:x>
+            <pd:y>1411</pd:y>
+            <config>
+                <variableName>varStatusCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Status">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>448</pd:x>
+            <pd:y>1470</pd:y>
+            <config>
+                <variableName>varStatus</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="RhCode">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>688</pd:x>
+            <pd:y>824</pd:y>
+            <config>
+                <variableName>varRhCode</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="RH">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>722</pd:x>
+            <pd:y>917</pd:y>
+            <config>
+                <variableName>varRH</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="IdType">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>600</pd:x>
+            <pd:y>250</pd:y>
+            <config>
+                <variableName>varIdType</variableName>
+            </config>
+            <pd:inputBindings>
+                <FilterOn>
+                    <xsl:value-of select="$Check-Filter/Found"/>
+                </FilterOn>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Add Filter">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>959</pd:x>
+        <pd:y>826</pd:y>
+        <config>
+            <element ref="pfx4:User"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:User>
+                <pfx4:Name>
+                    <xsl:value-of select="$varName/FilterOn"/>
+                </pfx4:Name>
+                <pfx4:LastName>
+                    <xsl:value-of select="$varLastName/FilterOn"/>
+                </pfx4:LastName>
+                <pfx4:SecondLastName>
+                    <xsl:value-of select="$varSecondLastName/FilterOn"/>
+                </pfx4:SecondLastName>
+                <pfx4:IdTypeCode>
+                    <xsl:value-of select="$varIdTypeCode/FilterOn"/>
+                </pfx4:IdTypeCode>
+                <pfx4:IdType>
+                    <xsl:value-of select="$varIdType/FilterOn"/>
+                </pfx4:IdType>
+                <pfx4:IdNumber>
+                    <xsl:value-of select="$varIdNumber/FilterOn"/>
+                </pfx4:IdNumber>
+                <pfx4:BirthDate>
+                    <xsl:value-of select="$varBirthDate/FilterOn"/>
+                </pfx4:BirthDate>
+                <pfx4:Address>
+                    <xsl:value-of select="$varAddress/FilterOn"/>
+                </pfx4:Address>
+                <pfx4:ScholarityCode>
+                    <xsl:value-of select="$varScholarityCode/FilterOn"/>
+                </pfx4:ScholarityCode>
+                <pfx4:Scholarity>
+                    <xsl:value-of select="$varScholarity/FilterOn"/>
+                </pfx4:Scholarity>
+                <pfx4:GenderCode>
+                    <xsl:value-of select="$varGenderCode/FilterOn"/>
+                </pfx4:GenderCode>
+                <pfx4:Gender>
+                    <xsl:value-of select="$varGender/FilterOn"/>
+                </pfx4:Gender>
+                <pfx4:RhCode>
+                    <xsl:value-of select="$varRhCode/FilterOn"/>
+                </pfx4:RhCode>
+                <pfx4:RH>
+                    <xsl:value-of select="$varRH/FilterOn"/>
+                </pfx4:RH>
+                <pfx4:Email>
+                    <xsl:value-of select="$varEmail/FilterOn"/>
+                </pfx4:Email>
+                <pfx4:Phone>
+                    <xsl:value-of select="$varPhone/FilterOn"/>
+                </pfx4:Phone>
+                <pfx4:Mobile>
+                    <xsl:value-of select="$varMobile/FilterOn"/>
+                </pfx4:Mobile>
+                <pfx4:Occupation>
+                    <xsl:value-of select="$varOccupation/FilterOn"/>
+                </pfx4:Occupation>
+                <pfx4:AuthorizeDataUse>
+                    <xsl:value-of select="$varAuthorizeDataUse/FilterOn"/>
+                </pfx4:AuthorizeDataUse>
+                <pfx4:LastUpdate>
+                    <xsl:value-of select="$varLastUpdate/FilterOn"/>
+                </pfx4:LastUpdate>
+                <pfx4:StatusCode>
+                    <xsl:value-of select="$varStatusCode/FilterOn"/>
+                </pfx4:StatusCode>
+                <pfx4:Status>
+                    <xsl:value-of select="$varStatus/FilterOn"/>
+                </pfx4:Status>
+                <pfx4:Benefits>
+                    <xsl:value-of select="$varBenefits/FilterOn"/>
+                </pfx4:Benefits>
+            </pfx4:User>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Field List</pd:from>
+        <pd:to>Create Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create Filter</pd:from>
+        <pd:to>Add Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Add Filter</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Field List</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

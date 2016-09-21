@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/RechargePoints.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/RechargePoint.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" xmlns:pfx="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" schemaLocation="/Personalization.CORE/Schemas/CardTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd" schemaLocation="/Personalization.CORE/Schemas/Transaction.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/GetCardTransactionsMapper.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Transactions">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:Transaction" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>48</pd:startX>
+    <pd:startY>81</pd:startY>
+    <pd:returnBindings>
+        <CardTransactions>
+            <xsl:for-each select="$Start/Transactions/pfx:Transaction">
+                <pfx2:Transaction>
+                    <pfx2:TransactionTypeCode>
+                        <xsl:value-of select="pfx:TransactionTypeCode"/>
+                    </pfx2:TransactionTypeCode>
+                    <pfx2:TransactionType>
+                        <xsl:value-of select="pfx:TransactionType"/>
+                    </pfx2:TransactionType>
+                    <pfx2:UsageDate>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx:TransactionDate),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx:TransactionDate)&#xA;)"/>
+                    </pfx2:UsageDate>
+                    <xsl:if test="pfx:TransactionValue">
+                        <pfx2:Amount>
+                            <xsl:value-of select="pfx:TransactionValue"/>
+                        </pfx2:Amount>
+                    </xsl:if>
+                    <xsl:if test="pfx:StationBus">
+                        <pfx2:StationBus>
+                            <xsl:value-of select="pfx:StationBus"/>
+                        </pfx2:StationBus>
+                    </xsl:if>
+                    <xsl:if test="pfx:BalanceAfter">
+                        <pfx2:RemainingDailyPreBalance>
+                            <xsl:value-of select="pfx:BalanceAfter"/>
+                        </pfx2:RemainingDailyPreBalance>
+                    </xsl:if>
+                    <xsl:if test="pfx:NegativeBalance">
+                        <pfx2:RemainingDailyPosBalance>
+                            <xsl:value-of select="pfx:NegativeBalance"/>
+                        </pfx2:RemainingDailyPosBalance>
+                    </xsl:if>
+                    <pfx2:ChargePoint>
+                        <xsl:value-of select="ns1:RechargePoint/ns1:PointName"/>
+                    </pfx2:ChargePoint>
+                </pfx2:Transaction>
+            </xsl:for-each>
+        </CardTransactions>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="CardTransactions">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx2:Transaction" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>306</pd:endX>
+    <pd:endY>83</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1456763736072</pd:targetNamespace>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

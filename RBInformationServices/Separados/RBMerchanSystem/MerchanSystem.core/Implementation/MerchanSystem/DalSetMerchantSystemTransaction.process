@@ -1,0 +1,1777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:ns="http://xmlns.tibco.com/2003/5/bw/plugins/tcp" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx="http://www.tibco.com/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd" schemaLocation="/MerchanSystem.core/Schemas/FcsMessaging/Envelope.xsd"/>
+    <pd:name>MerchanSystem.core/Implementation/MerchanSystem/DalSetMerchantSystemTransaction.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="TransactionId" type="xsd:string"/>
+                    <xsd:element name="TransactionAmount" type="xsd:string"/>
+                    <xsd:element name="PosId" type="xsd:string"/>
+                    <xsd:element name="BusinessCode" type="xsd:string"/>
+                    <xsd:element name="UserId" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>28</pd:startX>
+    <pd:startY>62</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error = &quot;false&quot;">
+                <ns2:MerchantSystemTransaction>
+                    <ns2:TransactionId>
+                        <xsl:value-of select="concat(tib:right($Tokenize-Response-Message/javaCodeActivityOutput/cmsCode, 5), $Tokenize-Response-Message/javaCodeActivityOutput/transactionDate,  $Tokenize-Response-Message/javaCodeActivityOutput/transactionTime)"/>
+                    </ns2:TransactionId>
+                    <ns2:RequestDate>
+                        <xsl:value-of select="concat($Tokenize-Response-Message/javaCodeActivityOutput/transactionDate,  $Tokenize-Response-Message/javaCodeActivityOutput/transactionTime)"/>
+                    </ns2:RequestDate>
+                    <ns2:ProcessingCode>
+                        <xsl:value-of select="$Tokenize-Response-Message/javaCodeActivityOutput/responseCode"/>
+                    </ns2:ProcessingCode>
+                    <ns2:MerchantCode>
+                        <xsl:value-of select="$Tokenize-Response-Message/javaCodeActivityOutput/merchantCode"/>
+                    </ns2:MerchantCode>
+                    <ns2:AccountBalanceAfter>
+                        <xsl:value-of select="$Tokenize-Response-Message/javaCodeActivityOutput/accountBalanceAfterTransaction"/>
+                    </ns2:AccountBalanceAfter>
+                    <ns2:PosId>
+                        <xsl:value-of select="$Tokenize-Response-Message/javaCodeActivityOutput/cmsCode"/>
+                    </ns2:PosId>
+                </ns2:MerchantSystemTransaction>
+            </xsl:if>
+            <xsl:if test="$varError/Error = &quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx3:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element ref="ns2:MerchantSystemTransaction" minOccurs="0"/>
+                    <xsd:element ref="pfx3:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1737</pd:endX>
+    <pd:endY>688</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varMessageId>
+            <xsd:element name="MessageId" type="xsd:string"/>
+        </varMessageId>
+        <varMessageSucceed>
+            <xsd:element name="Succeed" type="xsd:boolean"/>
+        </varMessageSucceed>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx3:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1462464738975</pd:targetNamespace>
+    <pd:group name="Retransmission Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>557</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>1104</pd:width>
+        <pd:height>593</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$varMessageId/MessageId !="F500" or $i &lt; 10</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Create Message Data</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>OK</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Recharge Error</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Write TCP Data</pd:from>
+            <pd:to>Read TCP Data</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Read TCP Data</pd:from>
+            <pd:to>Finish FCS Transaction</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Response Envelope</pd:from>
+            <pd:to>Tokenize Response Message</pd:to>
+            <pd:xpathDescription>OK</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Map-Response-Envelope/pfx2:Envelope/pfx2:DataLength = "00000100"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Tokenize Response Envelope</pd:from>
+            <pd:to>Map Response Envelope</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>TCP Open</pd:from>
+            <pd:to>Map TCP Package NO CRC</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map TCP Package NO CRC</pd:from>
+            <pd:to>Get Message Byte Array</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Message Byte Array</pd:from>
+            <pd:to>Init FCS Transaction</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>TCP Close</pd:from>
+            <pd:to>Set Message Id</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Tokenize Response Message</pd:from>
+            <pd:to>TCP Close</pd:to>
+            <pd:xpathDescription/>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Map Response Envelope</pd:from>
+            <pd:to>Recharge Error Message</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Set Message Id</pd:from>
+            <pd:to>OK</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create Message Data</pd:from>
+            <pd:to>TCP Open</pd:to>
+            <pd:xpathDescription>OK</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Create-Message-Data/root/Error = "false"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create Message Data</pd:from>
+            <pd:to>Message Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Recharge Error Message</pd:from>
+            <pd:to>Recharge Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Message Error</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Recharge Error</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Finish FCS Transaction</pd:from>
+            <pd:to>Tokenize Response Envelope</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Init FCS Transaction</pd:from>
+            <pd:to>Write TCP Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="TCP Open">
+            <pd:type>com.tibco.plugin.tcp.TCPOpenConnectionActivity</pd:type>
+            <pd:resourceType>ae.activities.TCPOpenConnection</pd:resourceType>
+            <pd:x>799</pd:x>
+            <pd:y>71</pd:y>
+            <config>
+                <localhost>%%TCP/FcsMerchantSystem/LocalIP%%</localhost>
+                <sharedConnection>/MerchanSystem.core/Connections/TCP/FCS TCP Merchant Protocol.sharedtcp</sharedConnection>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="TCP Close">
+            <pd:type>com.tibco.plugin.tcp.TCPCloseConnectionActivity</pd:type>
+            <pd:resourceType>ae.activities.TCPCloseConnection</pd:resourceType>
+            <pd:x>1254</pd:x>
+            <pd:y>248</pd:y>
+            <config>
+                <OpenConnectionActivity> </OpenConnectionActivity>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <ns:connection>
+                        <xsl:value-of select="$TCP-Open/ns:ActivityOutput/ns:connection"/>
+                    </ns:connection>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Write TCP Data">
+            <pd:type>com.tibco.plugin.tcp.TCPWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.TCPWrite</pd:resourceType>
+            <pd:x>1305</pd:x>
+            <pd:y>74</pd:y>
+            <config>
+                <dataType>Binary</dataType>
+                <Separator>SEPARATOR_NONE</Separator>
+                <SeparatorBinary>SEPARATOR_NONE</SeparatorBinary>
+                <Encoding/>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <ns:connection>
+                        <xsl:value-of select="$TCP-Open/ns:ActivityOutput/ns:connection"/>
+                    </ns:connection>
+                    <ns:data>
+                        <xsl:value-of select="$Get-Message-Byte-Array/javaCodeActivityOutput/messageByteArray"/>
+                    </ns:data>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map TCP Package NO CRC">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>933</pd:x>
+            <pd:y>79</pd:y>
+            <config>
+                <element ref="pfx2:Envelope"/>
+            </config>
+            <pd:inputBindings>
+                <pfx2:Envelope>
+                    <pfx2:Stx>
+                        <xsl:value-of select="&quot;02&quot;"/>
+                    </pfx2:Stx>
+                    <pfx2:CommanId>
+                        <xsl:value-of select="&quot;F120&quot;"/>
+                    </pfx2:CommanId>
+                    <pfx2:SendDateTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;YYYYMMddHHmmss&quot;, current-dateTime())"/>
+                    </pfx2:SendDateTime>
+                    <pfx2:SystemId>
+                        <xsl:value-of select="&quot;MIR000002&quot;"/>
+                    </pfx2:SystemId>
+                    <pfx2:DataLength>
+                        <xsl:value-of select="&quot;00000100&quot;"/>
+                    </pfx2:DataLength>
+                    <pfx2:DataSequence>
+                        <xsl:value-of select="&quot;00000000&quot;"/>
+                    </pfx2:DataSequence>
+                    <pfx2:Data>
+                        <xsl:value-of select="$Create-Message-Data/root/DataDump"/>
+                    </pfx2:Data>
+                    <pfx2:Etx>
+                        <xsl:value-of select="&quot;03&quot;"/>
+                    </pfx2:Etx>
+                    <pfx2:Crc>
+                        <xsl:value-of select="&quot;0&quot;"/>
+                    </pfx2:Crc>
+                </pfx2:Envelope>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Read TCP Data">
+            <pd:type>com.tibco.plugin.tcp.TCPReadActivity</pd:type>
+            <pd:resourceType>ae.activities.TCPRead</pd:resourceType>
+            <pd:x>1435</pd:x>
+            <pd:y>75</pd:y>
+            <config>
+                <dataType>Binary</dataType>
+                <Separator>SEPARATOR_NONE</Separator>
+                <SeparatorBinary>SEPARATOR_NONE</SeparatorBinary>
+                <Encoding/>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <ns:connection>
+                        <xsl:value-of select="$TCP-Open/ns:ActivityOutput/ns:connection"/>
+                    </ns:connection>
+                    <ns:bytesToRead>
+                        <xsl:value-of select="295"/>
+                    </ns:bytesToRead>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Map Response Envelope">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>928</pd:x>
+            <pd:y>257</pd:y>
+            <config>
+                <element ref="pfx2:Envelope"/>
+            </config>
+            <pd:inputBindings>
+                <pfx2:Envelope>
+                    <pfx2:Stx>
+                        <xsl:value-of select="$Tokenize-Response-Envelope/javaCodeActivityOutput/stx"/>
+                    </pfx2:Stx>
+                    <pfx2:CommanId>
+                        <xsl:value-of select="tib:hex-to-string($Tokenize-Response-Envelope/javaCodeActivityOutput/commandId)"/>
+                    </pfx2:CommanId>
+                    <pfx2:SendDateTime>
+                        <xsl:value-of select="tib:hex-to-string($Tokenize-Response-Envelope/javaCodeActivityOutput/sendDateTime)"/>
+                    </pfx2:SendDateTime>
+                    <pfx2:SystemId>
+                        <xsl:value-of select="tib:hex-to-string($Tokenize-Response-Envelope/javaCodeActivityOutput/systemId)"/>
+                    </pfx2:SystemId>
+                    <pfx2:DataLength>
+                        <xsl:value-of select="$Tokenize-Response-Envelope/javaCodeActivityOutput/dataLength"/>
+                    </pfx2:DataLength>
+                    <pfx2:DataSequence>
+                        <xsl:value-of select="$Tokenize-Response-Envelope/javaCodeActivityOutput/dataSequence"/>
+                    </pfx2:DataSequence>
+                    <pfx2:Data>
+                        <xsl:value-of select="tib:hex-to-string($Tokenize-Response-Envelope/javaCodeActivityOutput/data)"/>
+                    </pfx2:Data>
+                    <pfx2:Etx>
+                        <xsl:value-of select="$Tokenize-Response-Envelope/javaCodeActivityOutput/etx"/>
+                    </pfx2:Etx>
+                    <pfx2:Crc>
+                        <xsl:value-of select="tib:hex-to-string($Tokenize-Response-Envelope/javaCodeActivityOutput/crc16)"/>
+                    </pfx2:Crc>
+                </pfx2:Envelope>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Message Byte Array">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>1084</pd:x>
+            <pd:y>81</pd:y>
+            <config>
+                <fileName>DalSetMerchantSystemTransactionGetMessageByteArray</fileName>
+                <packageName>MerchanSystem_core.Implementation.MerchanSystem.DalSetMerchantSystemTransaction</packageName>
+                <fullsource>package MerchanSystem_core.Implementation.MerchanSystem.DalSetMerchantSystemTransaction;
+import java.util.*;
+import java.io.*;
+public class DalSetMerchantSystemTransactionGetMessageByteArray{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String messageDump = "";
+	protected byte[] messageByteArray = null;
+	public String getmessageDump() {
+		return messageDump;
+	}
+	public void setmessageDump(String val) {
+		messageDump = val;
+	}
+	public byte[] getmessageByteArray() {
+		return messageByteArray;
+	}
+	public void setmessageByteArray(byte[] val) {
+		messageByteArray = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public DalSetMerchantSystemTransactionGetMessageByteArray() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String messageDump
+	Out : byte[] messageByteArray
+* Available Variables: DO NOT MODIFY *****/
+
+ int crc_table[] = {0x0000,
+			 0x8005, 0x800F, 0x000A, 0x801B, 0x001E, 0x0014, 0x8011,
+			 0x8033, 0x0036, 0x003C, 0x8039, 0x0028, 0x802D, 0x8027,
+			 0x0022, 0x8063, 0x0066, 0x006C, 0x8069, 0x0078, 0x807D,
+			 0x8077, 0x0072, 0x0050, 0x8055, 0x805F, 0x005A, 0x804B,
+			 0x004E, 0x0044, 0x8041, 0x80C3, 0x00C6, 0x00CC, 0x80C9,
+			 0x00D8, 0x80DD, 0x80D7, 0x00D2, 0x00F0, 0x80F5, 0x80FF,
+			 0x00FA, 0x80EB, 0x00EE, 0x00E4, 0x80E1, 0x00A0, 0x80A5,
+			 0x80AF, 0x00AA, 0x80BB, 0x00BE, 0x00B4, 0x80B1, 0x8093,
+			 0x0096, 0x009C, 0x8099, 0x0088, 0x808D, 0x8087, 0x0082,
+			 0x8183, 0x0186, 0x018C, 0x8189, 0x0198, 0x819D, 0x8197,
+			 0x0192, 0x01B0, 0x81B5, 0x81BF, 0x01BA, 0x81AB, 0x01AE,
+			 0x01A4, 0x81A1, 0x01E0, 0x81E5, 0x81EF, 0x01EA, 0x81FB,
+			 0x01FE, 0x01F4, 0x81F1, 0x81D3, 0x01D6, 0x01DC, 0x81D9,
+			 0x01C8, 0x81CD, 0x81C7, 0x01C2, 0x0140, 0x8145, 0x814F,
+			 0x014A, 0x815B, 0x015E, 0x0154, 0x8151, 0x8173, 0x0176,
+			 0x017C, 0x8179, 0x0168, 0x816D, 0x8167, 0x0162, 0x8123,
+			 0x0126, 0x012C, 0x8129, 0x0138, 0x813D, 0x8137, 0x0132,
+			 0x0110, 0x8115, 0x811F, 0x011A, 0x810B, 0x010E, 0x0104,
+			 0x8101, 0x8303, 0x0306, 0x030C, 0x8309, 0x0318, 0x831D,
+			 0x8317, 0x0312, 0x0330, 0x8335, 0x833F, 0x033A, 0x832B,
+			 0x032E, 0x0324, 0x8321, 0x0360, 0x8365, 0x836F, 0x036A,
+			 0x837B, 0x037E, 0x0374, 0x8371, 0x8353, 0x0356, 0x035C,
+			 0x8359, 0x0348, 0x834D, 0x8347, 0x0342, 0x03C0, 0x83C5,
+			 0x83CF, 0x03CA, 0x83DB, 0x03DE, 0x03D4, 0x83D1, 0x83F3,
+			 0x03F6, 0x03FC, 0x83F9, 0x03E8, 0x83ED, 0x83E7, 0x03E2,
+			 0x83A3, 0x03A6, 0x03AC, 0x83A9, 0x03B8, 0x83BD, 0x83B7,
+			 0x03B2, 0x0390, 0x8395, 0x839F, 0x039A, 0x838B, 0x038E,
+			 0x0384, 0x8381, 0x0280, 0x8285, 0x828F, 0x028A, 0x829B,
+			 0x029E, 0x0294, 0x8291, 0x82B3, 0x02B6, 0x02BC, 0x82B9,
+			 0x02A8, 0x82AD, 0x82A7, 0x02A2, 0x82E3, 0x02E6, 0x02EC,
+			 0x82E9, 0x02F8, 0x82FD, 0x82F7, 0x02F2, 0x02D0, 0x82D5,
+			 0x82DF, 0x02DA, 0x82CB, 0x02CE, 0x02C4, 0x82C1, 0x8243,
+			 0x0246, 0x024C, 0x8249, 0x0258, 0x825D, 0x8257, 0x0252,
+			 0x0270, 0x8275, 0x827F, 0x027A, 0x826B, 0x026E, 0x0264,
+			 0x8261, 0x0220, 0x8225, 0x822F, 0x022A, 0x823B, 0x023E,
+			 0x0234, 0x8231, 0x8213, 0x0216, 0x021C, 0x8219, 0x0208,
+			 0x820D, 0x8207, 0x0202 };
+
+		int com_val, accum, crcLen, len, i;    		
+		String messageWithCrc16, crc16;
+ 		
+		len = messageDump.length();
+		byte[] data = new byte[len / 2];
+     		
+		// Convert Data string into byte array
+		for (i = 0; i &lt; len; i += 2) {
+        		data[i / 2] = (byte) ((Character.digit(messageDump.charAt(i), 16) &lt;&lt; 4)
+                             + Character.digit(messageDump.charAt(i+1), 16));
+    		}
+ 
+		// Compute CRC16
+		accum = 0;
+		for (i = 0; i &lt; data.length; i++)
+		{
+			com_val = ((accum &gt;&gt; 8) &amp; 0x00ff) ^ data[i];
+			accum = ((accum &lt;&lt; 8) &amp; 0xff00) ^ crc_table[com_val];
+		}
+
+		// Convert complete Data string into byte array
+		crc16 = Integer.toHexString(accum);
+		crcLen = crc16.length();
+		switch (crcLen){
+			case 1: crc16 = "000" + crc16;
+				break;
+			case 2: crc16 = "00" + crc16;
+				break;
+			case 3: crc16 = "0" + crc16;
+				break;
+			default : 	break;
+		}
+
+		messageWithCrc16 = messageDump + crc16;
+		len = messageWithCrc16.length();
+
+		messageByteArray  = new byte[len / 2];
+
+		for (i = 0; i &lt; len; i += 2) {
+        		messageByteArray[i / 2] = (byte) ((Character.digit(messageWithCrc16.charAt(i), 16) &lt;&lt; 4)
+                             + Character.digit(messageWithCrc16.charAt(i+1), 16));
+    		}
+}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>messageDump</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>messageByteArray</fieldName>
+                        <fieldType>binary</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>DalSetMerchantSystemTransactionGetMessageByteArray</name>
+                        <byteCode>yv66vgAAADMA0AkAkQCtCQCRAK4KAJIArwgAsAMAAIAFAwAAgA8DAACAGwMAAIARAwAAgDMDAACAOQMAAIAtAwAAgCcDAACAYwMAAIBpAwAAgH0DAACAdwMAAIBVAwAAgF8DAACASwMAAIBBAwAAgMMDAACAyQMAAIDdAwAAgNcDAACA9QMAAID/AwAAgOsDAACA4QMAAIClAwAAgK8DAACAuwMAAICxAwAAgJMDAACAmQMAAICNAwAAgIcDAACBgwMAAIGJAwAAgZ0DAACBlwMAAIG1AwAAgb8DAACBqwMAAIGhAwAAgeUDAACB7wMAAIH7AwAAgfEDAACB0wMAAIHZAwAAgc0DAACBxwMAAIFFAwAAgU8DAACBWwMAAIFRAwAAgXMDAACBeQMAAIFtAwAAgWcDAACBIwMAAIEpAwAAgT0DAACBNwMAAIEVAwAAgR8DAACBCwMAAIEBAwAAgwMDAACDCQMAAIMdAwAAgxcDAACDNQMAAIM/AwAAgysDAACDIQMAAINlAwAAg28DAACDewMAAINxAwAAg1MDAACDWQMAAINNAwAAg0cDAACDxQMAAIPPAwAAg9sDAACD0QMAAIPzAwAAg/kDAACD7QMAAIPnAwAAg6MDAACDqQMAAIO9AwAAg7cDAACDlQMAAIOfAwAAg4sDAACDgQMAAIKFAwAAgo8DAACCmwMAAIKRAwAAgrMDAACCuQMAAIKtAwAAgqcDAACC4wMAAILpAwAAgv0DAACC9wMAAILVAwAAgt8DAACCywMAAILBAwAAgkMDAACCSQMAAIJdAwAAglcDAACCdQMAAIJ/AwAAgmsDAACCYQMAAIIlAwAAgi8DAACCOwMAAIIxAwAAghMDAACCGQMAAIINAwAAggcKALEAsgoAsQCzCgC0ALUDAAD/AAoAtgC3BwC4CgCKAK8IALkKAIoAugoAigC7CAC8CAC9BwC+BwC/AQALbWVzc2FnZUR1bXABABJMamF2YS9sYW5nL1N0cmluZzsBABBtZXNzYWdlQnl0ZUFycmF5AQACW0IBAA5nZXRtZXNzYWdlRHVtcAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADnNldG1lc3NhZ2VEdW1wAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQATZ2V0bWVzc2FnZUJ5dGVBcnJheQEABCgpW0IBABNzZXRtZXNzYWdlQnl0ZUFycmF5AQAFKFtCKVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlBwC+BwDABwCWBwDBAQAKRXhjZXB0aW9ucwcAwgEAClNvdXJjZUZpbGUBADdEYWxTZXRNZXJjaGFudFN5c3RlbVRyYW5zYWN0aW9uR2V0TWVzc2FnZUJ5dGVBcnJheS5qYXZhDACTAJQMAJUAlgwAoQCiAQAABwDBDADDAMQMAMUAxgcAxwwAyADJBwDKDADLAMwBABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgEAAzAwMAwAzQDODADPAJgBAAIwMAEAATABAIJNZXJjaGFuU3lzdGVtX2NvcmUvSW1wbGVtZW50YXRpb24vTWVyY2hhblN5c3RlbS9EYWxTZXRNZXJjaGFudFN5c3RlbVRyYW5zYWN0aW9uL0RhbFNldE1lcmNoYW50U3lzdGVtVHJhbnNhY3Rpb25HZXRNZXNzYWdlQnl0ZUFycmF5AQAQamF2YS9sYW5nL09iamVjdAEAAltJAQAQamF2YS9sYW5nL1N0cmluZwEAE2phdmEvbGFuZy9FeGNlcHRpb24BAAZsZW5ndGgBAAMoKUkBAAZjaGFyQXQBAAQoSSlDAQATamF2YS9sYW5nL0NoYXJhY3RlcgEABWRpZ2l0AQAFKENJKUkBABFqYXZhL2xhbmcvSW50ZWdlcgEAC3RvSGV4U3RyaW5nAQAVKEkpTGphdmEvbGFuZy9TdHJpbmc7AQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAIdG9TdHJpbmcAIQCRAJIAAAACAAQAkwCUAAAABACVAJYAAAAGAAEAlwCYAAEAmQAAAB0AAQABAAAABSq0AAGwAAAAAQCaAAAABgABAAAACQABAJsAnAABAJkAAAAiAAIAAgAAAAYqK7UAAbEAAAABAJoAAAAKAAIAAAAMAAUADQABAJ0AngABAJkAAAAdAAEAAQAAAAUqtAACsAAAAAEAmgAAAAYAAQAAAA8AAQCfAKAAAQCZAAAAIgACAAIAAAAGKiu1AAKxAAAAAQCaAAAACgACAAAAEgAFABMAAQChAKIAAQCZ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</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <messageDump>
+                        <xsl:value-of select="concat(&#xA;&#x9;$Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:Stx,&#xA;&#x9;tib:string-to-hex($Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:CommanId),&#xA;&#x9;tib:string-to-hex($Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:SendDateTime),&#xA;&#x9;tib:string-to-hex($Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:SystemId),&#xA;&#x9;$Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:DataLength,&#xA;&#x9;$Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:DataSequence,&#xA;&#x9;$Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:Data,&#xA;&#x9;$Map-TCP-Package-NO-CRC/pfx2:Envelope/pfx2:Etx&#xA;)"/>
+                    </messageDump>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Tokenize Response Envelope">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>770</pd:x>
+            <pd:y>259</pd:y>
+            <config>
+                <fileName>DalSetMerchantSystemTransactionTokenizeResponseEnvelope</fileName>
+                <packageName>MerchanSystem_core.Implementation.MerchanSystem.DalSetMerchantSystemTransaction</packageName>
+                <fullsource>package MerchanSystem_core.Implementation.MerchanSystem.DalSetMerchantSystemTransaction;
+import java.util.*;
+import java.io.*;
+public class DalSetMerchantSystemTransactionTokenizeResponseEnvelope{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String outBoundMessage = "";
+	protected String stx = "";
+	protected String commandId = "";
+	protected String sendDateTime = "";
+	protected String systemId = "";
+	protected String dataLength = "";
+	protected String dataSequence = "";
+	protected String data = "";
+	protected String etx = "";
+	protected String crc16 = "";
+	public String getoutBoundMessage() {
+		return outBoundMessage;
+	}
+	public void setoutBoundMessage(String val) {
+		outBoundMessage = val;
+	}
+	public String getstx() {
+		return stx;
+	}
+	public void setstx(String val) {
+		stx = val;
+	}
+	public String getcommandId() {
+		return commandId;
+	}
+	public void setcommandId(String val) {
+		commandId = val;
+	}
+	public String getsendDateTime() {
+		return sendDateTime;
+	}
+	public void setsendDateTime(String val) {
+		sendDateTime = val;
+	}
+	public String getsystemId() {
+		return systemId;
+	}
+	public void setsystemId(String val) {
+		systemId = val;
+	}
+	public String getdataLength() {
+		return dataLength;
+	}
+	public void setdataLength(String val) {
+		dataLength = val;
+	}
+	public String getdataSequence() {
+		return dataSequence;
+	}
+	public void setdataSequence(String val) {
+		dataSequence = val;
+	}
+	public String getdata() {
+		return data;
+	}
+	public void setdata(String val) {
+		data = val;
+	}
+	public String getetx() {
+		return etx;
+	}
+	public void setetx(String val) {
+		etx = val;
+	}
+	public String getcrc16() {
+		return crc16;
+	}
+	public void setcrc16(String val) {
+		crc16 = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public DalSetMerchantSystemTransactionTokenizeResponseEnvelope() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String outBoundMessage
+	Out : String stx
+	Out : String commandId
+	Out : String sendDateTime
+	Out : String systemId
+	Out : String dataLength
+	Out : String dataSequence
+	Out : String data
+	Out : String etx
+	Out : String crc16
+* Available Variables: DO NOT MODIFY *****/
+
+int inDataLength;
+
+stx = outBoundMessage.substring(0, 2);
+commandId  = outBoundMessage.substring(2, 10);
+sendDateTime = outBoundMessage.substring(10, 38);
+systemId = outBoundMessage.substring(38, 56);
+
+// Get data length hex string no pad zeros
+dataLength = outBoundMessage.substring(56, 64);
+
+// Convert dta length from hex string to Integer
+inDataLength = Integer.parseInt(dataLength.replaceFirst("^0+(?!$)", "").trim(), 16);
+
+dataSequence = outBoundMessage.substring(64, 72);
+data = outBoundMessage.substring(72, (72 + (inDataLength * 2)));
+etx = outBoundMessage.substring(72 + (inDataLength * 2), 74 + (inDataLength * 2));
+crc16 = outBoundMessage.substring(74 + (inDataLength * 2), outBoundMessage.length());}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>outBoundMessage</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>stx</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>commandId</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>sendDateTime</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>systemId</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>dataLength</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>dataSequence</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>data</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>etx</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>crc16</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>DalSetMerchantSystemTransactionTokenizeResponseEnvelope</name>
+                        <byteCode>yv66vgAAADMAYQkAEwA/CQATAEAJABMAQQkAEwBCCQATAEMJABMARAkAEwBFCQATAEYJABMARwkAEwBICgAUAEkIAEoKAEsATAgATQoASwBOCgBLAE8KAFAAUQoASwBSBwBTBwBUAQAPb3V0Qm91bmRNZXNzYWdlAQASTGphdmEvbGFuZy9TdHJpbmc7AQADc3R4AQAJY29tbWFuZElkAQAMc2VuZERhdGVUaW1lAQAIc3lzdGVtSWQBAApkYXRhTGVuZ3RoAQAMZGF0YVNlcXVlbmNlAQAEZGF0YQEAA2V0eAEABWNyYzE2AQASZ2V0b3V0Qm91bmRNZXNzYWdlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQASc2V0b3V0Qm91bmRNZXNzYWdlAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAGZ2V0c3R4AQAGc2V0c3R4AQAMZ2V0Y29tbWFuZElkAQAMc2V0Y29tbWFuZElkAQAPZ2V0c2VuZERhdGVUaW1lAQAPc2V0c2VuZERhdGVUaW1lAQALZ2V0c3lzdGVtSWQBAAtzZXRzeXN0ZW1JZAEADWdldGRhdGFMZW5ndGgBAA1zZXRkYXRhTGVuZ3RoAQAPZ2V0ZGF0YVNlcXVlbmNlAQAPc2V0ZGF0YVNlcXVlbmNlAQAHZ2V0ZGF0YQEAB3NldGRhdGEBAAZnZXRldHgBAAZzZXRldHgBAAhnZXRjcmMxNgEACHNldGNyYzE2AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAVQEAClNvdXJjZUZpbGUBADxEYWxTZXRNZXJjaGFudFN5c3RlbVRyYW5zYWN0aW9uVG9rZW5pemVSZXNwb25zZUVudmVsb3BlLmphdmEMABUAFgwAFwAWDAAYABYMABkAFgwAGgAWDAAbABYMABwAFgwAHQAWDAAeABYMAB8AFgwAOAA5AQAABwBWDABXAFgBAAheMCsoPyEkKQwAWQBaDABbACEHAFwMAF0AXgwAXwBgAQCHTWVyY2hhblN5c3RlbV9jb3JlL0ltcGxlbWVudGF0aW9uL01lcmNoYW5TeXN0ZW0vRGFsU2V0TWVyY2hhbnRTeXN0ZW1UcmFuc2FjdGlvbi9EYWxTZXRNZXJjaGFu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</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <outBoundMessage>
+                        <xsl:value-of select="tib:base64-to-hex($Read-TCP-Data/ns:ActivityOutput/ns:data)"/>
+                    </outBoundMessage>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Tokenize Response Message">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>1102</pd:x>
+            <pd:y>257</pd:y>
+            <config>
+                <fileName>DalSetMerchantSystemTransactionTokenizeResponseMessage</fileName>
+                <packageName>MerchanSystem_core.Implementation.MerchanSystem.DalSetMerchantSystemTransaction</packageName>
+                <fullsource>package MerchanSystem_core.Implementation.MerchanSystem.DalSetMerchantSystemTransaction;
+import java.util.*;
+import java.io.*;
+public class DalSetMerchantSystemTransactionTokenizeResponseMessage{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String responseMessage = "";
+	protected String messageId = "";
+	protected String messageVersion = "";
+	protected String messageRevision = "";
+	protected String businessCode = "";
+	protected String merchantTransactionNumber = "";
+	protected String transmissionDate = "";
+	protected String transmissionTime = "";
+	protected String merchantType = "";
+	protected String merchantCode = "";
+	protected String responseMerchantCode = "";
+	protected String repeatNumber = "";
+	protected String merchantSystemTraceAuditNumber = "";
+	protected String merchantArea = "";
+	protected String responseCode = "";
+	protected String vanArea = "";
+	protected String primaryTransactionNumber = "";
+	protected String transactionDate = "";
+	protected String transactionTime = "";
+	protected String transactionType = "";
+	protected String paymentType = "";
+	protected String originTransactionNumber = "";
+	protected String bankCode = "";
+	protected String transactionAmount = "";
+	protected String negativeBalanceAfterTransaction = "";
+	protected String accountBalanceAfterTransaction = "";
+	protected String bankBranchCode = "";
+	protected String depositorName = "";
+	protected String cmsCode = "";
+	protected String ProcessingCode = "";
+	protected String rfu = "";
+	public String getresponseMessage() {
+		return responseMessage;
+	}
+	public void setresponseMessage(String val) {
+		responseMessage = val;
+	}
+	public String getmessageId() {
+		return messageId;
+	}
+	public void setmessageId(String val) {
+		messageId = val;
+	}
+	public String getmessageVersion() {
+		return messageVersion;
+	}
+	public void setmessageVersion(String val) {
+		messageVersion = val;
+	}
+	public String getmessageRevision() {
+		return messageRevision;
+	}
+	public void setmessageRevision(String val) {
+		messageRevision = val;
+	}
+	public String getbusinessCode() {
+		return businessCode;
+	}
+	public void setbusinessCode(String val) {
+		businessCode = val;
+	}
+	public String getmerchantTransactionNumber() {
+		return merchantTransactionNumber;
+	}
+	public void setmerchantTransactionNumber(String val) {
+		merchantTransactionNumber = val;
+	}
+	public String gettransmissionDate() {
+		return transmissionDate;
+	}
+	public void settransmissionDate(String val) {
+		transmissionDate = val;
+	}
+	public String gettransmissionTime() {
+		return transmissionTime;
+	}
+	public void settransmissionTime(String val) {
+		transmissionTime = val;
+	}
+	public String getmerchantType() {
+		return merchantType;
+	}
+	public void setmerchantType(String val) {
+		merchantType = val;
+	}
+	public String getmerchantCode() {
+		return merchantCode;
+	}
+	public void setmerchantCode(String val) {
+		merchantCode = val;
+	}
+	public String getresponseMerchantCode() {
+		return responseMerchantCode;
+	}
+	public void setresponseMerchantCode(String val) {
+		responseMerchantCode = val;
+	}
+	public String getrepeatNumber() {
+		return repeatNumber;
+	}
+	public void setrepeatNumber(String val) {
+		repeatNumber = val;
+	}
+	public String getmerchantSystemTraceAuditNumber() {
+		return merchantSystemTraceAuditNumber;
+	}
+	public void setmerchantSystemTraceAuditNumber(String val) {
+		merchantSystemTraceAuditNumber = val;
+	}
+	public String getmerchantArea() {
+		return merchantArea;
+	}
+	public void setmerchantArea(String val) {
+		merchantArea = val;
+	}
+	public String getresponseCode() {
+		return responseCode;
+	}
+	public void setresponseCode(String val) {
+		responseCode = val;
+	}
+	public String getvanArea() {
+		return vanArea;
+	}
+	public void setvanArea(String val) {
+		vanArea = val;
+	}
+	public String getprimaryTransactionNumber() {
+		return primaryTransactionNumber;
+	}
+	public void setprimaryTransactionNumber(String val) {
+		primaryTransactionNumber = val;
+	}
+	public String gettransactionDate() {
+		return transactionDate;
+	}
+	public void settransactionDate(String val) {
+		transactionDate = val;
+	}
+	public String gettransactionTime() {
+		return transactionTime;
+	}
+	public void settransactionTime(String val) {
+		transactionTime = val;
+	}
+	public String gettransactionType() {
+		return transactionType;
+	}
+	public void settransactionType(String val) {
+		transactionType = val;
+	}
+	public String getpaymentType() {
+		return paymentType;
+	}
+	public void setpaymentType(String val) {
+		paymentType = val;
+	}
+	public String getoriginTransactionNumber() {
+		return originTransactionNumber;
+	}
+	public void setoriginTransactionNumber(String val) {
+		originTransactionNumber = val;
+	}
+	public String getbankCode() {
+		return bankCode;
+	}
+	public void setbankCode(String val) {
+		bankCode = val;
+	}
+	public String gettransactionAmount() {
+		return transactionAmount;
+	}
+	public void settransactionAmount(String val) {
+		transactionAmount = val;
+	}
+	public String getnegativeBalanceAfterTransaction() {
+		return negativeBalanceAfterTransaction;
+	}
+	public void setnegativeBalanceAfterTransaction(String val) {
+		negativeBalanceAfterTransaction = val;
+	}
+	public String getaccountBalanceAfterTransaction() {
+		return accountBalanceAfterTransaction;
+	}
+	public void setaccountBalanceAfterTransaction(String val) {
+		accountBalanceAfterTransaction = val;
+	}
+	public String getbankBranchCode() {
+		return bankBranchCode;
+	}
+	public void setbankBranchCode(String val) {
+		bankBranchCode = val;
+	}
+	public String getdepositorName() {
+		return depositorName;
+	}
+	public void setdepositorName(String val) {
+		depositorName = val;
+	}
+	public String getcmsCode() {
+		return cmsCode;
+	}
+	public void setcmsCode(String val) {
+		cmsCode = val;
+	}
+	public String getProcessingCode() {
+		return ProcessingCode;
+	}
+	public void setProcessingCode(String val) {
+		ProcessingCode = val;
+	}
+	public String getrfu() {
+		return rfu;
+	}
+	public void setrfu(String val) {
+		rfu = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public DalSetMerchantSystemTransactionTokenizeResponseMessage() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String responseMessage
+	Out : String messageId
+	Out : String messageVersion
+	Out : String messageRevision
+	Out : String businessCode
+	Out : String merchantTransactionNumber
+	Out : String transmissionDate
+	Out : String transmissionTime
+	Out : String merchantType
+	Out : String merchantCode
+	Out : String responseMerchantCode
+	Out : String repeatNumber
+	Out : String merchantSystemTraceAuditNumber
+	Out : String merchantArea
+	Out : String responseCode
+	Out : String vanArea
+	Out : String primaryTransactionNumber
+	Out : String transactionDate
+	Out : String transactionTime
+	Out : String transactionType
+	Out : String paymentType
+	Out : String originTransactionNumber
+	Out : String bankCode
+	Out : String transactionAmount
+	Out : String negativeBalanceAfterTransaction
+	Out : String accountBalanceAfterTransaction
+	Out : String bankBranchCode
+	Out : String depositorName
+	Out : String cmsCode
+	Out : String ProcessingCode
+	Out : String rfu
+* Available Variables: DO NOT MODIFY *****/
+
+messageId = responseMessage.substring(0, 5);
+messageVersion = responseMessage.substring(5, 6);
+messageRevision = responseMessage.substring(6, 7);
+businessCode = responseMessage.substring(7, 9);
+merchantTransactionNumber = responseMessage.substring(9, 19);
+transmissionDate = responseMessage.substring(19, 27);
+transmissionTime = responseMessage.substring(27, 33);
+merchantType = responseMessage.substring(33, 35);
+merchantCode = responseMessage.substring(35, 39);
+responseMerchantCode = responseMessage.substring(39, 43);
+repeatNumber = responseMessage.substring(43, 44);
+merchantSystemTraceAuditNumber = responseMessage.substring(44, 54);
+merchantArea = responseMessage.substring(54, 76);
+responseCode = responseMessage.substring(76, 80);
+vanArea = responseMessage.substring(80, 100);
+primaryTransactionNumber = responseMessage.substring(100, 115);
+transactionDate = responseMessage.substring(115, 123);
+transactionTime = responseMessage.substring(123, 129);
+transactionType = responseMessage.substring(129, 131);
+paymentType = responseMessage.substring(131, 133);
+originTransactionNumber = responseMessage.substring(133, 148);
+bankCode = responseMessage.substring(148, 151);
+transactionAmount = responseMessage.substring(151, 163);
+negativeBalanceAfterTransaction = responseMessage.substring(163, 164);
+accountBalanceAfterTransaction = responseMessage.substring(164, 176);
+bankBranchCode = responseMessage.substring(176, 182);
+depositorName = responseMessage.substring(182, 212);
+cmsCode = responseMessage.substring(212, 222);
+ProcessingCode = responseMessage.substring(222, 224);
+rfu = responseMessage.substring(224, 256);}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>responseMessage</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>messageId</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>messageVersion</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>messageRevision</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>businessCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>merchantTransactionNumber</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>transmissionDate</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>transmissionTime</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>merchantType</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>merchantCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>responseMerchantCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>repeatNumber</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>merchantSystemTraceAuditNumber</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>merchantArea</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>responseCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>vanArea</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>primaryTransactionNumber</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>transactionDate</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>transactionTime</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>transactionType</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>paymentType</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>originTransactionNumber</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>bankCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>transactionAmount</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>negativeBalanceAfterTransaction</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>accountBalanceAfterTransaction</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>bankBranchCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>depositorName</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>cmsCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>ProcessingCode</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>rfu</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>required</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>DalSetMerchantSystemTransactionTokenizeResponseMessage</name>
+                        <byteCode>yv66vgAAADMAtwkAIwCOCQAjAI8JACMAkAkAIwCRCQAjAJIJACMAkwkAIwCUCQAjAJUJACMAlgkAIwCXCQAjAJgJACMAmQkAIwCaCQAjAJsJACMAnAkAIwCdCQAjAJ4JACMAnwkAIwCgCQAjAKEJACMAogkAIwCjCQAjAKQJACMApQkAIwCmCQAjAKcJACMAqAkAIwCpCQAjAKoJACMAqwkAIwCsCgAkAK0IAK4KAK8AsAcAsQcAsgEAD3Jlc3BvbnNlTWVzc2FnZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACW1lc3NhZ2VJZAEADm1lc3NhZ2VWZXJzaW9uAQAPbWVzc2FnZVJldmlzaW9uAQAMYnVzaW5lc3NDb2RlAQAZbWVyY2hhbnRUcmFuc2FjdGlvbk51bWJlcgEAEHRyYW5zbWlzc2lvbkRhdGUBABB0cmFuc21pc3Npb25UaW1lAQAMbWVyY2hhbnRUeXBlAQAMbWVyY2hhbnRDb2RlAQAUcmVzcG9uc2VNZXJjaGFudENvZGUBAAxyZXBlYXROdW1iZXIBAB5tZXJjaGFudFN5c3RlbVRyYWNlQXVkaXROdW1iZXIBAAxtZXJjaGFudEFyZWEBAAxyZXNwb25zZUNvZGUBAAd2YW5BcmVhAQAYcHJpbWFyeVRyYW5zYWN0aW9uTnVtYmVyAQAPdHJhbnNhY3Rpb25EYXRlAQAPdHJhbnNhY3Rpb25UaW1lAQAPdHJhbnNhY3Rpb25UeXBlAQALcGF5bWVudFR5cGUBABdvcmlnaW5UcmFuc2FjdGlvbk51bWJlcgEACGJhbmtDb2RlAQARdHJhbnNhY3Rpb25BbW91bnQBAB9uZWdhdGl2ZUJhbGFuY2VBZnRlclRyYW5zYWN0aW9uAQAeYWNjb3VudEJhbGFuY2VBZnRlclRyYW5zYWN0aW9uAQAOYmFua0JyYW5jaENvZGUBAA1kZXBvc2l0b3JOYW1lAQAHY21zQ29kZQEADlByb2Nlc3NpbmdDb2RlAQADcmZ1AQASZ2V0cmVzcG9uc2VNZXNzYWdlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQASc2V0cmVzcG9uc2VNZXNzYWdlAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAMZ2V0bWVzc2FnZUlkAQAMc2V0bWVzc2FnZUlkAQARZ2V0bWVzc2FnZVZlcnNpb24BABFzZXRtZXNzYWdlVmVyc2lvbgEAEmdldG1lc3NhZ2VSZXZpc2lvbgEAEnNldG1lc3NhZ2VSZXZpc2lvbgEAD2dldGJ1c2luZXNzQ29kZQEAD3NldGJ1c2luZXNzQ29kZQEAHGdldG1lcmNoYW50VHJhbnNhY3Rpb25OdW1iZXIBABxzZXRtZXJjaGFudFRyYW5zYWN0aW9uTnVtYmVyAQATZ2V0dHJhbnNtaXNzaW9uRGF0ZQEAE3NldHRyYW5zbWlzc2lvbkRhdGUBABNnZXR0cmFuc21pc3Npb25UaW1lAQATc2V0dHJhbnNtaXNzaW9uVGltZQEAD2dldG1lcmNoYW50VHlwZQEAD3NldG1lcmNoYW50VHlwZQEAD2dldG1lcmNoYW50Q29kZQEAD3NldG1lcmNoYW50Q29kZQEAF2dldHJlc3BvbnNlTWVyY2hhbnRDb2RlAQAXc2V0cmVzcG9uc2VNZXJjaGFudENvZGUBAA9nZXRyZXBlYXROdW1iZXIBAA9zZXRyZXBlYXROdW1iZXIBACFnZXRtZXJjaGFudFN5c3RlbVRyYWNlQXVkaXROdW1iZXIBACFzZXRtZXJjaGFudFN5c3RlbVRyYWNlQXVkaXROdW1iZXIBAA9nZXRtZXJjaGFudEFyZWEBAA9zZXRtZXJjaGFudEFyZWEBAA9nZXRyZXNwb25zZUNvZGUBAA9zZXRyZXNwb25zZUNvZGUBAApnZXR2YW5BcmVhAQAKc2V0dmFuQXJlYQEAG2dldHByaW1hcnlUcmFuc2FjdGlvbk51bWJlcgEAG3NldHByaW1hcnlUcmFuc2FjdGlvbk51bWJlcgEAEmdldHRyYW5zYWN0aW9uRGF0ZQEAEnNldHRyYW5zYWN0aW9uRGF0ZQEAEmdldHRyYW5zYWN0aW9uVGltZQEAEnNldHRyYW5zYWN0aW9uVGltZQEAEmdldHRyYW5zYWN0aW9uVHlwZQEAEnNldHRyYW5zYWN0aW9uVHlwZQEADmdldHBheW1lbnRUeXBlAQAOc2V0cGF5bWVudFR5cGUBABpnZXRvcmlnaW5UcmFuc2FjdGlvbk51bWJlcgEAGnNldG9yaWdpblRyYW5zYWN0aW9uTnVtYmVyAQALZ2V0YmFua0NvZGUBAAtzZXRiYW5rQ29kZQEAFGdldHRyYW5zYWN0aW9uQW1vdW50AQAUc2V0dHJhbnNhY3Rpb25BbW91bnQBACJnZXRuZWdhdGl2ZUJhbGFuY2VBZnRlclRyYW5zYWN0aW9uAQAic2V0bmVnYXRpdmVCYWxhbmNlQWZ0ZXJUcmFuc2FjdGlvbgEAIWdldGFjY291bnRCYWxhbmNlQWZ0ZXJUcmFuc2FjdGlvbgEAIXNldGFjY291bnRCYWxhbmNlQWZ0ZXJUcmFuc2FjdGlvbgEAEWdldGJhbmtCcmFuY2hDb2RlAQARc2V0YmFua0JyYW5jaENvZGUBABBnZXRkZXBvc2l0b3JOYW1lAQAQc2V0ZGVwb3NpdG9yTmFtZQEACmdldGNtc0NvZGUBAApzZXRjbXNDb2RlAQARZ2V0UHJvY2Vzc2luZ0NvZGUBABFzZXRQcm9jZXNzaW5nQ29kZQEABmdldHJmdQEABnNldHJmdQEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMHALMBAApTb3VyY2VGaWxlAQA7RGFsU2V0TWVyY2hhbnRTeXN0ZW1UcmFuc2FjdGlvblRva2VuaXplUmVzcG9uc2VNZXNzYWdlLmphdmEMACUAJgwAJwAmDAAoACYMACkAJgwAKgAmDAArACYMACwAJgwALQAmDAAuACYMAC8AJgwAMAAmDAAxACYMADIAJgwAMwAmDAA0ACYMADUAJgwANgAmDAA3ACYMADgAJgwAOQAmDAA6ACYMADsAJgwAPAAmDAA9ACYMAD4AJgwAPwAmDABAACYMAEEAJgwAQgAmDABDACYMAEQAJgwAhwCIAQAABwC0DAC1ALYBAIZNZXJjaGFuU3lzdGVtX2NvcmUvSW1wbGVtZW50YXRpb24vTWVyY2hhblN5c3RlbS9EYWxTZXRNZXJjaGFudFN5c3RlbVRyYW5zYWN0aW9uL0RhbFNldE1lcmNoYW50U3lzdGVtVHJhbnNhY3Rpb25Ub2tlbml6ZVJlc3BvbnNlTWVzc2FnZQEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAQamF2YS9sYW5nL1N0cmluZwEACXN1YnN0cmluZwEAFihJSSlMamF2YS9sYW5nL1N0cmluZzsA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</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <responseMessage>
+                        <xsl:value-of select="$Map-Response-Envelope/pfx2:Envelope/pfx2:Data"/>
+                    </responseMessage>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Set Message Id">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1391</pd:x>
+            <pd:y>250</pd:y>
+            <config>
+                <variableName>varMessageId</variableName>
+            </config>
+            <pd:inputBindings>
+                <MessageId>
+                    <xsl:value-of select="$Tokenize-Response-Message/javaCodeActivityOutput/messageId"/>
+                </MessageId>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Recharge Error">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1522</pd:x>
+            <pd:y>409</pd:y>
+            <config>
+                <variableName>varError</variableName>
+            </config>
+            <pd:inputBindings>
+                <Error>
+                    <xsl:value-of select="true()"/>
+                </Error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Recharge Error Message">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>927</pd:x>
+            <pd:y>416</pd:y>
+            <config>
+                <variableName>varErrorMessage</variableName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:Error>
+                    <pfx3:ErrorCode>
+                        <xsl:value-of select="&quot;21&quot;"/>
+                    </pfx3:ErrorCode>
+                    <pfx3:ErrorMessage>
+                        <xsl:value-of select="concat (&quot;Error FCS &quot;,  $Tokenize-Response-Envelope/javaCodeActivityOutput/commandId)"/>
+                    </pfx3:ErrorMessage>
+                </pfx3:Error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="OK">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1522</pd:x>
+            <pd:y>252</pd:y>
+            <config>
+                <variableName>varError</variableName>
+            </config>
+            <pd:inputBindings>
+                <Error>
+                    <xsl:value-of select="false()"/>
+                </Error>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Create Message Data">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>660</pd:x>
+            <pd:y>78</pd:y>
+            <config>
+                <processName>/MerchanSystem.core/Implementation/CreateMessageData.process</processName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <TransactionId>
+                        <xsl:value-of select="$Mapper/root/ns4:MerchantSystemTransaction/ns4:TransactionId"/>
+                    </TransactionId>
+                    <TransactionAmount>
+                        <xsl:value-of select="string( $Mapper/root/ns4:MerchantSystemTransaction/ns4:TransactionAmount)"/>
+                    </TransactionAmount>
+                    <PosId>
+                        <xsl:value-of select="$Mapper/root/ns4:MerchantSystemTransaction/ns4:PosId"/>
+                    </PosId>
+                    <MerchantCode>
+                        <xsl:value-of select="$Mapper/root/ns4:MerchantSystemTransaction/ns4:MerchantCode"/>
+                    </MerchantCode>
+                    <MerchantTransactionNumber>
+                        <xsl:value-of select="tib:pad-front(string($Get-Recharge-Network-Info/resultSet/Record[1]/TransactionNumber + ($i - 1)), &quot;10&quot;, &quot;0&quot;)"/>
+                    </MerchantTransactionNumber>
+                    <BusinessCode>
+                        <xsl:value-of select="$Mapper/root/ns4:MerchantSystemTransaction/ns4:BusinessCode"/>
+                    </BusinessCode>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Message Error">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>659</pd:x>
+            <pd:y>522</pd:y>
+            <config>
+                <variableName>varErrorMessage</variableName>
+            </config>
+            <pd:inputBindings>
+                <xsl:copy-of select="$Create-Message-Data/root/pfx3:Error"/>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>1306</pd:x>
+            <pd:y>523</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Init FCS Transaction">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1202</pd:x>
+            <pd:y>83</pd:y>
+            <config>
+                <variableName>varMessageSucceed</variableName>
+            </config>
+            <pd:inputBindings>
+                <Succeed>
+                    <xsl:value-of select="false()"/>
+                </Succeed>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Finish FCS Transaction">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1553</pd:x>
+            <pd:y>81</pd:y>
+            <config>
+                <variableName>varMessageSucceed</variableName>
+            </config>
+            <pd:inputBindings>
+                <Succeed>
+                    <xsl:value-of select="true()"/>
+                </Succeed>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>908</pd:x>
+        <pd:y>831</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Code F1200">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>468</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <variableName>varMessageId</variableName>
+        </config>
+        <pd:inputBindings>
+            <MessageId>
+                <xsl:value-of select="&quot;F1200&quot;"/>
+            </MessageId>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Recharge Network Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>216</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/MerchanSystem.core/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT MerchantCode, TransactionNumber
+FROM Users WHERE userId = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>userId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>MerchantCode</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>TransactionNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <userId>
+                    <xsl:value-of select="$Start/root/UserId"/>
+                </userId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Init">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>117</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <variableName>varMessageSucceed</variableName>
+        </config>
+        <pd:inputBindings>
+            <Succeed>
+                <xsl:value-of select="false()"/>
+            </Succeed>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1039</pd:x>
+        <pd:y>831</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/ErrorsMailTo"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="&quot;Error en Servicio Merchant System&quot;"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Ha ocurrido un error en el servicio Merchant System&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Error presentado: &quot;,&#xA; $_error/ns3:ErrorReport/Msg, &quot; &quot; ,&#xA;tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;,$_error/ns3:ErrorReport/StackTrace,&quot;&lt;/p>&quot;,&#xA;&quot;&lt;/body>&lt;/html>&quot;)"/>
+                </message>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>322</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/MerchanSystem.core/Implementation/MerchanSystem/SetMerchantSystemTransaction.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:MerchantSystemTransaction>
+                <ns2:TransactionId>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
+                </ns2:TransactionId>
+                <ns2:MerchantCode>
+                    <xsl:value-of select="$Get-Recharge-Network-Info/resultSet/Record[1]/MerchantCode"/>
+                </ns2:MerchantCode>
+                <ns2:PosId>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/PosId, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 10), 10, '0')"/>
+                </ns2:PosId>
+                <ns2:TransactionAmount>
+                    <xsl:value-of select="tib:pad-front(substring(translate($Start/root/TransactionAmount, $_globalVariables/ns5:GlobalVariables/validCharacters, &quot;&quot;), 1, 12), 12, '0')"/>
+                </ns2:TransactionAmount>
+                <ns2:BusinessCode>
+                    <xsl:value-of select="$Start/root/BusinessCode"/>
+                </ns2:BusinessCode>
+                <ns2:UserId>
+                    <xsl:value-of select="$Start/root/UserId"/>
+                </ns2:UserId>
+            </ns2:MerchantSystemTransaction>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>344</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Mapper/root/pfx3:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Message Sent to FCS">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1176</pd:x>
+        <pd:y>839</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Other Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>320</pd:x>
+        <pd:y>690</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Set Next Transaction Number">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>1861</pd:x>
+        <pd:y>554</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/MerchanSystem.core/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE Users SET TransactionNumber =? WHERE userId = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>nextTransactionNumber</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>userId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <nextTransactionNumber>
+                    <xsl:value-of select="$Get-Recharge-Network-Info/resultSet/Record[1]/TransactionNumber + $i"/>
+                </nextTransactionNumber>
+                <userId>
+                    <xsl:value-of select="$Start/root/UserId"/>
+                </userId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Set Next Transaction Number Catch">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>1375</pd:x>
+        <pd:y>949</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/MerchanSystem.core/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE Users SET TransactionNumber =? WHERE userId = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>nextTransactionNumber</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>userId</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <nextTransactionNumber>
+                    <xsl:value-of select="$Get-Recharge-Network-Info/resultSet/Record[1]/TransactionNumber + $i"/>
+                </nextTransactionNumber>
+                <userId>
+                    <xsl:value-of select="$Start/root/UserId"/>
+                </userId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="To End">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1734</pd:x>
+        <pd:y>306</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Unknown Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1645</pd:x>
+        <pd:y>833</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1515</pd:x>
+        <pd:y>840</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Error>
+                <pfx3:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx3:ErrorCode>
+                <pfx3:ErrorMessage>
+                    <xsl:value-of select="$_error/ns3:ErrorReport/StackTrace"/>
+                </pfx3:ErrorMessage>
+            </pfx3:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Mapper</pd:from>
+        <pd:to>Mapper Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper Error</pd:from>
+        <pd:to>Other Error</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error Message</pd:from>
+        <pd:to>Unknown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper</pd:from>
+        <pd:to>Code F1200</pd:to>
+        <pd:xpathDescription>Validation OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Mapper/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Code F1200</pd:from>
+        <pd:to>Retransmission Group</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retransmission Group</pd:from>
+        <pd:to>To End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>To End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Init</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Recharge Network Info</pd:from>
+        <pd:to>Mapper</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>To End</pd:from>
+        <pd:to>Set Next Transaction Number</pd:to>
+        <pd:xpathDescription>Response OK</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$varError/Error = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Set Next Transaction Number</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Other Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>MailSend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Message Sent to FCS</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:xpathDescription>Not Sent</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$varMessageSucceed/Succeed = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Message Sent to FCS</pd:from>
+        <pd:to>Set Next Transaction Number Catch</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Set Next Transaction Number Catch</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Init</pd:from>
+        <pd:to>Get Recharge Network Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend</pd:from>
+        <pd:to>Message Sent to FCS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

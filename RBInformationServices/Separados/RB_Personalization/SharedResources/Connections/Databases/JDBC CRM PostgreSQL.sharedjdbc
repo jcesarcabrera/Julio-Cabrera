@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC CRM PostgreSQL</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>tibcosoftwareinc.jdbc.oracle.OracleDriver</driver>
+        <maxConnections>%%Databases/Unificacion/MaxConnections%%</maxConnections>
+        <loginTimeout>%%Databases/Unificacion/Timeout%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:postgresql://%%Databases/Unificacion/Host%%:%%Databases/Unificacion/Port%%/%%Databases/Unificacion/Instance%%</location>
+        <user>%%Databases/Unificacion/UserName%%</user>
+        <password>%%Databases/Unificacion/Password%%</password>
+    </config>
+</BWSharedResource>

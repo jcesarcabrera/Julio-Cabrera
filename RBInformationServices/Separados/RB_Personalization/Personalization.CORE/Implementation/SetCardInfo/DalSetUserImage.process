@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/SetCardInfo/DalSetUserImage.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="IdNumber" type="xsd:string"/>
+                    <xsd:element name="ImageType" type="xsd:string"/>
+                    <xsd:element name="ImageBase64" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>44</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$varErrorMessage/pfx:Error"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:Error"/>
+    <pd:endX>1236</pd:endX>
+    <pd:endY>377</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varErrorMessage ref="pfx:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1464722108263</pd:targetNamespace>
+    <pd:activity name="Check User">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>327</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT numero_documento FROM usuario WHERE numero_documento = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>numero_documento</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>numero_documento</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <numero_documento>
+                    <xsl:choose>
+                        <xsl:when test="exists($Mapper/root/Card[1]/User/ns1:CardUser/ns1:IdNumber)">
+                            <xsl:value-of select="$Mapper/root/Card[1]/User/ns1:CardUser/ns1:IdNumber"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </numero_documento>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Set Image">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>891</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE usuario SET img_firma = ? WHERE numero_documento = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>img_firma</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>numero_documento</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <img_firma>
+                    <xsl:value-of select="$Start/root/ImageBase64"/>
+                </img_firma>
+                <numero_documento>
+                    <xsl:choose>
+                        <xsl:when test="exists($Mapper/root/Card[1]/User/ns1:CardUser/ns1:IdNumber)">
+                            <xsl:value-of select="$Mapper/root/Card[1]/User/ns1:CardUser/ns1:IdNumber"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </numero_documento>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="User Dont Exists">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>327</pd:x>
+        <pd:y>374</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;03&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="concat(&quot;El usuario: &quot;,  $Mapper/root/Card[1]/User/ns1:CardUser/ns1:IdNumber, &quot; no existe en la base de datos&quot;)"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check Image Type">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>482</pd:x>
+        <pd:y>66</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Not Valid Image Type">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>484</pd:x>
+        <pd:y>267</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;15&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Tipo de imagen no es valido&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1059</pd:x>
+        <pd:y>378</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1056</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;00&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="concat(&quot;Imagen actualizada con exito al usuario: &quot;,  $Start/root/IdNumber)"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>923</pd:x>
+        <pd:y>494</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Unknown Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1062</pd:x>
+        <pd:y>495</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>176</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/SetCardInfo/SetUserImageMapper.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <Card>
+                    <User>
+                        <ns2:User>
+                            <ns2:IdNumber>
+                                <xsl:value-of select="$Start/root/IdNumber"/>
+                            </ns2:IdNumber>
+                        </ns2:User>
+                    </User>
+                </Card>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check Image">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>679</pd:x>
+        <pd:y>67</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Not Valid Image">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>680</pd:x>
+        <pd:y>227</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;15&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Formato de la imagen incorrecto&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Mapper</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check User</pd:from>
+        <pd:to>Check Image Type</pd:to>
+        <pd:xpathDescription>User Exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Check-User/resultSet/Record/numero_documento)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Set Image</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check User</pd:from>
+        <pd:to>User Dont Exists</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Image Type</pd:from>
+        <pd:to>Check Image</pd:to>
+        <pd:xpathDescription>Signature</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim(upper-case($Start/root/ImageType)) = "SIGNATURE"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Image Type</pd:from>
+        <pd:to>Not Valid Image Type</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Not Valid Image Type</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>User Dont Exists</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Unknown Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper</pd:from>
+        <pd:to>Check User</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Image</pd:from>
+        <pd:to>Set Image</pd:to>
+        <pd:xpathDescription>Image OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/ImageBase64 !=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Image</pd:from>
+        <pd:to>Not Valid Image</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Not Valid Image</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

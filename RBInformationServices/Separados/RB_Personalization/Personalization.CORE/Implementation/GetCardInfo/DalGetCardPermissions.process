@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardPermission.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd" schemaLocation="/Personalization.CORE/Schemas/CardPermission.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/DalGetCardPermissions.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardTypeCode" type="xsd:string"/>
+                    <xsd:element name="ServiceId" type="xsd:byte"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>41</pd:startX>
+    <pd:startY>158</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <Permissions>
+                    <xsl:copy-of select="$varPermissions/Permissions/pfx4:Permission"/>
+                </Permissions>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx3:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="Permissions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx4:Permission" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx3:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>915</pd:endX>
+    <pd:endY>163</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varPermissions>
+            <xsd:element name="Permissions">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="pfx4:Permission" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </varPermissions>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx3:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450725653759</pd:targetNamespace>
+    <pd:activity name="OK All">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>562</pd:x>
+        <pd:y>253</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>359</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>485</pd:x>
+        <pd:y>358</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>662</pd:x>
+        <pd:y>367</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Error>
+                <pfx3:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx3:ErrorCode>
+                <pfx3:ErrorMessage>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </pfx3:ErrorMessage>
+            </pfx3:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Select">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>150</pd:x>
+        <pd:y>160</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Specific Permission">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>SELECT  S.serviceName + ' - ' + CP.cardProfileName AS permissionName,
+	SA.authorizationValue,
+	ISNULL(SA.reason, '') AS reason
+FROM CardProfiles CP, [Services] S, ServiceAuthorization SA
+WHERE SA.cardProfileId = CP.cardProfileId
+	AND SA.serviceId =  S.serviceId
+	AND SA.cardProfileId = ?
+	AND SA.serviceId = ?</statement>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <wizardData>#Tue Dec 22 15:11:24 COT 2015&#xD;
+useSchemaInFQN=true&#xD;
+columncount=0&#xD;
+manualSQLText=SELECT  S.serviceName + ' - ' + CP.cardProfileName AS permissionName,\n\tSA.authorizationValue,\n\tSA.reason\nFROM CardProfiles CP, [Services] S, ServiceAuthorization SA\nWHERE SA.cardProfileId \= CP.cardProfileId\n\tAND SA.serviceId \=  S.serviceId\n\tAND SA.cardProfileId \= ?\n\tAND SA.serviceId \= ?&#xD;
+joincount=0&#xD;
+tablecount=0&#xD;
+</wizardData>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>cardProfileId</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>serviceId</parameterName>
+                    <dataType>TINYINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>permissionName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>authorizationValue</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>reason</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <cardProfileId>
+                    <xsl:value-of select="$Start/root/CardTypeCode"/>
+                </cardProfileId>
+                <serviceId>
+                    <xsl:value-of select="$Start/root/ServiceId"/>
+                </serviceId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="All Permissions">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>257</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC MiddlewareDB Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT  S.serviceName + ' - ' + CP.cardProfileName AS permissionName,
+	SA.authorizationValue,
+	ISNULL(SA.reason, '') AS reason
+FROM CardProfiles CP, [Services] S, ServiceAuthorization SA
+WHERE SA.cardProfileId = CP.cardProfileId
+	AND SA.serviceId =  S.serviceId
+	AND SA.cardProfileId = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>cardProfileId</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>permissionName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>authorizationValue</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bit</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>reason</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <cardProfileId>
+                    <xsl:value-of select="$Start/root/CardTypeCode"/>
+                </cardProfileId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Data">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>487</pd:x>
+        <pd:y>162</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Permissions Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>664</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:Error>
+                <pfx3:ErrorCode>
+                    <xsl:value-of select="&quot;05&quot;"/>
+                </pfx3:ErrorCode>
+                <pfx3:ErrorMessage>
+                    <xsl:value-of select="&quot;No se encontraron permisos o no han sido parametrizados&quot;"/>
+                </pfx3:ErrorMessage>
+            </pfx3:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK Specific">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>556</pd:x>
+        <pd:y>60</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Permission Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>775</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <variableName>varPermissions</variableName>
+        </config>
+        <pd:inputBindings>
+            <Permissions>
+                <xsl:for-each select="$Specific-Permission/resultSet/Record">
+                    <pfx4:Permission>
+                        <pfx4:PermissionName>
+                            <xsl:value-of select="permissionName"/>
+                        </pfx4:PermissionName>
+                        <pfx4:PermissionValue>
+                            <xsl:value-of select="authorizationValue"/>
+                        </pfx4:PermissionValue>
+                        <pfx4:PermissionObservation>
+                            <xsl:value-of select="reason"/>
+                        </pfx4:PermissionObservation>
+                    </pfx4:Permission>
+                </xsl:for-each>
+            </Permissions>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Permissions Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>776</pd:x>
+        <pd:y>263</pd:y>
+        <config>
+            <variableName>varPermissions</variableName>
+        </config>
+        <pd:inputBindings>
+            <Permissions>
+                <xsl:for-each select="$All-Permissions/resultSet/Record">
+                    <pfx4:Permission>
+                        <pfx4:PermissionName>
+                            <xsl:value-of select="permissionName"/>
+                        </pfx4:PermissionName>
+                        <pfx4:PermissionValue>
+                            <xsl:value-of select="authorizationValue"/>
+                        </pfx4:PermissionValue>
+                        <pfx4:PermissionObservation>
+                            <xsl:value-of select="reason"/>
+                        </pfx4:PermissionObservation>
+                    </pfx4:Permission>
+                </xsl:for-each>
+            </Permissions>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Select</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Select</pd:from>
+        <pd:to>Specific Permission</pd:to>
+        <pd:xpathDescription>Specific</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/ServiceId !=0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Select</pd:from>
+        <pd:to>All Permissions</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Specific Permission</pd:from>
+        <pd:to>OK Specific</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>All Permissions</pd:from>
+        <pd:to>OK All</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK All</pd:from>
+        <pd:to>Permissions Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Specific Permission</pd:from>
+        <pd:to>No Data</pd:to>
+        <pd:xpathDescription>No Data</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Specific-Permission/resultSet/Record) = 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>All Permissions</pd:from>
+        <pd:to>No Data</pd:to>
+        <pd:xpathDescription>No Data</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($All-Permissions/resultSet/Record)=0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Data</pd:from>
+        <pd:to>No Permissions Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Permissions Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK Specific</pd:from>
+        <pd:to>Permission Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Permission Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Permissions Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

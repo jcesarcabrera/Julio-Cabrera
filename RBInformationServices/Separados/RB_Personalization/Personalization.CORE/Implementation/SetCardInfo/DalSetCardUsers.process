@@ -1,0 +1,1750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx16="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardUserRelationshipResponse.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pfx15="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardUserRelationship.xsd" xmlns:pfx14="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardDataResponse.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx13="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardData.xsd" xmlns:pfx12="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/IdTypeRelationship.xsd" xmlns:pfx11="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CustomerDataResponse.xsd" xmlns:pfx10="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx19="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx18="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd" xmlns:pfx17="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardInfo.xsd" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/UserAuth.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/JSON_GEN_Schemas/user_data.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/JSON_GEN_Schemas/auth_user response.xsd" xmlns:pfx2="http://www.tibco.com/schemas/RBDAL/JSON_GEN_Schemas/SugarCrmAuth.xsd" xmlns:pfx9="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:pfx8="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:pfx7="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CustomerData.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/UserAuthResponse.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/JSON_GEN_Schemas/user_auth.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/RBDAL/JSON_GEN_Schemas/SugarCrmAuth.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/JSON_GEN_Schemas/auth_user response.xsd" schemaLocation="/JSON_GEN_Schemas/auth_user response.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/JSON_GEN_Schemas/user_data.xsd" schemaLocation="/JSON_GEN_Schemas/user_data.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/JSON_GEN_Schemas/user_auth.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/user_auth.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/UserAuth.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/UserAuth.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/UserAuthResponse.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/UserAuthResponse.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CustomerData.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/CustomerData.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CustomerDataResponse.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/CustomerDataResponse.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/IdTypeRelationship.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/IdTypeRelationship.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardData.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/CardData.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardDataResponse.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/CardDataResponse.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardUserRelationship.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/CardUserRelationship.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/JSON_GEN_Schemas/SugarCRM/CardUserRelationshipResponse.xsd" schemaLocation="/JSON_GEN_Schemas/SugarCRM/CardUserRelationshipResponse.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/SetCardInfo/DalSetCardUsers.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Card" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="User">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element ref="pfx9:User"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Payer" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element ref="pfx9:User"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element ref="pfx8:CardInfo" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>31</pd:startX>
+    <pd:startY>561</pd:startY>
+    <pd:returnBindings>
+        <pfx10:Error>
+            <pfx10:ErrorCode>
+                <xsl:value-of select="$varErrorMessage/pfx10:Error/pfx10:ErrorCode"/>
+            </pfx10:ErrorCode>
+            <pfx10:ErrorMessage>
+                <xsl:value-of select="$varErrorMessage/pfx10:Error/pfx10:ErrorMessage"/>
+            </pfx10:ErrorMessage>
+        </pfx10:Error>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx10:Error"/>
+    <pd:endX>2462</pd:endX>
+    <pd:endY>536</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varErrorMessage ref="pfx10:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1452267883321</pd:targetNamespace>
+    <pd:activity name="Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>126</pd:x>
+        <pd:y>563</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/SetCardInfo/SetCardUsersMapper.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Start/root"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>2371</pd:x>
+        <pd:y>540</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx10:Error>
+                <pfx10:ErrorCode>
+                    <xsl:value-of select="&quot;00&quot;"/>
+                </pfx10:ErrorCode>
+                <pfx10:ErrorMessage>
+                    <xsl:value-of select="&quot;Información actualizada con exito&quot;"/>
+                </pfx10:ErrorMessage>
+            </pfx10:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Transaction Group">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>224</pd:x>
+        <pd:y>2</pd:y>
+        <pd:width>2059</pd:width>
+        <pd:height>831</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Iteration Group</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Iteration Group</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Iteration Group">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>320</pd:x>
+            <pd:y>60</pd:y>
+            <pd:width>1921</pd:width>
+            <pd:height>721</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Mapper/root/Card</pd:over>
+                <pd:iterationElementSlot>CurrentCard</pd:iterationElementSlot>
+                <pd:indexSlot>i</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Check User</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Finish</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check User</pd:from>
+                <pd:to>Check Payer</pd:to>
+                <pd:xpathDescription>Payer Exists</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/Payer)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Payer</pd:from>
+                <pd:to>Insert Payer</pd:to>
+                <pd:xpathDescription>New Payer</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/Payer) and not(exists($Check-Payer/resultSet/Record))</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Card</pd:from>
+                <pd:to>Update Card Status</pd:to>
+                <pd:xpathDescription>New Card</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/pfx17:CardInfo) and not(exists($Check-CRM-Card/resultSet/Record))</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Card</pd:from>
+                <pd:to>Finish</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert Payer</pd:from>
+                <pd:to>GO Card</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Update User</pd:from>
+                <pd:to>Delete Emergency Info</pd:to>
+                <pd:xpathDescription>Emergency Info</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:RhCode)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check User</pd:from>
+                <pd:to>No Payer</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>No Payer</pd:from>
+                <pd:to>Check Card Master</pd:to>
+                <pd:xpathDescription>Card Exists</pd:xpathDescription>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/pfx17:CardInfo)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>No Payer</pd:from>
+                <pd:to>GO Upsert Data</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check Payer</pd:from>
+                <pd:to>GO Upsert Data</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check CRM Card</pd:from>
+                <pd:to>GO Upsert Data</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Upsert Data</pd:from>
+                <pd:to>Insert User</pd:to>
+                <pd:xpathDescription>New User</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$Check-User/resultSet/Record/userexists = 0 and not(exists($Check-CRM-Card/resultSet/Record))</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Upsert Data</pd:from>
+                <pd:to>Card User Match</pd:to>
+                <pd:xpathDescription>Card Exists</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Check-CRM-Card/resultSet/Record)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Payer</pd:from>
+                <pd:to>Ignore Payer</pd:to>
+                <pd:xpathDescription>No Payer</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>not(exists(($CurrentCard/Card/Payer)))</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Ignore Payer</pd:from>
+                <pd:to>GO Card</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert Card</pd:from>
+                <pd:to>Finish</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Payer</pd:from>
+                <pd:to>Update Payer</pd:to>
+                <pd:xpathDescription>Existing Payer</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/Payer) and exists($Check-Payer/resultSet/Record)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Update Payer</pd:from>
+                <pd:to>GO Card</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check Payer</pd:from>
+                <pd:to>Check Card Master</pd:to>
+                <pd:xpathDescription>Card Exists</pd:xpathDescription>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/pfx17:CardInfo)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Update Card Status</pd:from>
+                <pd:to>Insert Card</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Card User Match</pd:from>
+                <pd:to>Update User</pd:to>
+                <pd:xpathDescription>Match</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$Check-CRM-Card/resultSet/Record/usuario_id = $CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Card User Match</pd:from>
+                <pd:to>Card User Mismatch</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO Upsert Data</pd:from>
+                <pd:to>GO</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GO</pd:from>
+                <pd:to>Update User</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Update User</pd:from>
+                <pd:to>Delete Socioeconomic Info</pd:to>
+                <pd:xpathDescription>Socioeconomic Info</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:GenderCode)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Update User</pd:from>
+                <pd:to>Skip Update Additional User Info</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Skip Update Additional User Info</pd:from>
+                <pd:to>GO Payer</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert Emergency Additional Info</pd:from>
+                <pd:to>GO Payer</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert Socioeconomic Additional Info</pd:from>
+                <pd:to>GO Payer</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert User</pd:from>
+                <pd:to>Go Socioeconomic Info</pd:to>
+                <pd:xpathDescription>Socioeconomic Info</pd:xpathDescription>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16763905</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:GenderCode)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert User</pd:from>
+                <pd:to>Go Emergency Info</pd:to>
+                <pd:xpathDescription>Emergency Info</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16763905</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:RhCode)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert User</pd:from>
+                <pd:to>Skip Insert Additional Info</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Skip Insert Additional Info</pd:from>
+                <pd:to>GO Payer</pd:to>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Delete Socioeconomic Info</pd:from>
+                <pd:to>Insert Socioeconomic Additional Info</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Delete Emergency Info</pd:from>
+                <pd:to>Insert Emergency Additional Info</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Go Emergency Info</pd:from>
+                <pd:to>Insert Emergency Additional Info</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16763956</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Go Socioeconomic Info</pd:from>
+                <pd:to>Insert Socioeconomic Additional Info</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16763956</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check Card Master</pd:from>
+                <pd:to>Check CRM Card</pd:to>
+                <pd:xpathDescription>OK</pd:xpathDescription>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$Check-Card-Master/root/Error="false"</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check Card Master</pd:from>
+                <pd:to>Invalid Card Number</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Insert Card">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>2105</pd:x>
+                <pd:y>263</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>INSERT INTO info_tarjetas 
+(serial_tarjeta, lugar_recogida_tarjeta,  fecha_solicitud, id_medio_consecucion_tarjeta_id, usuario_id, activo) 
+VALUES(?, NULL, now(), ?, ?, TRUE)</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>serial_tarjeta</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_medio_consecucion_tarjeta</parameterName>
+                            <dataType>SMALLINT</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>usuario_id</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <serial_tarjeta>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/pfx17:CardInfo/pfx17:CardNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/pfx17:CardInfo/pfx17:CardNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </serial_tarjeta>
+                        <id_medio_consecucion_tarjeta>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/pfx17:CardInfo/pfx17:CardAcquisitionFormCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/pfx17:CardInfo/pfx17:CardAcquisitionFormCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_medio_consecucion_tarjeta>
+                        <usuario_id>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </usuario_id>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Insert User">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>941</pd:x>
+                <pd:y>212</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>INSERT INTO Usuario 
+(numero_documento, nombres, apellidos, telefono_fijo, telefono_celular, email, autoriza_uso_datos, fecha_actualizacion, id_estado, id_tipo_documento)
+VALUES (?,?,?,?,?,?,?,?,?,?)
+
+</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>numero_documento</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>nombres</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>apellidos</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>telefono_fijo</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>telefono_celular</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>email</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>autoriza_uso_datos</parameterName>
+                            <dataType>BIT</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>fecha_actualizacion</parameterName>
+                            <dataType>TIMESTAMP</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_estado</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_tipo_documento</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <numero_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </numero_documento>
+                        <nombres>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Name)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Name"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </nombres>
+                        <apellidos>
+                            <xsl:choose>
+                                <xsl:when test="exists(concat($CurrentCard/Card/User/pfx18:CardUser/pfx18:LastName, &quot; &quot;, $CurrentCard/Card/User/pfx18:CardUser/pfx18:SecondLastName))">
+                                    <xsl:value-of select="concat($CurrentCard/Card/User/pfx18:CardUser/pfx18:LastName, &quot; &quot;, $CurrentCard/Card/User/pfx18:CardUser/pfx18:SecondLastName)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </apellidos>
+                        <telefono_fijo>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Phone)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Phone"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </telefono_fijo>
+                        <telefono_celular>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Mobile)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Mobile"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </telefono_celular>
+                        <email>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Email)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Email"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </email>
+                        <autoriza_uso_datos>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:AuthorizeDataUse)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:AuthorizeDataUse"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </autoriza_uso_datos>
+                        <fecha_actualizacion>
+                            <xsl:choose>
+                                <xsl:when test="exists(current-dateTime())">
+                                    <xsl:value-of select="current-dateTime()"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </fecha_actualizacion>
+                        <id_estado>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/User/pfx18:CardUser/pfx18:StatusCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/User/pfx18:CardUser/pfx18:StatusCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_estado>
+                        <id_tipo_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdTypeCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdTypeCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_tipo_documento>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Insert Payer">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1767</pd:x>
+                <pd:y>264</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>INSERT INTO info_pagos_asociados
+(nombres, apellidos, numero_documento, email, telefono_celular, id_tipo_documento_id, usuario_id)
+VALUES (?, ?, ?, ?, ?, ?, ?)</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>nombres</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>apellidos</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>numero_documento</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>email</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>telefono_celular</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_tipo_documento_id</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>usuario_id</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <nombres>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Name)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Name"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </nombres>
+                        <apellidos>
+                            <xsl:choose>
+                                <xsl:when test="exists(concat($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:LastName, &quot; &quot;, $CurrentCard/Card/Payer/pfx18:CardUser/pfx18:SecondLastName))">
+                                    <xsl:value-of select="concat($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:LastName, &quot; &quot;, $CurrentCard/Card/Payer/pfx18:CardUser/pfx18:SecondLastName)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </apellidos>
+                        <numero_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </numero_documento>
+                        <email>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Email)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Email"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </email>
+                        <telefono_celular>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Mobile)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Mobile"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </telefono_celular>
+                        <id_tipo_documento_id>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:IdTypeCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:IdTypeCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_tipo_documento_id>
+                        <usuario_id>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </usuario_id>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Check User">
+                <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+                <pd:x>388</pd:x>
+                <pd:y>426</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <maxRows>1</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>SELECT COUNT(*) UserExists 
+FROM Usuario 
+WHERE numero_documento = ?</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>numero_documento</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                    <oraObjects/>
+                    <oraTables/>
+                    <QueryOutputCachedSchemaColumns>userexists</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>int8</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                </config>
+                <pd:inputBindings>
+                    <jdbcQueryActivityInput>
+                        <numero_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </numero_documento>
+                    </jdbcQueryActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Check Payer">
+                <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+                <pd:x>476</pd:x>
+                <pd:y>153</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <maxRows>1</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>SELECT id, usuario_id
+FROM info_pagos_asociados 
+WHERE numero_documento = ? AND usuario_id = ?</statement>
+                    <oraObjects/>
+                    <oraTables/>
+                    <QueryOutputCachedSchemaColumns>id</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>serial</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>usuario_id</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>numero_documento</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>usuario_id</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcQueryActivityInput>
+                        <numero_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </numero_documento>
+                        <usuario_id>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </usuario_id>
+                    </jdbcQueryActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Check CRM Card">
+                <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+                <pd:x>645</pd:x>
+                <pd:y>519</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <maxRows>1</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>SELECT id, usuario_id
+FROM info_tarjetas
+WHERE serial_tarjeta = ?</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>serial_tarjeta</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                    <oraObjects/>
+                    <oraTables/>
+                    <QueryOutputCachedSchemaColumns>id</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>serial</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>usuario_id</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                </config>
+                <pd:inputBindings>
+                    <jdbcQueryActivityInput>
+                        <serial_tarjeta>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/pfx17:CardInfo/pfx17:CardNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/pfx17:CardInfo/pfx17:CardNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </serial_tarjeta>
+                    </jdbcQueryActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="GO Payer">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1585</pd:x>
+                <pd:y>522</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="GO Card">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1863</pd:x>
+                <pd:y>524</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Update User">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1105</pd:x>
+                <pd:y>523</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>UPDATE Usuario SET
+nombres=?, apellidos=?, telefono_fijo=?, telefono_celular=?, email=?, autoriza_uso_datos=?, fecha_actualizacion=?, id_estado=?, id_tipo_documento = ?
+WHERE numero_documento = ?</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>nombres</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>apellidos</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>telefono_fijo</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>telefono_celular</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>email</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>autoriza_uso_datos</parameterName>
+                            <dataType>BIT</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>fecha_actualizacion</parameterName>
+                            <dataType>TIMESTAMP</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_estado</parameterName>
+                            <dataType>SMALLINT</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_tipo_documento</parameterName>
+                            <dataType>SMALLINT</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>numero_documento</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <nombres>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Name)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Name"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </nombres>
+                        <apellidos>
+                            <xsl:choose>
+                                <xsl:when test="exists(concat($CurrentCard/Card/User/pfx18:CardUser/pfx18:LastName, &quot; &quot;,  $CurrentCard/Card/User/pfx18:CardUser/pfx18:SecondLastName))">
+                                    <xsl:value-of select="concat($CurrentCard/Card/User/pfx18:CardUser/pfx18:LastName, &quot; &quot;,  $CurrentCard/Card/User/pfx18:CardUser/pfx18:SecondLastName)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </apellidos>
+                        <telefono_fijo>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Phone)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Phone"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </telefono_fijo>
+                        <telefono_celular>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Mobile)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Mobile"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </telefono_celular>
+                        <email>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:Email)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:Email"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </email>
+                        <autoriza_uso_datos>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:AuthorizeDataUse)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:AuthorizeDataUse"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </autoriza_uso_datos>
+                        <fecha_actualizacion>
+                            <xsl:value-of select="current-dateTime()"/>
+                        </fecha_actualizacion>
+                        <id_estado>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/User/pfx18:CardUser/pfx18:StatusCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/User/pfx18:CardUser/pfx18:StatusCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_estado>
+                        <id_tipo_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdTypeCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdTypeCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_tipo_documento>
+                        <numero_documento>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </numero_documento>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="No Payer">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>476</pd:x>
+                <pd:y>723</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="GO Upsert Data">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>796</pd:x>
+                <pd:y>519</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Ignore Payer">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1766</pd:x>
+                <pd:y>724</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Finish">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>2158</pd:x>
+                <pd:y>525</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Update Payer">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1764</pd:x>
+                <pd:y>523</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>UPDATE info_pagos_asociados
+SET nombres=?, apellidos=?, email=? , telefono_celular=?
+WHERE id = ?</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>nombres</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>apellidos</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>email</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>telefono_celular</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id</parameterName>
+                            <dataType>INTEGER</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <nombres>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Name)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Name"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </nombres>
+                        <apellidos>
+                            <xsl:choose>
+                                <xsl:when test="exists(concat($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:LastName, &quot; &quot;, $CurrentCard/Card/Payer/pfx18:CardUser/pfx18:SecondLastName))">
+                                    <xsl:value-of select="concat($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:LastName, &quot; &quot;, $CurrentCard/Card/Payer/pfx18:CardUser/pfx18:SecondLastName)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </apellidos>
+                        <email>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Email)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Email"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </email>
+                        <telefono_celular>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Mobile)">
+                                    <xsl:value-of select="$CurrentCard/Card/Payer/pfx18:CardUser/pfx18:Mobile"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </telefono_celular>
+                        <id>
+                            <xsl:choose>
+                                <xsl:when test="exists($Check-Payer/resultSet/Record[1]/id)">
+                                    <xsl:value-of select="$Check-Payer/resultSet/Record[1]/id"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Update Card Status">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>2000</pd:x>
+                <pd:y>262</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <statement>UPDATE info_tarjetas SET activo = FALSE WHERE usuario_id = ?</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>usuario_id</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <usuario_id>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </usuario_id>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Card User Match">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>929</pd:x>
+                <pd:y>521</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Card User Mismatch">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>1014</pd:x>
+                <pd:y>649</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput>
+                        <message>
+                            <xsl:value-of select="&quot;El id de usuario no corresponde al registrado en la tarjeta&quot;"/>
+                        </message>
+                        <messageCode>
+                            <xsl:value-of select="&quot;03&quot;"/>
+                        </messageCode>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="GO">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>940</pd:x>
+                <pd:y>725</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Skip Update Additional User Info">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1237</pd:x>
+                <pd:y>663</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Insert Emergency Additional Info">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1496</pd:x>
+                <pd:y>410</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>INSERT INTO info_adicional_emergencia(
+            usuario_ptr_id, contacto_emergencia_nombre, contacto_emergencia_numero, 
+            id_tipo_rh)
+    VALUES (?, NULL, NULL,  ?)</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>usuario_ptr_id</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_tipo_rh</parameterName>
+                            <dataType>SMALLINT</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <usuario_ptr_id>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </usuario_ptr_id>
+                        <id_tipo_rh>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/User/pfx18:CardUser/pfx18:RhCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/User/pfx18:CardUser/pfx18:RhCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_tipo_rh>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Insert Socioeconomic Additional Info">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>1418</pd:x>
+                <pd:y>539</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/Port%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                    <statement>INSERT INTO info_adicional_socioeconomico(
+            usuario_ptr_id, fecha_nacimiento, id_genero, id_niveleducativo, 
+            id_ocupacion, id_poblacion_especial)
+    VALUES (?, ?, ?, NULL, NULL, NULL)</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>usuario_ptr_id</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>fecha_nacimiento</parameterName>
+                            <dataType>TIMESTAMP</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>id_genero</parameterName>
+                            <dataType>SMALLINT</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <usuario_ptr_id>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </usuario_ptr_id>
+                        <fecha_nacimiento>
+                            <xsl:choose>
+                                <xsl:when test="exists($CurrentCard/Card/User/pfx18:CardUser/pfx18:BirthDate)">
+                                    <xsl:value-of select="$CurrentCard/Card/User/pfx18:CardUser/pfx18:BirthDate"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </fecha_nacimiento>
+                        <id_genero>
+                            <xsl:choose>
+                                <xsl:when test="exists(number($CurrentCard/Card/User/pfx18:CardUser/pfx18:GenderCode))">
+                                    <xsl:value-of select="number($CurrentCard/Card/User/pfx18:CardUser/pfx18:GenderCode)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </id_genero>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Skip Insert Additional Info">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1413</pd:x>
+                <pd:y>134</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Delete Socioeconomic Info">
+                <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+                <pd:x>1279</pd:x>
+                <pd:y>533</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <jdbcGeneralActivityInput>
+                        <statement>
+                            <xsl:value-of select="concat(&quot;DELETE FROM info_adicional_socioeconomico WHERE usuario_ptr_id = '&quot;,  $CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber, &quot;'&quot;)"/>
+                        </statement>
+                    </jdbcGeneralActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Delete Emergency Info">
+                <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+                <pd:x>1237</pd:x>
+                <pd:y>409</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
+                    <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <jdbcGeneralActivityInput>
+                        <statement>
+                            <xsl:value-of select="concat(&quot;DELETE FROM info_adicional_emergencia WHERE usuario_ptr_id = '&quot;,  $CurrentCard/Card/User/pfx18:CardUser/pfx18:IdNumber, &quot;'&quot;)"/>
+                        </statement>
+                    </jdbcGeneralActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Go Socioeconomic Info">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1415</pd:x>
+                <pd:y>307</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Go Emergency Info">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>1495</pd:x>
+                <pd:y>212</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Check Card Master">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>541</pd:x>
+                <pd:y>386</pd:y>
+                <config>
+                    <processName>/Personalization.CORE/Implementation/DalGetCardInfo.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <root>
+                        <CardNumber>
+                            <xsl:value-of select="$CurrentCard/Card/pfx17:CardInfo/pfx17:CardNumber"/>
+                        </CardNumber>
+                    </root>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Invalid Card Number">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>731</pd:x>
+                <pd:y>394</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput>
+                        <xsl:if test="$Check-Card-Master/root/pfx10:Error/pfx10:ErrorMessage">
+                            <message>
+                                <xsl:value-of select="$Check-Card-Master/root/pfx10:Error/pfx10:ErrorMessage"/>
+                            </message>
+                        </xsl:if>
+                        <xsl:if test="$Check-Card-Master/root/pfx10:Error/pfx10:ErrorCode">
+                            <messageCode>
+                                <xsl:value-of select="$Check-Card-Master/root/pfx10:Error/pfx10:ErrorCode"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>2021</pd:x>
+        <pd:y>1015</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>2326</pd:x>
+        <pd:y>1015</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx10:Error>
+                <pfx10:ErrorCode>
+                    <xsl:value-of select="if ($_error/ns1:ErrorReport/MsgCode = &quot;03&quot;) then &quot;03&quot; &#xA;else if ($_error/ns1:ErrorReport/MsgCode = &quot;02&quot;) then &quot;02&quot; &#xA;else &quot;99&quot;"/>
+                </pfx10:ErrorCode>
+                <pfx10:ErrorMessage>
+                    <xsl:value-of select="if ($_error/ns1:ErrorReport/MsgCode= &quot;03&quot;) then $_error/ns1:ErrorReport/Msg &#xA;else if ($_error/ns1:ErrorReport/MsgCode= &quot;02&quot;) then $_error/ns1:ErrorReport/Msg &#xA;else $_error/ns1:ErrorReport/StackTrace"/>
+                </pfx10:ErrorMessage>
+            </pfx10:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>2328</pd:x>
+        <pd:y>886</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Mapper/root/pfx10:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="To End">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>126</pd:x>
+        <pd:y>893</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>2371</pd:x>
+        <pd:y>430</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx19:LOGS_SAVE>
+                <pfx19:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                </pfx19:process>
+                <pfx19:project>
+                    <xsl:value-of select="concat(&quot;RB Personalization&quot;, &quot; | &quot;, &quot;DalSetCardUsers&quot;)"/>
+                </pfx19:project>
+                <pfx19:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx19:datetime>
+                <pfx19:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </pfx19:level>
+                <pfx19:message>
+                    <xsl:value-of select="concat(&quot;Se recibe respuesta de la operación&quot;, &quot; | &quot;, $_processContext/ns1:ProcessContext/ProcessId)"/>
+                </pfx19:message>
+                <pfx19:detail>
+                    <xsl:value-of select="concat($varErrorMessage/pfx10:Error/pfx10:ErrorMessage,  &quot; | &quot;, $_processContext/ns1:ProcessContext/ProcessId)"/>
+                </pfx19:detail>
+                <pfx19:id_process>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                </pfx19:id_process>
+            </pfx19:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Start_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>125</pd:x>
+        <pd:y>426</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx19:LOGS_SAVE>
+                <pfx19:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns1:ProcessContext/ProcessId)"/>
+                </pfx19:process>
+                <pfx19:project>
+                    <xsl:value-of select="concat(&quot;RB Personalization&quot;, &quot; | &quot;, &quot;DalSetCardUsers&quot;)"/>
+                </pfx19:project>
+                <pfx19:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </pfx19:datetime>
+                <pfx19:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </pfx19:level>
+                <pfx19:message>
+                    <xsl:value-of select="concat(&quot;Se envían parámetros para la operación&quot;, &quot; | &quot;, $_processContext/ns1:ProcessContext/ProcessId)"/>
+                </pfx19:message>
+                <pfx19:detail>
+                    <xsl:value-of select="tib:render-xml($Mapper/root)"/>
+                </pfx19:detail>
+                <pfx19:id_process>
+                    <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                </pfx19:id_process>
+            </pfx19:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Mapper</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper</pd:from>
+        <pd:to>Start_Log</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Mapper/root/Error = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper</pd:from>
+        <pd:to>To End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>To End</pd:from>
+        <pd:to>Mapper Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Log</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transaction Group</pd:from>
+        <pd:to>Insert_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start_Log</pd:from>
+        <pd:to>Transaction Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -139,11 +139,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>validCharacters</name>
-			<value>ºª\!|@·#$%&amp;¬/()='?¡¿*`+´ç¨Ç-_^*</value>
+			<value>AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTTUuVvWwXxYyZzÑñ</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1474394237255</modTime>
+			<modTime>1474489806351</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

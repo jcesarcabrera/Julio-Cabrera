@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/SetUserImageRequest.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/SetUserImageRequest.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="SetUserImageRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IdNumber"/>
+				<xs:element ref="ImageType"/>
+				<xs:element ref="SecurityToken"/>
+				<xs:element ref="ServiceId" minOccurs="0"/>
+				<xs:element ref="Version" minOccurs="0"/>
+				<xs:element ref="PostData"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IdNumber" type="xs:string"/>
+	<xs:element name="ImageType" type="xs:string"/>
+	<xs:element name="PostData" type="xs:string"/>
+	<xs:element name="SecurityToken" type="xs:string"/>
+	<xs:element name="Version" type="xs:string"/>
+	<xs:element name="ServiceId" type="xs:string"/>
+</xs:schema>

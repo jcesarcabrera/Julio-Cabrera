@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC HybridCardSystem</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>tibcosoftwareinc.jdbc.sqlserver.SQLServerDriver</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>%%Databases/HybridCardSystem/Timeout%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:tibcosoftwareinc:sqlserver://%%Databases/HybridCardSystem/Host%%:%%Databases/HybridCardSystem/Port%%;databaseName=%%Databases/HybridCardSystem/Instance%%</location>
+        <user>%%Databases/HybridCardSystem/UserName%%</user>
+        <password>%%Databases/HybridCardSystem/Password%%</password>
+    </config>
+</BWSharedResource>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardRequest.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardRequest.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="CardRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CardNumber"/>
+				<xs:element ref="SecurityToken"/>
+				<xs:element ref="StartDate" minOccurs="0"/>
+				<xs:element ref="EndDate" minOccurs="0"/>
+				<xs:element ref="ServiceId" minOccurs="0"/>
+				<xs:element ref="Parameters" minOccurs="0"/>
+				<xs:element ref="Version" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CardNumber" type="xs:string"/>
+	<xs:element name="SecurityToken" type="xs:string"/>
+	<xs:element name="Parameters" type="xs:string"/>
+	<xs:element name="Version" type="xs:string"/>
+	<xs:element name="StartDate" type="xs:string"/>
+	<xs:element name="EndDate" type="xs:string"/>
+	<xs:element name="ServiceId" type="xs:byte"/>
+</xs:schema>

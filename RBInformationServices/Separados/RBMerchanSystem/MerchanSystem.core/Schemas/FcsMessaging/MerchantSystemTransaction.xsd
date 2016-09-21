@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/MerchantSystemTransaction.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="MerchantSystemTransaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Common"/>
+				<xs:element ref="FinancialTransaction"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MessageId" type="xs:string"/>
+	<xs:element name="MessageVersion" type="xs:string"/>
+	<xs:element name="MessageRevision" type="xs:string"/>
+	<xs:element name="BusinessCode" type="xs:string"/>
+	<xs:element name="MerchantTransactionNumber" type="xs:string"/>
+	<xs:element name="TransmissionDate" type="xs:string"/>
+	<xs:element name="TransmissionTime" type="xs:string"/>
+	<xs:element name="MerchantType" type="xs:string"/>
+	<xs:element name="MerchantCode" type="xs:string"/>
+	<xs:element name="ResponseMerchantCode" type="xs:string"/>
+	<xs:element name="RepeatNumber" type="xs:string"/>
+	<xs:element name="MerchantSystemTraceAuditNumber" type="xs:string"/>
+	<xs:element name="MerchantArea" type="xs:string"/>
+	<xs:element name="ResponseCode" type="xs:string"/>
+	<xs:element name="VanArea" type="xs:string"/>
+	<xs:element name="Common">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MessageId"/>
+				<xs:element ref="MessageVersion"/>
+				<xs:element ref="MessageRevision"/>
+				<xs:element ref="BusinessCode"/>
+				<xs:element ref="MerchantTransactionNumber"/>
+				<xs:element ref="TransmissionDate"/>
+				<xs:element ref="TransmissionTime"/>
+				<xs:element ref="MerchantType"/>
+				<xs:element ref="MerchantCode"/>
+				<xs:element ref="ResponseMerchantCode"/>
+				<xs:element ref="RepeatNumber"/>
+				<xs:element ref="MerchantSystemTraceAuditNumber"/>
+				<xs:element ref="MerchantArea"/>
+				<xs:element ref="ResponseCode"/>
+				<xs:element ref="VanArea"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PrimaryTransactionNumber" type="xs:string"/>
+	<xs:element name="TransactionDate" type="xs:string"/>
+	<xs:element name="TransactionTime" type="xs:string"/>
+	<xs:element name="TransactionType" type="xs:string"/>
+	<xs:element name="PaymentType" type="xs:string"/>
+	<xs:element name="OriginTransactionNumber" type="xs:string"/>
+	<xs:element name="BankCode" type="xs:string"/>
+	<xs:element name="TransactionAmount" type="xs:string"/>
+	<xs:element name="NegativeBalanceAfterTransaction" type="xs:string"/>
+	<xs:element name="AccountBalanceAfterTransaction" type="xs:string"/>
+	<xs:element name="BankBranchCode" type="xs:string"/>
+	<xs:element name="DepositorName" type="xs:string"/>
+	<xs:element name="CmsCode" type="xs:string"/>
+	<xs:element name="ProcessingCode" type="xs:string"/>
+	<xs:element name="RFU" type="xs:string"/>
+	<xs:element name="FinancialTransaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="PrimaryTransactionNumber"/>
+				<xs:element ref="TransactionDate"/>
+				<xs:element ref="TransactionTime"/>
+				<xs:element ref="TransactionType"/>
+				<xs:element ref="PaymentType"/>
+				<xs:element ref="OriginTransactionNumber"/>
+				<xs:element ref="BankCode"/>
+				<xs:element ref="TransactionAmount"/>
+				<xs:element ref="NegativeBalanceAfterTransaction"/>
+				<xs:element ref="AccountBalanceAfterTransaction"/>
+				<xs:element ref="BankBranchCode"/>
+				<xs:element ref="DepositorName"/>
+				<xs:element ref="CmsCode"/>
+				<xs:element ref="ProcessingCode"/>
+				<xs:element ref="RFU"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

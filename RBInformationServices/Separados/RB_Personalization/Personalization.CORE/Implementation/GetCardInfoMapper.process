@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:pfx="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardInfo.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardInfo.xsd" schemaLocation="/Personalization.CORE/Schemas/CannonicalModel/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/CardInfo.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfoMapper.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:CardInfo"/>
+    <pd:startX>83</pd:startX>
+    <pd:startY>82</pd:startY>
+    <pd:returnBindings>
+        <xsl:for-each select="$Start/pfx:CardInfo">
+            <pfx2:CardInfo>
+                <xsl:if test="pfx:CardNumber">
+                    <pfx2:CardNumber>
+                        <xsl:value-of select="pfx:CardNumber"/>
+                    </pfx2:CardNumber>
+                </xsl:if>
+                <xsl:if test="pfx:StatusCode">
+                    <pfx2:StatusCode>
+                        <xsl:value-of select="pfx:StatusCode"/>
+                    </pfx2:StatusCode>
+                </xsl:if>
+                <xsl:if test="pfx:Status">
+                    <pfx2:Status>
+                        <xsl:value-of select="pfx:Status"/>
+                    </pfx2:Status>
+                </xsl:if>
+                <xsl:if test="pfx:ProfileCode">
+                    <pfx2:ProfileCode>
+                        <xsl:value-of select="pfx:ProfileCode"/>
+                    </pfx2:ProfileCode>
+                </xsl:if>
+                <xsl:if test="pfx:Profile">
+                    <pfx2:Profile>
+                        <xsl:value-of select="pfx:Profile"/>
+                    </pfx2:Profile>
+                </xsl:if>
+                <xsl:if test="pfx:CardTypeCode">
+                    <pfx2:CardTypeCode>
+                        <xsl:value-of select="pfx:CardTypeCode"/>
+                    </pfx2:CardTypeCode>
+                </xsl:if>
+                <xsl:if test="pfx:CardType">
+                    <pfx2:CardType>
+                        <xsl:value-of select="pfx:CardType"/>
+                    </pfx2:CardType>
+                </xsl:if>
+                <xsl:if test="pfx:PrepaidBalance">
+                    <pfx2:PrepaidBalance>
+                        <xsl:value-of select="pfx:PrepaidBalance"/>
+                    </pfx2:PrepaidBalance>
+                </xsl:if>
+                <xsl:if test="pfx:PospaidBalance">
+                    <pfx2:PospaidBalance>
+                        <xsl:value-of select="pfx:PospaidBalance"/>
+                    </pfx2:PospaidBalance>
+                </xsl:if>
+                <xsl:if test="exists( pfx:CreatedAt)">
+                    <pfx2:CreatedAt>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx:CreatedAt),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx:CreatedAt),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx:CreatedAt),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx:CreatedAt),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx:CreatedAt),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx:CreatedAt)&#xA;)"/>
+                    </pfx2:CreatedAt>
+                </xsl:if>
+                <xsl:if test="exists(pfx:LastModify)">
+                    <pfx2:LastModify>
+                        <xsl:value-of select="tib:create-dateTime(&#xA;&#x9;tib:get-year-from-dateTime(current()/pfx:LastModify),&#xA;&#x9;tib:get-month-from-dateTime(current()/pfx:LastModify),&#xA;&#x9;tib:get-day-from-dateTime(current()/pfx:LastModify),&#xA;&#x9;tib:get-hours-from-dateTime(current()/pfx:LastModify),&#xA;&#x9;tib:get-minutes-from-dateTime(current()/pfx:LastModify),&#xA;&#x9;tib:get-seconds-from-dateTime(current()/pfx:LastModify)&#xA;)"/>
+                    </pfx2:LastModify>
+                </xsl:if>
+            </pfx2:CardInfo>
+        </xsl:for-each>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:CardInfo"/>
+    <pd:endX>372</pd:endX>
+    <pd:endY>82</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1455832530497</pd:targetNamespace>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

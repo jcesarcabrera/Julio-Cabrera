@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="AgentTransaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TransactionId" minOccurs="0"/>
+				<xs:element ref="TransactionClearingDate" minOccurs="0"/>
+				<xs:element ref="TransactionDate" minOccurs="0"/>
+				<xs:element ref="AgentNumber" minOccurs="0"/>
+				<xs:element ref="AgentName" minOccurs="0"/>
+				<xs:element ref="AgentId" minOccurs="0"/>
+				<xs:element ref="PosId" minOccurs="0"/>
+				<xs:element ref="CardNumber" minOccurs="0"/>
+				<xs:element ref="CardType" minOccurs="0"/>
+				<xs:element ref="ProfileName" minOccurs="0"/>
+				<xs:element ref="TransactionType" minOccurs="0"/>
+				<xs:element ref="RechargeType" minOccurs="0"/>
+				<xs:element ref="BalanceBefore" minOccurs="0"/>
+				<xs:element ref="TransactionValue" minOccurs="0"/>
+				<xs:element ref="BalanceAfter" minOccurs="0"/>
+				<xs:element ref="NegativeBalance" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransactionId" type="xs:string"/>
+	<xs:element name="TransactionClearingDate" type="xs:dateTime"/>
+	<xs:element name="TransactionDate" type="xs:dateTime"/>
+	<xs:element name="AgentNumber" type="xs:string"/>
+	<xs:element name="AgentName" type="xs:string"/>
+	<xs:element name="AgentId" type="xs:string"/>
+	<xs:element name="PosId" type="xs:string"/>
+	<xs:element name="CardNumber" type="xs:string"/>
+	<xs:element name="CardType" type="xs:string"/>
+	<xs:element name="ProfileName" type="xs:string"/>
+	<xs:element name="TransactionType" type="xs:string"/>
+	<xs:element name="RechargeType" type="xs:string"/>
+	<xs:element name="BalanceBefore" type="xs:string"/>
+	<xs:element name="TransactionValue" type="xs:string"/>
+	<xs:element name="BalanceAfter" type="xs:string"/>
+	<xs:element name="NegativeBalance" type="xs:string"/>
+</xs:schema>

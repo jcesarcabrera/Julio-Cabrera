@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Report_Mail_To</name>
-			<value>wkling@rbsas.co, nprieto@rbsas.co, jcabrera@rbsas.co</value>
+			<value>jcabrera@rbsas.co</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473366897152</modTime>
+			<modTime>1474472822407</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Timer</name>

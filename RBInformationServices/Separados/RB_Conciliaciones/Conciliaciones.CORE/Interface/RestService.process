@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Conciliaciones.CORE/Interface/RestService.process</pd:name>
+    <pd:startName>HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>70</pd:x>
+        <pd:y>67</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>UTF8</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/SharedResources/Connections/HTTP/RBConciliaciones_HttpConnection.sharedhttp</sharedChannel>
+            <useHTTPAuthentication>false</useHTTPAuthentication>
+            <parsePostData>false</parsePostData>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>468</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1438616388994</pd:targetNamespace>
+    <pd:activity name="OnError">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>256</pd:x>
+        <pd:y>183</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="REST Dispatch and Reply">
+        <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
+        <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
+        <pd:x>253</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <eventSource>HTTP Receiver</eventSource>
+            <enableOAuthField>false</enableOAuthField>
+            <oauthServerProperty/>
+            <EnableWADLReference>false</EnableWADLReference>
+            <RestService>
+                <InnerService>
+                    <ns0:application xmlns:ns0="http://wadl.dev.java.net/2009/02" name="Application">
+                        <ns0:resources name="RBInformationServices" base="%%HttpHost%%">
+                            <ns0:resource id="SecurityTokenResource" path="token">
+                                <ns0:doc>Este recurso representa el token de seguridad (solo lectura)</ns0:doc>
+                                <ns0:method id="GetSecurityToken" name="GET">
+                                    <ns0:doc>Obtiene el token de seguridad (válido por 24 horas)</ns0:doc>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="UserName" style="query" required="true">
+                                            <ns0:doc>Nombre de usuario</ns0:doc>
+                                        </ns0:param>
+                                        <ns0:param name="Password" style="query" required="true">
+                                            <ns0:doc>Contraseña</ns0:doc>
+                                        </ns0:param>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                    <Binding process="/Conciliaciones.CORE/Implementation/SecurityProcesses/GetSecurityToken.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/TokenRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <ns:TokenRequest>
+                                                    <ns:UserName>
+                                                        <xsl:value-of select="$Input-Binding/params/query/UserName"/>
+                                                    </ns:UserName>
+                                                    <ns:Password>
+                                                        <xsl:value-of select="$Input-Binding/params/query/Password"/>
+                                                    </ns:Password>
+                                                </ns:TokenRequest>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/SecurityInfo.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/TokenRequest.xsd" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/SecurityInfo.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/TokenRequest.xsd" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/ResponseString">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/ResponseString"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="AgentTransactionsResource" path="agentTransactions">
+                                <ns0:doc/>
+                                <ns0:method id="GetAgentTransactions" name="GET">
+                                    <ns0:doc/>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="RequestDate" style="query" required="true"/>
+                                        <ns0:param name="SecurityToken" style="query" required="true"/>
+                                        <ns0:param name="Version" style="query" required="false"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                    <Binding process="/Conciliaciones.CORE/Implementation/ServiceProcesses/GetAgentTransactionsSelector.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <ns:DateRequest>
+                                                    <ns:SecurityToken>
+                                                        <xsl:value-of select="$Input-Binding/params/query/SecurityToken"/>
+                                                    </ns:SecurityToken>
+                                                    <ns:RequestDate>
+                                                        <xsl:value-of select="$Input-Binding/params/query/RequestDate"/>
+                                                    </ns:RequestDate>
+                                                    <xsl:if test="$Input-Binding/params/query/Version">
+                                                        <ns:Version>
+                                                            <xsl:value-of select="$Input-Binding/params/query/Version"/>
+                                                        </ns:Version>
+                                                    </xsl:if>
+                                                </ns:DateRequest>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx5="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Response/ChargingNetworkOperation.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/AgentTransactionsRequest.xsd">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Response/ChargingNetworkOperation.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/AgentTransactionsRequest.xsd" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/ResponseString">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/ResponseString"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                                <ns0:method id="SetAgentTransactions" name="POST">
+                                    <ns0:doc/>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="RequestDate" style="query" required="true"/>
+                                        <ns0:param name="SecurityToken" style="query" required="true"/>
+                                        <ns0:param name="Version" style="query" required="false"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                    <Binding process="/Conciliaciones.CORE/Implementation/ServiceProcesses/SetAgentTransactionsSelector.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <ns:DateRequest>
+                                                    <ns:SecurityToken>
+                                                        <xsl:value-of select="$Input-Binding/params/query/SecurityToken"/>
+                                                    </ns:SecurityToken>
+                                                    <ns:RequestDate>
+                                                        <xsl:value-of select="$Input-Binding/params/query/RequestDate"/>
+                                                    </ns:RequestDate>
+                                                    <xsl:if test="$Input-Binding/params/query/Version">
+                                                        <ns:Version>
+                                                            <xsl:value-of select="$Input-Binding/params/query/Version"/>
+                                                        </ns:Version>
+                                                    </xsl:if>
+                                                </ns:DateRequest>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/AgentTransactionsRequest.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Request/SetCardRequest.xsd">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/DateRequest.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Request/AgentTransactionsRequest.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Request/SetCardRequest.xsd" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/ResponseString">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/ResponseString"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                            </ns0:resource>
+                        </ns0:resources>
+                    </ns0:application>
+                </InnerService>
+            </RestService>
+        </config>
+        <pd:inputBindings>
+            <ns0:ActivityInputClass xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/json">
+                <tmp>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Method"/>
+                </tmp>
+            </ns0:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>OnError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>REST Dispatch and Reply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>REST Dispatch and Reply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

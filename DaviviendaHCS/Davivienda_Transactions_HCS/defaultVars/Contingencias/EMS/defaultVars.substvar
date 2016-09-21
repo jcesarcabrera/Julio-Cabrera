@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Host</name>
+			<value>localhost</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474475547618</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value></value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474475547662</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Port</name>
+			<value>7222</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474475547753</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Queue_Transactions</name>
+			<value>Davivienda_Transactions_Contingency</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474475661490</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>admin</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474475547706</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

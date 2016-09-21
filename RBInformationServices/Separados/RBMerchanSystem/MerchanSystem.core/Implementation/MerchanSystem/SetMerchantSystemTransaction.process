@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx2="http://www.tibco.com/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/MerchantSystem/MerchantSystemTransaction.xsd" schemaLocation="/MerchanSystem.core/Schemas/MerchantSystem/MerchantSystemTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/MerchantSystemTransaction.xsd" schemaLocation="/MerchanSystem.core/Schemas/BusinessObjects/MerchantSystemTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/MerchanSystem.core/Schemas/Error.xsd"/>
+    <pd:name>MerchanSystem.core/Implementation/MerchanSystem/SetMerchantSystemTransaction.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:MerchantSystemTransaction"/>
+    <pd:startX>163</pd:startX>
+    <pd:startY>69</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:copy-of select="$Map-Transaction/pfx4:MerchantSystemTransaction"/>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <pfx3:Error>
+                    <pfx3:ErrorCode>
+                        <xsl:value-of select="&quot;19&quot;"/>
+                    </pfx3:ErrorCode>
+                    <pfx3:ErrorMessage>
+                        <xsl:value-of select="&quot;Error con la validación de campos del modelo canónico&quot;"/>
+                    </pfx3:ErrorMessage>
+                </pfx3:Error>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element ref="pfx4:MerchantSystemTransaction" minOccurs="0"/>
+                    <xsd:element ref="pfx3:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>586</pd:endX>
+    <pd:endY>69</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1463495164128</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>184</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>414</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                </message>
+                <xsl:if test="$_error/ns2:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns2:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Transaction">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>317</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <element ref="pfx4:MerchantSystemTransaction"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:MerchantSystemTransaction>
+                <pfx4:TransactionId>
+                    <xsl:value-of select="$Start/pfx:MerchantSystemTransaction/pfx:TransactionId"/>
+                </pfx4:TransactionId>
+                <pfx4:TransactionAmount>
+                    <xsl:value-of select="number($Start/pfx:MerchantSystemTransaction/pfx:TransactionAmount)"/>
+                </pfx4:TransactionAmount>
+                <pfx4:PosId>
+                    <xsl:value-of select="$Start/pfx:MerchantSystemTransaction/pfx:PosId"/>
+                </pfx4:PosId>
+                <pfx4:MerchantCode>
+                    <xsl:value-of select="$Start/pfx:MerchantSystemTransaction/pfx:MerchantCode"/>
+                </pfx4:MerchantCode>
+                <pfx4:BusinessCode>
+                    <xsl:value-of select="$Start/pfx:MerchantSystemTransaction/pfx:BusinessCode"/>
+                </pfx4:BusinessCode>
+                <pfx4:UserId>
+                    <xsl:value-of select="number($Start/pfx:MerchantSystemTransaction/pfx:UserId)"/>
+                </pfx4:UserId>
+            </pfx4:MerchantSystemTransaction>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Mapper Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>521</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>447</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Transaction</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Transaction</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Mapper Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Mapper Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

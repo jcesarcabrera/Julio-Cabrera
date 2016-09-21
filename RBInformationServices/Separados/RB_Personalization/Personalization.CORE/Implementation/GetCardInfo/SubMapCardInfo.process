@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfoFilter.xsd" xmlns:pfx13="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx12="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd" xmlns:pfx11="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" xmlns:pfx10="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/CardInfoFilter.xsd" xmlns:pfx5="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardPermission.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardInfo.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" xmlns:pfx9="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" xmlns:pfx8="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/Card.xsd" xmlns:pfx7="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardTransaction.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" schemaLocation="/Schemas/Response/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" schemaLocation="/Schemas/General/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardPermission.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardPermission.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardInfo.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/Card.xsd" schemaLocation="/Personalization.CORE/Schemas/Card.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" schemaLocation="/Personalization.CORE/Schemas/CardTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardPermission.xsd" schemaLocation="/Personalization.CORE/Schemas/CardPermission.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/SubMapCardInfo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx9:CardInfo"/>
+                    <xsd:element name="HasUser" type="xsd:boolean"/>
+                    <xsd:element ref="pfx10:User" minOccurs="0"/>
+                    <xsd:element name="HasTransactions" type="xsd:boolean"/>
+                    <xsd:element name="Transactions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx11:Transaction" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="HasPermissions" type="xsd:boolean"/>
+                    <xsd:element name="Permissions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx12:Permission" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="HasExceptions" type="xsd:boolean"/>
+                    <xsd:element name="Errors" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx13:Error" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Params" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>161</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Consolidate-Card-Info/pfx8:Card"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx8:Card"/>
+    <pd:endX>973</pd:endX>
+    <pd:endY>159</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varFieldList>
+            <xsd:element name="FieldList" type="xsd:string"/>
+        </varFieldList>
+        <varHasCardInfo>
+            <xsd:element name="hasCardInfo" type="xsd:boolean"/>
+        </varHasCardInfo>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1449675197415</pd:targetNamespace>
+    <pd:activity name="Get CardInfo Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>543</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/SubGetCardInfoFilter.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <FieldList>
+                    <xsl:value-of select="$varFieldList/FieldList"/>
+                </FieldList>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Consolidate Card Info">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>831</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <element ref="pfx8:Card"/>
+        </config>
+        <pd:inputBindings>
+            <pfx8:Card>
+                <xsl:if test="$varHasCardInfo/hasCardInfo=&quot;true&quot;">
+                    <xsl:copy-of select="$Map-CardInfo/pfx9:CardInfo"/>
+                </xsl:if>
+                <xsl:if test="$Start/root/HasUser=&quot;true&quot;">
+                    <xsl:copy-of select="$Start/root/pfx10:User"/>
+                </xsl:if>
+                <xsl:if test="$Start/root/HasTransactions=&quot;true&quot;">
+                    <pfx8:Transactions>
+                        <xsl:copy-of select="$Start/root/Transactions/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Start/root/Transactions/@*"/>
+                        <xsl:copy-of select="$Start/root/Transactions/node()"/>
+                    </pfx8:Transactions>
+                </xsl:if>
+                <xsl:if test="$Start/root/HasPermissions=&quot;true&quot;">
+                    <pfx8:Permissions>
+                        <xsl:copy-of select="$Start/root/Permissions/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Start/root/Permissions/@*"/>
+                        <xsl:copy-of select="$Start/root/Permissions/node()"/>
+                    </pfx8:Permissions>
+                </xsl:if>
+                <pfx8:ErrorCount>
+                    <xsl:value-of select="if (not(exists($Start/root/Errors/pfx13:Error))) then 0 else count($Start/root/Errors/pfx13:Error)"/>
+                </pfx8:ErrorCount>
+                <xsl:if test="$Start/root/HasExceptions=&quot;true&quot;">
+                    <pfx8:Errors>
+                        <xsl:copy-of select="$Start/root/Errors/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$Start/root/Errors/@*"/>
+                        <xsl:copy-of select="$Start/root/Errors/node()"/>
+                    </pfx8:Errors>
+                </xsl:if>
+            </pfx8:Card>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Filter">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>127</pd:x>
+        <pd:y>35</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="All Field List">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>399</pd:x>
+        <pd:y>159</pd:y>
+        <config>
+            <variableName>varFieldList</variableName>
+        </config>
+        <pd:inputBindings>
+            <FieldList>
+                <xsl:value-of select="&quot;CardNumber,StatusCode,Status,ProfileCode,Profile,CardTypeCode,CardType,PrepaidBalance,PostpaidBalance,CreatedAt,LastModify&quot;"/>
+            </FieldList>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check All Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>256</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;AllCardInfo&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check Partial Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>257</pd:x>
+        <pd:y>313</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;CardInfo&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Partial Field List">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>433</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <variableName>varFieldList</variableName>
+        </config>
+        <pd:inputBindings>
+            <FieldList>
+                <xsl:value-of select="$Start/root/Params"/>
+            </FieldList>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Card Info Not Required">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>259</pd:x>
+        <pd:y>458</pd:y>
+        <config>
+            <variableName>varHasCardInfo</variableName>
+        </config>
+        <pd:inputBindings>
+            <hasCardInfo>
+                <xsl:value-of select="false()"/>
+            </hasCardInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Init">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>124</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <variableName>varHasCardInfo</variableName>
+        </config>
+        <pd:inputBindings>
+            <hasCardInfo>
+                <xsl:value-of select="true()"/>
+            </hasCardInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map CardInfo">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>680</pd:x>
+        <pd:y>161</pd:y>
+        <config>
+            <element ref="pfx9:CardInfo"/>
+        </config>
+        <pd:inputBindings>
+            <pfx9:CardInfo>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:CardNumber=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:CardNumber">
+                        <pfx9:CardNumber>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:CardNumber"/>
+                        </pfx9:CardNumber>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:StatusCode=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:StatusCode">
+                        <pfx9:StatusCode>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:StatusCode"/>
+                        </pfx9:StatusCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:Status=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:Status">
+                        <pfx9:Status>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:Status"/>
+                        </pfx9:Status>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:ProfileCode=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:ProfileCode">
+                        <pfx9:ProfileCode>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:ProfileCode"/>
+                        </pfx9:ProfileCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:Profile=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:Profile">
+                        <pfx9:Profile>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:Profile"/>
+                        </pfx9:Profile>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:CardTypeCode=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:CardTypeCode">
+                        <pfx9:CardTypeCode>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:CardTypeCode"/>
+                        </pfx9:CardTypeCode>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:CardType=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:CardType">
+                        <pfx9:CardType>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:CardType"/>
+                        </pfx9:CardType>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:PrepaidBalance=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:PrepaidBalance">
+                        <pfx9:PrepaidBalance>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:PrepaidBalance"/>
+                        </pfx9:PrepaidBalance>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:PospaidBalance=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:PospaidBalance">
+                        <pfx9:PospaidBalance>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:PospaidBalance"/>
+                        </pfx9:PospaidBalance>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:CreatedAt=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:CreatedAt">
+                        <pfx9:CreatedAt>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:CreatedAt"/>
+                        </pfx9:CreatedAt>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-CardInfo-Filter/ns1:CardInfo/ns1:LastModify=&quot;true&quot;">
+                    <xsl:if test="$Start/root/pfx9:CardInfo/pfx9:LastModify">
+                        <pfx9:LastModify>
+                            <xsl:value-of select="$Start/root/pfx9:CardInfo/pfx9:LastModify"/>
+                        </pfx9:LastModify>
+                    </xsl:if>
+                </xsl:if>
+            </pfx9:CardInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Get CardInfo Filter</pd:from>
+        <pd:to>Map CardInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Consolidate Card Info</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Filter</pd:from>
+        <pd:to>All Field List</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>Check Partial Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>All Field List</pd:to>
+        <pd:xpathDescription>All Filter</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-All-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>Partial Field List</pd:to>
+        <pd:xpathDescription>Partial Filter</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-Partial-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>All Field List</pd:from>
+        <pd:to>Get CardInfo Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Partial Field List</pd:from>
+        <pd:to>Get CardInfo Filter</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>Card Info Not Required</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Card Info Not Required</pd:from>
+        <pd:to>Consolidate Card Info</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Init</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Init</pd:from>
+        <pd:to>No Filter</pd:to>
+        <pd:xpathDescription>All</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/Params=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Init</pd:from>
+        <pd:to>Check All Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map CardInfo</pd:from>
+        <pd:to>Consolidate Card Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

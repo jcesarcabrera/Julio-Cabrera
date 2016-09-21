@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx11="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx10="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" xmlns:pfx="http://rbsas.co/schemas/CardInformationServices/REST/Schemas/Schema.xsd" xmlns:ns2="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0/Control/TransactionInfoFilter.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/TransactionInfoFilter.xsd" xmlns:pfx5="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardInfoRequest.xsd" xmlns:pfx3="http://www.tibco.com/schemas/RBInformationServices/Schemas/Request/Schema.xsd2" xmlns:pfx2="http://rbsas.co/schemas/CardInformationServices/REST/Schemas/CardInformation.xsd" xmlns:pfx9="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:pfx8="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardTransaction.xsd" xmlns:pfx7="http://www.rbsas.co/schemas/RBInformationServices/Schemas/General/Error.xsd" xmlns:pfx6="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/TransactionInfo.xsd">
+    <xsd:import namespace="http://rbsas.co/schemas/CardInformationServices/REST/Schemas/CardInformation.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Request/CardInfoRequest.xsd" schemaLocation="/Schemas/Request/CardInfoRequest.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/CardInfo.xsd" schemaLocation="/Schemas/Response/CardInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Response/TransactionInfo.xsd" schemaLocation="/Schemas/Response/TransactionInfo.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardTransaction.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/CardTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" schemaLocation="/GeneralSchemas/Version 1.0/BusinessObjects/Error.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardTransaction.xsd" schemaLocation="/Personalization.CORE/Schemas/CardTransaction.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/SubGetTransactionInfo.process</pd:name>
+    <pd:description>Gather information regarding Transactions made on a card</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardNumber" type="xsd:string"/>
+                    <xsd:element name="Params" type="xsd:string"/>
+                    <xsd:element name="StartDate" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="EndDate" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>55</pd:startX>
+    <pd:startY>187</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:copy-of select="$Map-Data/Transactions"/>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx11:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element name="Transactions" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx10:Transaction" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="pfx11:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1716</pd:endX>
+    <pd:endY>197</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varFieldList>
+            <xsd:element name="FieldList" type="xsd:string"/>
+        </varFieldList>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx11:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://rbsas.co/1438617392291</pd:targetNamespace>
+    <pd:activity name="No Filter">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>638</pd:x>
+        <pd:y>49</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="All Field List">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>941</pd:x>
+        <pd:y>192</pd:y>
+        <config>
+            <variableName>varFieldList</variableName>
+        </config>
+        <pd:inputBindings>
+            <FieldList>
+                <xsl:value-of select="&quot;TransactionTypeCode,TransactionType,UsageDate,Amount,StationBus,RemainingDailyPreBalance,RemainingDailyPosBalance,ChargePoint&quot;"/>
+            </FieldList>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check All Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>779</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;AllTransaction&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check Partial Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>779</pd:x>
+        <pd:y>338</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/StringLookup.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <List>
+                    <xsl:value-of select="$Start/root/Params"/>
+                </List>
+                <Value>
+                    <xsl:value-of select="&quot;Transaction&quot;"/>
+                </Value>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Transaction Info Not Required">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>779</pd:x>
+        <pd:y>804</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get Transaction Filter">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1083</pd:x>
+        <pd:y>202</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/SubGetTransactionFilter.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <FieldList>
+                    <xsl:value-of select="$varFieldList/FieldList"/>
+                </FieldList>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Transaction Data">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1240</pd:x>
+        <pd:y>202</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/DalGetCardTransactions.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <CardNumber>
+                    <xsl:value-of select="$Start/root/CardNumber"/>
+                </CardNumber>
+                <StartDate>
+                    <xsl:value-of select="$Start/root/StartDate"/>
+                </StartDate>
+                <EndDate>
+                    <xsl:value-of select="$Start/root/EndDate"/>
+                </EndDate>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1238</pd:x>
+        <pd:y>347</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1536</pd:x>
+        <pd:y>349</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Get-Transaction-Data/root/pfx11:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>1391</pd:x>
+        <pd:y>195</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Transactions">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="pfx10:Transaction" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Transactions>
+                <xsl:for-each select="$Get-Transaction-Data/root/Transactions/pfx10:Transaction">
+                    <pfx10:Transaction>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:TransactionTypeCode= &quot;true&quot;">
+                            <xsl:if test="pfx10:TransactionTypeCode">
+                                <pfx10:TransactionTypeCode>
+                                    <xsl:value-of select="pfx10:TransactionTypeCode"/>
+                                </pfx10:TransactionTypeCode>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:TransactionType=&quot;true&quot;">
+                            <xsl:if test="pfx10:TransactionType">
+                                <pfx10:TransactionType>
+                                    <xsl:value-of select="pfx10:TransactionType"/>
+                                </pfx10:TransactionType>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:UsageDate=&quot;true&quot;">
+                            <xsl:if test="pfx10:UsageDate">
+                                <pfx10:UsageDate>
+                                    <xsl:value-of select="pfx10:UsageDate"/>
+                                </pfx10:UsageDate>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:Amount=&quot;true&quot;">
+                            <xsl:if test="pfx10:Amount">
+                                <pfx10:Amount>
+                                    <xsl:value-of select="pfx10:Amount"/>
+                                </pfx10:Amount>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:StationBus=&quot;true&quot;">
+                            <xsl:if test="pfx10:StationBus">
+                                <pfx10:StationBus>
+                                    <xsl:value-of select="pfx10:StationBus"/>
+                                </pfx10:StationBus>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:RemainingDailyPreBalance=&quot;true&quot;">
+                            <xsl:if test="pfx10:RemainingDailyPreBalance">
+                                <pfx10:RemainingDailyPreBalance>
+                                    <xsl:value-of select="pfx10:RemainingDailyPreBalance"/>
+                                </pfx10:RemainingDailyPreBalance>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:RemainingDailyPosBalance=&quot;true&quot;">
+                            <xsl:if test="pfx10:RemainingDailyPosBalance">
+                                <pfx10:RemainingDailyPosBalance>
+                                    <xsl:value-of select="pfx10:RemainingDailyPosBalance"/>
+                                </pfx10:RemainingDailyPosBalance>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$Get-Transaction-Filter/ns3:Transaction/ns3:ChargePoint=&quot;true&quot;">
+                            <xsl:if test="pfx10:ChargePoint">
+                                <pfx10:ChargePoint>
+                                    <xsl:value-of select="pfx10:ChargePoint"/>
+                                </pfx10:ChargePoint>
+                            </xsl:if>
+                        </xsl:if>
+                    </pfx10:Transaction>
+                </xsl:for-each>
+            </Transactions>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1532</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Range Validation">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>500</pd:x>
+        <pd:y>190</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="No Range">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>55</pd:x>
+        <pd:y>797</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Bad Range">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>503</pd:x>
+        <pd:y>478</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Range OK">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>636</pd:x>
+        <pd:y>188</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="PartialFieldList">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>942</pd:x>
+        <pd:y>331</pd:y>
+        <config>
+            <variableName>varFieldList</variableName>
+        </config>
+        <pd:inputBindings>
+            <FieldList>
+                <xsl:value-of select="$Start/root/Params"/>
+            </FieldList>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No Data">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1240</pd:x>
+        <pd:y>793</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Empty Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1535</pd:x>
+        <pd:y>801</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx11:Error>
+                <pfx11:ErrorCode>
+                    <xsl:value-of select="&quot;98&quot;"/>
+                </pfx11:ErrorCode>
+                <pfx11:ErrorMessage>
+                    <xsl:value-of select="&quot;Información de transacción no requerida&quot;"/>
+                </pfx11:ErrorMessage>
+            </pfx11:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid Range Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1241</pd:x>
+        <pd:y>480</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Range Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1533</pd:x>
+        <pd:y>483</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx11:Error>
+                <pfx11:ErrorCode>
+                    <xsl:value-of select="&quot;08&quot;"/>
+                </pfx11:ErrorCode>
+                <pfx11:ErrorMessage>
+                    <xsl:value-of select="&quot;Rango de fechas inválido&quot;"/>
+                </pfx11:ErrorMessage>
+            </pfx11:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Validate StartDate">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>200</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/DateParser.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <DateString>
+                    <xsl:value-of select="$Start/root/StartDate"/>
+                </DateString>
+                <FieldName>
+                    <xsl:value-of select="&quot;StartDate&quot;"/>
+                </FieldName>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Validate EndDate">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>345</pd:x>
+        <pd:y>188</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/Common/DateParser.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <DateString>
+                    <xsl:value-of select="$Start/root/EndDate"/>
+                </DateString>
+                <FieldName>
+                    <xsl:value-of select="&quot;EndDate&quot;"/>
+                </FieldName>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid StartDate">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>202</pd:x>
+        <pd:y>688</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Invalid EndDate">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>348</pd:x>
+        <pd:y>580</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Invalid EndDate Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1244</pd:x>
+        <pd:y>592</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid EndDate Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1531</pd:x>
+        <pd:y>591</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Validate-EndDate/root/pfx11:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid StartDate Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1534</pd:x>
+        <pd:y>703</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Validate-StartDate/root/pfx11:Error"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid StartDate Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>1244</pd:x>
+        <pd:y>701</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Validate StartDate</pd:to>
+        <pd:xpathDescription>Range Exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/root/StartDate) and exists($Start/root/EndDate)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>All Field List</pd:to>
+        <pd:xpathDescription>All Filter</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-All-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>All Field List</pd:from>
+        <pd:to>Get Transaction Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transaction Filter</pd:from>
+        <pd:to>Get Transaction Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transaction Data</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Transaction-Data/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check All Filter</pd:from>
+        <pd:to>Check Partial Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>Transaction Info Not Required</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Partial Filter</pd:from>
+        <pd:to>PartialFieldList</pd:to>
+        <pd:xpathDescription>Partial Filter</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-Partial-Filter/Found="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transaction Info Not Required</pd:from>
+        <pd:to>No Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Transaction Data</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Filter</pd:from>
+        <pd:to>All Field List</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Range Validation</pd:from>
+        <pd:to>Range OK</pd:to>
+        <pd:xpathDescription>Range OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:compare-dateTime(
+	tib:create-dateTime(
+		number(substring($Start/root/EndDate, 1, 4)),
+		number(substring($Start/root/EndDate, 5, 2)),
+		number(substring($Start/root/EndDate, 7, 2)),
+		number(substring($Start/root/EndDate, 9, 2)),
+		number(substring($Start/root/EndDate, 11, 2)),
+		number(substring($Start/root/EndDate, 13, 2))
+	), 
+	tib:create-dateTime(
+		number(substring($Start/root/StartDate, 1, 4)),
+		number(substring($Start/root/StartDate, 5, 2)),
+		number(substring($Start/root/StartDate, 7, 2)),
+		number(substring($Start/root/StartDate, 9, 2)),
+		number(substring($Start/root/StartDate, 11, 2)),
+		number(substring($Start/root/StartDate, 13, 2))
+	)
+) &gt;= 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Range Validation</pd:from>
+        <pd:to>Bad Range</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Range</pd:from>
+        <pd:to>Transaction Info Not Required</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>No Range</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Bad Range</pd:from>
+        <pd:to>Invalid Range Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Range OK</pd:from>
+        <pd:to>No Filter</pd:to>
+        <pd:xpathDescription>All</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/root/Params=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Range OK</pd:from>
+        <pd:to>Check All Filter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PartialFieldList</pd:from>
+        <pd:to>Get Transaction Filter</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No Data</pd:from>
+        <pd:to>Empty Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Empty Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid Range Error</pd:from>
+        <pd:to>Range Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Range Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate StartDate</pd:from>
+        <pd:to>Validate EndDate</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate-StartDate/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate EndDate</pd:from>
+        <pd:to>Range Validation</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Validate-EndDate/root/Error="false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate StartDate</pd:from>
+        <pd:to>Invalid StartDate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65485</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid EndDate</pd:from>
+        <pd:to>Invalid EndDate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate EndDate</pd:from>
+        <pd:to>Invalid EndDate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid EndDate Error</pd:from>
+        <pd:to>Invalid EndDate Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid EndDate Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid StartDate Error</pd:from>
+        <pd:to>Invalid StartDate Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid StartDate Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Invalid StartDate</pd:from>
+        <pd:to>Invalid StartDate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

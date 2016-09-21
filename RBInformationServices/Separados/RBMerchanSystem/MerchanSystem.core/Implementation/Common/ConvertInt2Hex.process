@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>MerchanSystem.core/Implementation/Common/ConvertInt2Hex.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="IntNumber" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>104</pd:startX>
+    <pd:startY>55</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <HexString>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/hexString"/>
+            </HexString>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="HexString" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>461</pd:endX>
+    <pd:endY>59</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1463084241336</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>264</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <fileName>ConvertInt2HexJavaCode</fileName>
+            <packageName>MerchanSystem_core.Implementation.Common.ConvertInt2Hex</packageName>
+            <fullsource>package MerchanSystem_core.Implementation.Common.ConvertInt2Hex;
+import java.util.*;
+import java.io.*;
+public class ConvertInt2HexJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected int inValue = 0;
+	protected String hexString = "";
+	public int getinValue() {
+		return inValue;
+	}
+	public void setinValue(int val) {
+		inValue = val;
+	}
+	public String gethexString() {
+		return hexString;
+	}
+	public void sethexString(String val) {
+		hexString = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ConvertInt2HexJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : int inValue
+	Out : String hexString
+* Available Variables: DO NOT MODIFY *****/
+
+hexString = Integer.toHexString(inValue);}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>inValue</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>hexString</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ConvertInt2HexJavaCode</name>
+                    <byteCode>yv66vgAAADMAKQkABgAdCQAGAB4KAAcAHwgAIAoAIQAiBwAjBwAkAQAHaW5WYWx1ZQEAAUkBAAloZXhTdHJpbmcBABJMamF2YS9sYW5nL1N0cmluZzsBAApnZXRpblZhbHVlAQADKClJAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEACnNldGluVmFsdWUBAAQoSSlWAQAMZ2V0aGV4U3RyaW5nAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAAxzZXRoZXhTdHJpbmcBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwAlAQAKU291cmNlRmlsZQEAG0NvbnZlcnRJbnQySGV4SmF2YUNvZGUuamF2YQwACAAJDAAKAAsMABYAFwEAAAcAJgwAJwAoAQBOTWVyY2hhblN5c3RlbV9jb3JlL0ltcGxlbWVudGF0aW9uL0NvbW1vbi9Db252ZXJ0SW50MkhleC9Db252ZXJ0SW50MkhleEphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABFqYXZhL2xhbmcvSW50ZWdlcgEAC3RvSGV4U3RyaW5nAQAVKEkpTGphdmEvbGFuZy9TdHJpbmc7ACEABgAHAAAAAgAEAAgACQAAAAQACgALAAAABgABAAwADQABAA4AAAAdAAEAAQAAAAUqtAABrAAAAAEADwAAAAYAAQAAAAkAAQAQABEAAQAOAAAAIgACAAIAAAAGKhu1AAGxAAAAAQAPAAAACgACAAAADAAFAA0AAQASABMAAQAOAAAAHQABAAEAAAAFKrQAArAAAAABAA8AAAAGAAEAAAAPAAEAFAAVAAEADgAAACIAAgACAAAABiortQACsQAAAAEADwAAAAoAAgAAABIABQATAAEAFgAXAAEADgAAADQAAgABAAAAECq3AAMqA7UAASoSBLUAArEAAAABAA8AAAASAAQAAAAVAAQABgAJAAcADwAWAAEAGAAXAAIADgAAACQAAgABAAAADCoqtAABuAAFtQACsQAAAAEADwAAAAYAAQAAAB0AGQAAAAQAAQAaAAEAGwAAAAIAHA==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <inValue>
+                    <xsl:value-of select="$Start/root/IntNumber"/>
+                </inValue>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

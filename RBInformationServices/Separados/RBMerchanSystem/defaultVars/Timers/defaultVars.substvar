@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>MerchantSystemClosing</name>
+			<value>2016 septiembre 14 23:00:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473870537826</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MerchantSystemOpening</name>
+			<value>2016 septiembre 14 11:29:00</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1473870537863</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

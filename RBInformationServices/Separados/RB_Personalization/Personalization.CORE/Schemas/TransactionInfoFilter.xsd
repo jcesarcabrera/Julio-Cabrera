@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/TransactionInfoFilter.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/Control/TransactionInfoFilter.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Transaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TransactionTypeCode" minOccurs="0"/>
+				<xs:element ref="TransactionType" minOccurs="0"/>
+				<xs:element ref="UsageDate" minOccurs="0"/>
+				<xs:element ref="Amount" minOccurs="0"/>
+				<xs:element ref="StationBus" minOccurs="0"/>
+				<xs:element ref="RemainingDailyPreBalance" minOccurs="0"/>
+				<xs:element ref="RemainingDailyPosBalance" minOccurs="0"/>
+				<xs:element ref="ChargePoint" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UsageDate" type="xs:boolean"/>
+	<xs:element name="Amount" type="xs:boolean"/>
+	<xs:element name="RemainingDailyPreBalance" type="xs:boolean"/>
+	<xs:element name="RemainingDailyPosBalance" type="xs:boolean"/>
+	<xs:element name="StationBus" type="xs:boolean"/>
+	<xs:element name="ChargePoint" type="xs:boolean"/>
+	<xs:element name="TransactionType" type="xs:boolean"/>
+	<xs:element name="TransactionTypeCode" type="xs:boolean"/>
+</xs:schema>

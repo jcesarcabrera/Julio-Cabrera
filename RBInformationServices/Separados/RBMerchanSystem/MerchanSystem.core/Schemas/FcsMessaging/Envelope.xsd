@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/FcsMessaging/Envelope.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Envelope">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Stx"/>
+				<xs:element ref="CommanId"/>
+				<xs:element ref="SendDateTime"/>
+				<xs:element ref="SystemId"/>
+				<xs:element ref="DataLength"/>
+				<xs:element ref="DataSequence"/>
+				<xs:element ref="Data"/>
+				<xs:element ref="Etx"/>
+				<xs:element ref="Crc"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Stx" type="xs:string"/>
+	<xs:element name="CommanId" type="xs:string"/>
+	<xs:element name="SendDateTime" type="xs:string"/>
+	<xs:element name="SystemId" type="xs:string"/>
+	<xs:element name="DataLength" type="xs:string"/>
+	<xs:element name="DataSequence" type="xs:string"/>
+	<xs:element name="Data" type="xs:string"/>
+	<xs:element name="Etx" type="xs:string"/>
+	<xs:element name="Crc" type="xs:string"/>
+</xs:schema>

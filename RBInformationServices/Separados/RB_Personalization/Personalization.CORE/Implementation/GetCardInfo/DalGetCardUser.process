@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/CardUser.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" xmlns:pfx3="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" xmlns:pfx2="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/Error.xsd" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0/BusinessObjects/CardUser.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardUser.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/CardUser.xsd"/>
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Personalization.CORE/Schemas/BusinessObjects/Error.xsd"/>
+    <pd:name>Personalization.CORE/Implementation/GetCardInfo/DalGetCardUser.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="CardNumber" type="xsd:string"/>
+                    <xsd:element name="Filter" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>50</pd:startX>
+    <pd:startY>63</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <Error>
+                <xsl:value-of select="$varError/Error"/>
+            </Error>
+            <xsl:if test="$varError/Error=&quot;false&quot;">
+                <xsl:copy-of select="$Get-User-Mapper/pfx3:User"/>
+            </xsl:if>
+            <xsl:if test="$varError/Error=&quot;true&quot;">
+                <xsl:copy-of select="$varErrorMessage/pfx4:Error"/>
+            </xsl:if>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Error" type="xsd:boolean"/>
+                    <xsd:element ref="pfx3:User" minOccurs="0"/>
+                    <xsd:element ref="pfx4:Error" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1039</pd:endX>
+    <pd:endY>198</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varError>
+            <xsd:element name="Error" type="xsd:boolean"/>
+        </varError>
+        <varErrorMessage ref="pfx4:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450725462545</pd:targetNamespace>
+    <pd:activity name="OK">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>843</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="false()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>531</pd:x>
+        <pd:y>325</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>683</pd:x>
+        <pd:y>324</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Unknown Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>837</pd:x>
+        <pd:y>333</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx4:Error>
+                <pfx4:ErrorCode>
+                    <xsl:value-of select="&quot;99&quot;"/>
+                </pfx4:ErrorCode>
+                <pfx4:ErrorMessage>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </pfx4:ErrorMessage>
+            </pfx4:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get User Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>173</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT U.numero_documento
+	,U.nombres
+	,U.apellidos 
+	,U.telefono_fijo
+	,U.telefono_celular
+	,U.email
+	,U.autoriza_uso_datos
+	,U.fecha_actualizacion
+	,U.id_estado
+	,DE.estado
+	,U.id_tipo_documento
+	,DTD.tipo_documento
+FROM usuario U, info_tarjetas IT, dim_estado DE, dim_tipo_documento DTD
+WHERE U.numero_documento = IT.usuario_id
+	AND U.id_estado = DE.id_estado
+	AND U.id_tipo_documento = DTD.id_tipodocumento
+	AND IT.serial_tarjeta = ?</statement>
+            <wizardData>#Fri May 06 18:16:00 COT 2016&#xD;
+useSchemaInFQN=true&#xD;
+columncount=0&#xD;
+manualSQLText=SELECT U.numero_documento, U.nombres, U.apellidos, U.telefono_fijo, U.telefono_celular, U.email, U.autoriza_uso_datos, U.fecha_actualizacion, U.id_estado, U.id_tipo_documento\nFROM usuario U, info_tarjetas IT\nWHERE U.numero_documento \= IT.usuario_id\nAND IT.serial_tarjeta \= ?\n&#xD;
+joincount=0&#xD;
+tablecount=0&#xD;
+</wizardData>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>serial_tarjeta</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>numero_documento</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>nombres</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>apellidos</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>telefono_fijo</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>telefono_celular</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>email</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>autoriza_uso_datos</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-7</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bool</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>fecha_actualizacion</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>timestamptz</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>id_estado</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int4</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>estado</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>id_tipo_documento</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int4</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>tipo_documento</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <serial_tarjeta>
+                    <xsl:value-of select="$Start/root/CardNumber"/>
+                </serial_tarjeta>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get User Mapper">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>675</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/Personalization.CORE/Implementation/GetCardInfo/GetCardUserMapper.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:CardUser>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/nombres">
+                    <ns2:Name>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/nombres"/>
+                    </ns2:Name>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/apellidos">
+                    <ns2:LastName>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/apellidos"/>
+                    </ns2:LastName>
+                </xsl:if>
+                <ns2:IdTypeCode>
+                    <xsl:value-of select="string($Get-User-Info/resultSet/Record[1]/id_tipo_documento)"/>
+                </ns2:IdTypeCode>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/tipo_documento">
+                    <ns2:IdType>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/tipo_documento"/>
+                    </ns2:IdType>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/numero_documento">
+                    <ns2:IdNumber>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/numero_documento"/>
+                    </ns2:IdNumber>
+                </xsl:if>
+                <xsl:if test="exists($Get-User-Socioeconomic-Info/resultSet/Record)">
+                    <xsl:if test="$Get-User-Socioeconomic-Info/resultSet/Record[1]/fecha_nacimiento">
+                        <ns2:BirthDate>
+                            <xsl:value-of select="$Get-User-Socioeconomic-Info/resultSet/Record[1]/fecha_nacimiento"/>
+                        </ns2:BirthDate>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="exists($Get-User-Socioeconomic-Info/resultSet/Record)">
+                    <ns2:GenderCode>
+                        <xsl:value-of select="string($Get-User-Socioeconomic-Info/resultSet/Record[1]/id_genero)"/>
+                    </ns2:GenderCode>
+                </xsl:if>
+                <xsl:if test="exists($Get-User-Socioeconomic-Info/resultSet/Record)">
+                    <xsl:if test="$Get-User-Socioeconomic-Info/resultSet/Record[1]/genero">
+                        <ns2:Gender>
+                            <xsl:value-of select="$Get-User-Socioeconomic-Info/resultSet/Record[1]/genero"/>
+                        </ns2:Gender>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="exists($Get-User-Emergency-Info/resultSet/Record)">
+                    <ns2:RhCode>
+                        <xsl:value-of select="$Get-User-Emergency-Info/resultSet/Record[1]/id_tipo_rh"/>
+                    </ns2:RhCode>
+                </xsl:if>
+                <xsl:if test="exists($Get-User-Emergency-Info/resultSet/Record)">
+                    <xsl:if test="$Get-User-Emergency-Info/resultSet/Record[1]/tipo_rh">
+                        <ns2:RH>
+                            <xsl:value-of select="$Get-User-Emergency-Info/resultSet/Record[1]/tipo_rh"/>
+                        </ns2:RH>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/email">
+                    <ns2:Email>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/email"/>
+                    </ns2:Email>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/telefono_fijo">
+                    <ns2:Phone>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/telefono_fijo"/>
+                    </ns2:Phone>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/telefono_celular">
+                    <ns2:Mobile>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/telefono_celular"/>
+                    </ns2:Mobile>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/autoriza_uso_datos">
+                    <ns2:AuthorizeDataUse>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/autoriza_uso_datos"/>
+                    </ns2:AuthorizeDataUse>
+                </xsl:if>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/fecha_actualizacion">
+                    <ns2:LastUpdate>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/fecha_actualizacion"/>
+                    </ns2:LastUpdate>
+                </xsl:if>
+                <ns2:StatusCode>
+                    <xsl:value-of select="string($Get-User-Info/resultSet/Record[1]/id_estado)"/>
+                </ns2:StatusCode>
+                <xsl:if test="$Get-User-Info/resultSet/Record[1]/estado">
+                    <ns2:Status>
+                        <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/estado"/>
+                    </ns2:Status>
+                </xsl:if>
+            </ns2:CardUser>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="No User Info">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>171</pd:x>
+        <pd:y>200</pd:y>
+        <config>
+            <variableName>varError</variableName>
+        </config>
+        <pd:inputBindings>
+            <Error>
+                <xsl:value-of select="true()"/>
+            </Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Message">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>837</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx4:Error>
+                <pfx4:ErrorCode>
+                    <xsl:value-of select="&quot;03&quot;"/>
+                </pfx4:ErrorCode>
+                <pfx4:ErrorMessage>
+                    <xsl:value-of select="concat(&quot;No registra usuario asociado a la tarjeta: &quot;,  $Start/root/CardNumber)"/>
+                </pfx4:ErrorMessage>
+            </pfx4:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get User Emergency Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>329</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT DTR.id_tipo_rh, DTR.tipo_rh
+FROM usuario U, info_adicional_emergencia IAE, dim_tipo_rh DTR
+WHERE U.numero_documento = IAE.usuario_ptr_id
+	AND IAE.id_tipo_rh = DTR.id_tipo_rh
+	AND U.numero_documento =?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>numero_documento</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>id_tipo_rh</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int4</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>tipo_rh</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <numero_documento>
+                    <xsl:choose>
+                        <xsl:when test="exists($Get-User-Info/resultSet/Record[1]/numero_documento)">
+                            <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/numero_documento"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </numero_documento>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get User Socioeconomic Info">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>499</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/Databases/JDBC CRM PostgreSQL.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT IAS.fecha_nacimiento, DG.id_genero, DG.genero
+FROM usuario U, info_adicional_socioeconomico IAS, dim_genero DG
+WHERE U.numero_documento = IAS.usuario_ptr_id
+	AND IAS.id_genero = DG.id_genero
+	AND U.numero_documento = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>numero_documento</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>fecha_nacimiento</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>timestamptz</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>id_genero</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int4</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>genero</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <numero_documento>
+                    <xsl:choose>
+                        <xsl:when test="exists($Get-User-Info/resultSet/Record[1]/numero_documento)">
+                            <xsl:value-of select="$Get-User-Info/resultSet/Record[1]/numero_documento"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </numero_documento>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get User Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error</pd:from>
+        <pd:to>Unknown Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Unknown Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Info</pd:from>
+        <pd:to>Get User Emergency Info</pd:to>
+        <pd:xpathDescription>OK</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Get-User-Info/resultSet/Record)  &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Mapper</pd:from>
+        <pd:to>OK</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>OK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Info</pd:from>
+        <pd:to>No User Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>No User Info</pd:from>
+        <pd:to>Error Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Emergency Info</pd:from>
+        <pd:to>Get User Socioeconomic Info</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get User Socioeconomic Info</pd:from>
+        <pd:to>Get User Mapper</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

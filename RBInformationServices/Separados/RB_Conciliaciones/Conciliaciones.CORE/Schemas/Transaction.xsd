@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd"
+	 xmlns:ns0="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/RechargePoint.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/Transaction.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.rbsas.co/schemas/CanonicalModel/CanonicalModel 1.0.0/Core/RechargePoint.xsd" schemaLocation="RechargePoint.xsd"/>
+	<xs:element name="Transaction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TransactionId" minOccurs="0"/>
+				<xs:element ref="TransactionClearingDate" minOccurs="0"/>
+				<xs:element ref="TransactionDate" minOccurs="0"/>
+				<xs:element ref="StationBus" minOccurs="0"/>
+				<xs:element ref="AgentNumber" minOccurs="0"/>
+				<xs:element ref="AgentName" minOccurs="0"/>
+				<xs:element ref="AgentId" minOccurs="0"/>
+				<xs:element ref="PosId" minOccurs="0"/>
+				<xs:element ref="CardNumber" minOccurs="0"/>
+				<xs:element ref="CardType" minOccurs="0"/>
+				<xs:element ref="ProfileName" minOccurs="0"/>
+				<xs:element ref="TransactionTypeCode" minOccurs="0"/>
+				<xs:element ref="TransactionType" minOccurs="0"/>
+				<xs:element ref="RechargeType" minOccurs="0"/>
+				<xs:element ref="BalanceBefore" minOccurs="0"/>
+				<xs:element ref="TransactionValue" minOccurs="0"/>
+				<xs:element ref="BalanceAfter" minOccurs="0"/>
+				<xs:element ref="NegativeBalance" minOccurs="0"/>
+				<xs:element ref="ns0:RechargePoint" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransactionId">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:whiteSpace value="collapse"/>
+				<xs:pattern value="[0-9]{19}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="TransactionClearingDate" type="xs:dateTime"/>
+	<xs:element name="TransactionDate" type="xs:dateTime"/>
+	<xs:element name="AgentNumber">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:whiteSpace value="collapse"/>
+				<xs:maxLength value="10"/>
+				<xs:minLength value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="AgentName">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="200"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="AgentId">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{7}"/>
+				<xs:whiteSpace value="collapse"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="PosId">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{10}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CardNumber">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{16}"/>
+				<xs:pattern value="[0-9]{17}"/>
+				<xs:pattern value="[0-9]{10}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CardType">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="50"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="ProfileName">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="50"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="TransactionType">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="50"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="RechargeType">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="50"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="BalanceBefore" type="xs:string"/>
+	<xs:element name="TransactionValue" type="xs:string"/>
+	<xs:element name="BalanceAfter" type="xs:string"/>
+	<xs:element name="NegativeBalance" type="xs:string"/>
+	<xs:element name="StationBus" type="xs:string"/>
+	<xs:element name="TransactionTypeCode" type="xs:string"/>
+</xs:schema>
