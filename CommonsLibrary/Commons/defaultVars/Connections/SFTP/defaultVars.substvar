@@ -3,27 +3,27 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Host</name>
-			<value>190.144.156.157</value>
+			<value>localhost</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472357544124</modTime>
+			<modTime>1474578277973</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>yrpK6p*u</value>
+			<value>recaudo1234</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472357544327</modTime>
+			<modTime>1474578277997</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Port</name>
-			<value>10022</value>
+			<value>22</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472357544171</modTime>
+			<modTime>1474578278020</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>TimeOut</name>
@@ -35,11 +35,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>UserName</name>
-			<value>pp_recbogprd01</value>
+			<value>recaudouser</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472357544249</modTime>
+			<modTime>1474578278041</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

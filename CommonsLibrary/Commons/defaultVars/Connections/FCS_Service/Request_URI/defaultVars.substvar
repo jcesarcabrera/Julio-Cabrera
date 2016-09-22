@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ClaimData</name>
-			<value>http://10.50.98.21:81/InterfaceServer/rest/claim/download</value>
+			<value>http://10.50.128.134:7033/InterfaceServer/rest/claim/download</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472426271911</modTime>
+			<modTime>1474578277939</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>ClaimDataResult</name>
-			<value>http://10.50.98.21:81/InterfaceServer/rest/claim/upload</value>
+			<value>http://10.50.128.134:7033/InterfaceServer/rest/claim/upload</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473286960616</modTime>
+			<modTime>1474578277954</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

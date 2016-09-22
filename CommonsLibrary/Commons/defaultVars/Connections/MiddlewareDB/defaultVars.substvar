@@ -3,20 +3,20 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Database</name>
-			<value>bd_pruebasPR</value>
+			<value>bd_pruebasQA</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1474380793635</modTime>
+			<modTime>1474577038784</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Host</name>
-			<value>middlewaredbpro.cr0k1tnuhdai.us-west-2.rds.amazonaws.com</value>
+			<value>middlewaredbpru.cr0k1tnuhdai.us-west-2.rds.amazonaws.com</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<constraint></constraint>
-			<modTime>1474380793618</modTime>
+			<modTime>1474577038802</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Max_Rows</name>
