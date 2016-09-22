@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>ContingenciasEMS</name>
+    <resourceType>ae.shared.JMSConnectionKey</resourceType>
+    <config>
+        <NamingEnvironment>
+            <UseJNDI>false</UseJNDI>
+            <ProviderURL>tcp://%%RecaudoBogota/Contingencias/EMS_Host%%:%%RecaudoBogota/Contingencias/EMS_Port%%</ProviderURL>
+            <NamingURL>tibjmsnaming://localhost:7222</NamingURL>
+            <NamingInitialContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</NamingInitialContextFactory>
+            <TopicFactoryName>TopicConnectionFactory</TopicFactoryName>
+            <QueueFactoryName>QueueConnectionFactory</QueueFactoryName>
+            <NamingPrincipal/>
+            <NamingCredential/>
+        </NamingEnvironment>
+        <ConnectionAttributes>
+            <username>%%RecaudoBogota/Contingencias/EMS_User%%</username>
+            <password>%%RecaudoBogota/Contingencias/EMS_Password%%</password>
+            <clientID/>
+            <autoGenClientID>true</autoGenClientID>
+        </ConnectionAttributes>
+        <UseXACF>false</UseXACF>
+    </config>
+</BWSharedResource>

@@ -2,20 +2,36 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>HTTP_Host</name>
+			<name>EMS_Host</name>
 			<value>localhost</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1474404578624</modTime>
+			<modTime>1474580680670</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>HTTP_Port</name>
-			<value>8990</value>
+			<name>EMS_Password</name>
+			<value></value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1474404578593</modTime>
+			<modTime>1474580680631</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EMS_Port</name>
+			<value>7222</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474580680577</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>EMS_User</name>
+			<value>admin</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474580680603</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Local_Path</name>
@@ -24,6 +40,14 @@
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1473444166818</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>QueueContingencia</name>
+			<value>AV_VILLAS_Transactions_Contingency</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474580805323</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
