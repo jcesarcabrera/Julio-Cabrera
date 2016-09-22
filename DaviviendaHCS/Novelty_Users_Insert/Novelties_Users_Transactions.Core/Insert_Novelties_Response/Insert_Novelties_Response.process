@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse">
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult.sharedparse"/>
     <pd:name>Novelties_Users_Transactions.Core/Insert_Novelties_Response/Insert_Novelties_Response.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>55</pd:startX>
-    <pd:startY>77</pd:startY>
+    <pd:startX>27</pd:startX>
+    <pd:startY>79</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>569</pd:endX>
-    <pd:endY>78</pd:endY>
+    <pd:endX>659</pd:endX>
+    <pd:endY>82</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1473288444360</pd:targetNamespace>
     <pd:activity name="ParseERFile">
         <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
         <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
-        <pd:x>264</pd:x>
-        <pd:y>76</pd:y>
+        <pd:x>334</pd:x>
+        <pd:y>79</pd:y>
         <config>
             <InputType>File</InputType>
             <Encoding>ISO8859_1</Encoding>
@@ -36,8 +36,8 @@
     <pd:activity name="ListERFile">
         <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
         <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
-        <pd:x>164</pd:x>
-        <pd:y>78</pd:y>
+        <pd:x>123</pd:x>
+        <pd:y>80</pd:y>
         <config>
             <mode>only-files</mode>
         </config>
@@ -52,8 +52,8 @@
     <pd:group name="Insert_ER">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>339</pd:x>
-        <pd:y>0</pd:y>
+        <pd:x>418</pd:x>
+        <pd:y>6</pd:y>
         <pd:width>167</pd:width>
         <pd:height>140</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -88,8 +88,8 @@
         <pd:activity name="Insert_Novelties_ER">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>417</pd:x>
-            <pd:y>81</pd:y>
+            <pd:x>495</pd:x>
+            <pd:y>87</pd:y>
             <config>
                 <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
                 <commit>false</commit>
@@ -161,6 +161,34 @@
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>227</pd:x>
+        <pd:y>81</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>231</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:Errors_Save>
+                <ns12:error_message>
+                    <xsl:value-of select="&quot;No se encuentra el archivo de novedades para insertar Respuesta de Novedades&quot;"/>
+                </ns12:error_message>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>ListERFile</pd:to>
@@ -170,7 +198,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>ListERFile</pd:from>
-        <pd:to>ParseERFile</pd:to>
+        <pd:to>Null</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -186,6 +214,29 @@
         <pd:from>Insert_ER</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>ParseERFile</pd:to>
+        <pd:xpathDescription>Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($ListERFile/ns1:ListFilesActivityOutput/files/fileInfo)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>

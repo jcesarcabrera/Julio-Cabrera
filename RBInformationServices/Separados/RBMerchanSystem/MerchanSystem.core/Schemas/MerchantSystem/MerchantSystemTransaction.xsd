@@ -26,7 +26,7 @@
 	</xs:element>
 	<xs:element name="TransactionAmount">
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
+			<xs:restriction base="xs:int">
 				<xs:maxInclusive value="10000000"/>
 			</xs:restriction>
 		</xs:simpleType>

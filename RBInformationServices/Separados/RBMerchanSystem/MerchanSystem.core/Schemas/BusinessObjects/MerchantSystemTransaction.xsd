@@ -21,7 +21,7 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="TransactionId" type="xs:string"/>
-	<xs:element name="TransactionAmount" type="xs:string"/>
+	<xs:element name="TransactionAmount" type="xs:int"/>
 	<xs:element name="PosId" type="xs:string"/>
 	<xs:element name="MerchantCode" type="xs:string"/>
 	<xs:element name="BusinessCode" type="xs:string"/>

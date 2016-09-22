@@ -10,7 +10,7 @@
             <authorProperty>Julio Cabrera</authorProperty>
             <processProperty>/Novelties_Users_Transactions.Core/Insert_Novelties/TimerInsertNoveltysCards.process,/Novelties_Users_Transactions.Core/Insert_Users/Timer_InsertHistoryUsers.process,/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File.process,/Novelties_Users_Transactions.Core/SendFilesMail/Send_AE_File/Send_AE_File.process,/Novelties_Users_Transactions.Core/Insert_Transactions/Insert_Transactions_Timer.process,/Novelties_Users_Transactions.Core/SendFilesMail/Report_Transactions/Rejected_Transactions.process,/Novelties_Users_Transactions.Core/Insert_Novelties_Response/Timer_Insert_Novelties_Response.process,/Novelties_Users_Transactions.Core/Insert_Transactions_Response/Timer_Insert_Transactions_Response.process</processProperty>
         </processArchive>
-        <versionProperty>43</versionProperty>
+        <versionProperty>44</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>Novelty_Users_Insert</name>

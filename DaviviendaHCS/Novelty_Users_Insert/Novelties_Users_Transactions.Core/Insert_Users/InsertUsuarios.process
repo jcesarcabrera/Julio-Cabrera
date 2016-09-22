@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <pd:name>Novelties_Users_Transactions.Core/Insert_Users/InsertUsuarios.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>83</pd:startX>
+    <pd:startX>27</pd:startX>
     <pd:startY>183</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
@@ -14,8 +14,8 @@
     <pd:activity name="List Files">
         <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
         <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
-        <pd:x>203</pd:x>
-        <pd:y>183</pd:y>
+        <pd:x>112</pd:x>
+        <pd:y>184</pd:y>
         <config>
             <mode>files-and-directories</mode>
         </config>
@@ -334,6 +334,34 @@
             </pd:activity>
         </pd:group>
     </pd:group>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>203</pd:x>
+        <pd:y>184</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>205</pd:x>
+        <pd:y>398</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:Errors_Save>
+                <ns12:error_message>
+                    <xsl:value-of select="&quot;No se encuentra el archivo de novedades para insertar Usuarios&quot;"/>
+                </ns12:error_message>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>List Files</pd:to>
@@ -343,7 +371,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>List Files</pd:from>
-        <pd:to>Lines</pd:to>
+        <pd:to>Null</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -352,6 +380,29 @@
         <pd:from>Lines</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Lines</pd:to>
+        <pd:xpathDescription>Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($List-Files/ns:ListFilesActivityOutput/files/fileInfo)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>

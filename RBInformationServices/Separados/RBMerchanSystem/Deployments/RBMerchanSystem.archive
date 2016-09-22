@@ -10,7 +10,7 @@
             <authorProperty>Catalina Montero</authorProperty>
             <processProperty>/MerchanSystem.core/Interface/RestService.process,/MerchanSystem.core/Interface/TimerMerchantClosing.process,/MerchanSystem.core/Interface/TimerMerchantOpening.process</processProperty>
         </processArchive>
-        <versionProperty>6</versionProperty>
+        <versionProperty>2</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>RBMerchanSystem</name>
