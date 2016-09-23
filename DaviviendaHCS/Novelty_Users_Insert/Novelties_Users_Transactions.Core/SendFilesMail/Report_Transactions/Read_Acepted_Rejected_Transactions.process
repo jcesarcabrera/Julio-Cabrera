@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx7="nsUsosResponseBank" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx7="nsUsosResponseBank" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="nsUsosResponseBank" schemaLocation="/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/Schemas/BankValidationsResponse.xsd"/>
     <pd:name>Novelties_Users_Transactions.Core/SendFilesMail/Report_Transactions/Read_Acepted_Rejected_Transactions.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -11,7 +11,7 @@
                 <xsl:value-of select="$Write-Injustified/ns1:WriteActivityOutputClass/fileInfo/fullName"/>
             </Count_Rejected>
             <Detail_Rejected>
-                <xsl:value-of select="$Write_Detail_BankRejected_Novelties/ns1:WriteActivityOutputClass/fileInfo/fullName"/>
+                <xsl:value-of select="$Write-Detail_Start_Rejected_Novelties/ns1:WriteActivityOutputClass/fileInfo/fullName"/>
             </Detail_Rejected>
         </Rejected_Files>
     </pd:returnBindings>

@@ -11,7 +11,7 @@
                 <xsl:value-of select="$Write-Injustified/ns1:WriteActivityOutputClass/fileInfo/fullName"/>
             </Count_Rejected>
             <Detail_Rejected>
-                <xsl:value-of select="$Write_Detail_BankRejected_Novelties/ns1:WriteActivityOutputClass/fileInfo/fullName"/>
+                <xsl:value-of select="$Write-Detail_Start_Rejected_Novelties/ns1:WriteActivityOutputClass/fileInfo/fullName"/>
             </Detail_Rejected>
         </Rejected_Files>
     </pd:returnBindings>
@@ -602,7 +602,7 @@
     <pd:activity name="CountersTotal">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>240</pd:x>
+        <pd:x>238</pd:x>
         <pd:y>35</pd:y>
         <config>
             <processName>/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/CountersTotalAR.process</processName>
@@ -624,7 +624,7 @@
         <pd:inputBindings>
             <ns1:ListFilesActivityConfig>
                 <fileName>
-                    <xsl:value-of select="'C:\ArchivosRecaudo2\Usos\ARFile\UncifredFiles\ARB0320160810113214'"/>
+                    <xsl:value-of select="'C:\ArchivosRecaudo2\Usos\ARFile\UncifredFiles\ARB0320160922171654'"/>
                 </fileName>
             </ns1:ListFilesActivityConfig>
         </pd:inputBindings>
