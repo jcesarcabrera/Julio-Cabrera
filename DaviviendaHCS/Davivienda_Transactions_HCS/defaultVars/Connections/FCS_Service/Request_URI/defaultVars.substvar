@@ -2,28 +2,20 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>Password</name>
-			<value>rest1234</value>
+			<name>ClaimData</name>
+			<value>http://10.50.128.134:7033/InterfaceServer/rest/claim/download</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472419689848</modTime>
+			<modTime>1474649670001</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>TimeOut</name>
-			<value>38000</value>
+			<name>ClaimDataResult</name>
+			<value>http://10.50.128.134:7033/InterfaceServer/rest/claim/upload</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472419719057</modTime>
-		</globalVariable>
-		<globalVariable>
-			<name>User</name>
-			<value>restuser</value>
-			<deploymentSettable>true</deploymentSettable>
-			<serviceSettable>false</serviceSettable>
-			<type>String</type>
-			<modTime>1472419689753</modTime>
+			<modTime>1474645920287</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
