@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="nsClaimResponseFcs" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/CanonicoRB" xmlns:pfx3="nsDailyBlackListResultFcs" xmlns:pfx2="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" xmlns:pfx7="nsClaimDataBank" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="nsClaimResponseFcs" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/CanonicoRB" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="nsDailyBlackListResultFcs" xmlns:pfx2="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" xmlns:pfx7="nsClaimDataBank" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd">
     <xsd:import namespace="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" schemaLocation="/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd"/>
     <xsd:import namespace="nsDailyBlackListResultFcs" schemaLocation="/SharedResources/Schemas/Response/FcsDailyBlackListResult.xsd"/>
     <xsd:import namespace="http://www.recaudo.bogota.com/schemas/CanonicoRB" schemaLocation="/SharedResources/Schemas/CanonicoRecaudoBogota.xsd"/>
@@ -48,8 +48,8 @@
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
-    <pd:endX>728</pd:endX>
-    <pd:endY>185</pd:endY>
+    <pd:endX>646</pd:endX>
+    <pd:endY>286</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1435776779610</pd:targetNamespace>
@@ -348,6 +348,43 @@
             </ns:WriteActivityInputTextClass>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="SFTP_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>753</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns4:ProcessContext/ProcessId))"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | &quot;, $_processContext/ns4:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="concat(&quot;Se envía el archivo creado por cointingencia al SFTP del banco &quot;, $_processContext/ns4:ProcessContext/ProcessId)"/>
+                </ns12:message>
+                <xsl:if test="$Send_PGP_File/SFTPPutOutputFile/FileTransferred[1]/Name">
+                    <ns12:detail>
+                        <xsl:value-of select="$Send_PGP_File/SFTPPutOutputFile/FileTransferred[1]/Name"/>
+                    </ns12:detail>
+                </xsl:if>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="MailSend">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
@@ -448,8 +485,8 @@
     <pd:activity name="Send_PGP_File">
         <pd:type>com.tibco.plugin.sp.SFTPPutActivity</pd:type>
         <pd:resourceType>ae.activities.SFTPPutActivityUI</pd:resourceType>
-        <pd:x>856</pd:x>
-        <pd:y>183</pd:y>
+        <pd:x>865</pd:x>
+        <pd:y>286</pd:y>
         <config>
             <Timeout>%%Connections/SFTP/TimeOut%%</Timeout>
             <FireWall>false</FireWall>
@@ -509,6 +546,41 @@
             </Input>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="PGP_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>858</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns4:ProcessContext/ProcessId))"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | &quot;, $_processContext/ns4:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="concat(&quot;Se cifra el archivo creado por cointingencia &quot;, $_processContext/ns4:ProcessContext/ProcessId)"/>
+                </ns12:message>
+                <ns12:detail>
+                    <xsl:value-of select="$PGPCifrado/Cifred_File/FileName"/>
+                </ns12:detail>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Read File</pd:from>
         <pd:to>Parse JSON</pd:to>
@@ -553,14 +625,14 @@
     </pd:transition>
     <pd:transition>
         <pd:from>PGPCifrado</pd:from>
-        <pd:to>Send_PGP_File</pd:to>
+        <pd:to>PGP_Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Send_PGP_File</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>SFTP_Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -589,6 +661,20 @@
     <pd:transition>
         <pd:from>MailSend</pd:from>
         <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFTP_Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGP_Log</pd:from>
+        <pd:to>Send_PGP_File</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
