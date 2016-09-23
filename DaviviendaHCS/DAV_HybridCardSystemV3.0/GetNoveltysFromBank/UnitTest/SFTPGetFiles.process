@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:pfx5="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/ws/Schema" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/ws/Schema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx6="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
     <xsd:import namespace="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP"/>
     <xsd:import namespace="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP" schemaLocation="/Interfaces/Schemas/GetFilesSFTP.xsd"/>
-    <pd:name>GetNoveltysFromBank/SFTPGetFiles.process</pd:name>
+    <pd:name>GetNoveltysFromBank/UnitTest/SFTPGetFiles.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>49</pd:startX>
     <pd:startY>165</pd:startY>
@@ -69,14 +69,14 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>SetRetry</pd:from>
+            <pd:from>SetRetryError</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Insert_Error</pd:from>
+            <pd:from>SetRetry</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -111,18 +111,10 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>SetRetryError</pd:from>
-            <pd:to>Insert_Error</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
             <pd:from>SFTP Dir</pd:from>
-            <pd:to>FileNotFound</pd:to>
-            <pd:xpathDescription>FileNotFound</pd:xpathDescription>
+            <pd:to>Generate-Error-1</pd:to>
             <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-65536</pd:lineColor>
+            <pd:lineColor>-52429</pd:lineColor>
             <pd:conditionType>xpath</pd:conditionType>
             <pd:xpath>$SFTP-Dir/Output/ItemCount=0</pd:xpath>
         </pd:transition>
@@ -137,7 +129,7 @@
                 <Overwrite>true</Overwrite>
                 <useProcessData>false</useProcessData>
                 <logout>true</logout>
-                <SharedUserData>/GetNoveltysFromBank/SFTPInterface.sharedsftp</SharedUserData>
+                <SharedUserData>/GetNoveltysFromBank/UnitTest/SFTPInterface.sharedsftp</SharedUserData>
             </config>
             <pd:inputBindings>
                 <SFTPGetInputDataFile>
@@ -178,13 +170,13 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>330</pd:x>
+            <pd:x>353</pd:x>
             <pd:y>257</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns0:SleepInputSchema>
                     <IntervalInMillisec>
-                        <xsl:value-of select="$_globalVariables/pfx:GlobalVariables/SendNoveltys/SFTP/Sleep"/>
+                        <xsl:value-of select="1000"/>
                     </IntervalInMillisec>
                 </ns0:SleepInputSchema>
             </pd:inputBindings>
@@ -192,8 +184,8 @@
         <pd:activity name="SetRetryError">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>416</pd:x>
-            <pd:y>256</pd:y>
+            <pd:x>475</pd:x>
+            <pd:y>257</pd:y>
             <config>
                 <variableName>Retries</variableName>
             </config>
@@ -206,11 +198,11 @@
         <pd:activity name="SFTP Dir">
             <pd:type>com.tibco.plugin.sp.SFTPDirActivity</pd:type>
             <pd:resourceType>ae.activities.SFTPDirActivityUI</pd:resourceType>
-            <pd:x>282</pd:x>
+            <pd:x>284</pd:x>
             <pd:y>58</pd:y>
             <config>
                 <NLST>true</NLST>
-                <SharedUserData>/GetNoveltysFromBank/SFTPInterface.sharedsftp</SharedUserData>
+                <SharedUserData>/GetNoveltysFromBank/UnitTest/SFTPInterface.sharedsftp</SharedUserData>
             </config>
             <pd:inputBindings>
                 <Input>
@@ -220,42 +212,16 @@
                 </Input>
             </pd:inputBindings>
         </pd:activity>
-        <pd:activity name="Insert_Error">
-            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-            <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>511</pd:x>
-            <pd:y>257</pd:y>
-            <config>
-                <processName>/Audit_Management/Insert_Error.process</processName>
-                <spawn>true</spawn>
-            </config>
-            <pd:inputBindings>
-                <ns3:Errors_Save>
-                    <ns3:error_message>
-                        <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
-                    </ns3:error_message>
-                    <ns3:id_process>
-                        <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
-                    </ns3:id_process>
-                </ns3:Errors_Save>
-            </pd:inputBindings>
-        </pd:activity>
-        <pd:activity name="FileNotFound">
+        <pd:activity name="Generate-Error-1">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>398</pd:x>
-            <pd:y>148</pd:y>
+            <pd:x>362</pd:x>
+            <pd:y>153</pd:y>
             <config>
-                <faultName>Error</faultName>
+                <faultName/>
             </config>
             <pd:inputBindings>
-                <pfx6:ActivityInput>
-                    <data>
-                        <ErrorDescription>
-                            <xsl:value-of select="'Archivo de novedades no encontrado en SFTP'"/>
-                        </ErrorDescription>
-                    </data>
-                </pfx6:ActivityInput>
+                <pfx6:ActivityInput/>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
@@ -289,44 +255,9 @@
             </pfx6:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Insert_Log">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>673</pd:x>
-        <pd:y>165</pd:y>
-        <config>
-            <processName>/Audit_Management/Insert_Log.process</processName>
-            <spawn>true</spawn>
-        </config>
-        <pd:inputBindings>
-            <ns1:LOGS_SAVE>
-                <ns1:process>
-                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
-                </ns1:process>
-                <ns1:project>
-                    <xsl:value-of select="concat($_globalVariables/pfx:GlobalVariables/SendNoveltys/ProjectName, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
-                </ns1:project>
-                <ns1:datetime>
-                    <xsl:value-of select="current-dateTime()"/>
-                </ns1:datetime>
-                <ns1:level>
-                    <xsl:value-of select="'Info'"/>
-                </ns1:level>
-                <ns1:message>
-                    <xsl:value-of select="'Obtencion de archivos del SFTP envio de novedades'"/>
-                </ns1:message>
-                <ns1:detail>
-                    <xsl:value-of select="tib:render-xml($SFTP-Get/SFTPGetOutputFile)"/>
-                </ns1:detail>
-                <ns1:id_process>
-                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
-                </ns1:id_process>
-            </ns1:LOGS_SAVE>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Group</pd:from>
-        <pd:to>Insert_Log</pd:to>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
@@ -353,12 +284,5 @@
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>$Retries/Retry!='OK'</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Insert_Log</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

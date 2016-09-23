@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>ContingencyQueue</name>
+			<value>ContingencyNovelty.Queue</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474574677744</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>ReplyQueues</name>
 			<value>ReplyNovelty.Queues</value>
 			<deploymentSettable>true</deploymentSettable>

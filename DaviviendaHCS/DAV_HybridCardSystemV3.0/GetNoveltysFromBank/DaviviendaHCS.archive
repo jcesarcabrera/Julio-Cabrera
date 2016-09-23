@@ -10,7 +10,7 @@
             <authorProperty>RB</authorProperty>
             <processProperty>/GetNoveltysFromBank/SendNoveltysTimer.process,/GetNoveltysFromBank/ReplyNoveltysInterface.process</processProperty>
         </processArchive>
-        <versionProperty>42</versionProperty>
+        <versionProperty>44</versionProperty>
         <authorProperty>RB</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>DaviviendaHCS</name>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\nprieto\DaviviendaHCS.ear</fileLocationProperty>
+        <fileLocationProperty>C:\WorkSpaceRB\DaviviendaHCS\Deployments\DaviviendaHCS.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

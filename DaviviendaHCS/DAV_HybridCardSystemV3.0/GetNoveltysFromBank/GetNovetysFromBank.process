@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <pd:name>GetNoveltysFromBank/GetNovetysFromBank.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>27</pd:startX>
@@ -41,8 +41,8 @@
     <pd:activity name="InvokeWebService">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>422</pd:x>
-        <pd:y>61</pd:y>
+        <pd:x>419</pd:x>
+        <pd:y>63</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/InvokeWebService.process</processName>
         </config>

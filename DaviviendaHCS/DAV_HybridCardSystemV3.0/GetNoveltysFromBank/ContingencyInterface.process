@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <pd:name>GetNoveltysFromBank/SendNoveltysTimer.process</pd:name>
-    <pd:startName>Timer</pd:startName>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>GetNoveltysFromBank/ContingencyInterface.process</pd:name>
+    <pd:startName>ContingencyQueueReceiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="Timer">
-        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
-        <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>105</pd:x>
-        <pd:y>69</pd:y>
+    <pd:starter name="ContingencyQueueReceiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>70</pd:x>
+        <pd:y>54</pd:y>
         <config>
-            <StartTime>%%SendNoveltys/Timer%%</StartTime>
-            <Frequency>false</Frequency>
-            <TimeInterval>1</TimeInterval>
-            <FrequencyIndex>Day</FrequencyIndex>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%SendNoveltys/Queues/ContingencyQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/GetNoveltysFromBank/JMSConnection.sharedjmscon</ConnectionReference>
         </config>
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>450</pd:endX>
-    <pd:endY>69</pd:endY>
+    <pd:endX>423</pd:endX>
+    <pd:endY>54</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1472336600275</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1474573299788</pd:targetNamespace>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>241</pd:x>
-        <pd:y>193</pd:y>
+        <pd:x>233</pd:x>
+        <pd:y>151</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -38,24 +47,24 @@
     <pd:activity name="ErrorLog">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>343</pd:x>
-        <pd:y>193</pd:y>
+        <pd:x>331</pd:x>
+        <pd:y>151</pd:y>
         <config>
             <role>User</role>
         </config>
         <pd:inputBindings>
-            <ns:ActivityInput>
+            <ns1:ActivityInput>
                 <message>
-                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
                 </message>
-            </ns:ActivityInput>
+            </ns1:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="GetNovetysFromBank">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>276</pd:x>
-        <pd:y>69</pd:y>
+        <pd:x>249</pd:x>
+        <pd:y>54</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/GetNovetysFromBank.process</processName>
         </config>
@@ -64,8 +73,8 @@
     <pd:activity name="MailSendError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>451</pd:x>
-        <pd:y>192</pd:y>
+        <pd:x>425</pd:x>
+        <pd:y>151</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/MailSend.process</processName>
             <spawn>true</spawn>
@@ -73,10 +82,10 @@
         <pd:inputBindings>
             <input>
                 <subject>
-                    <xsl:value-of select="'Error en procesamiento envio de novedades'"/>
+                    <xsl:value-of select="'Error en procesamiento envio de novedades por contingencia'"/>
                 </subject>
                 <message>
-                    <xsl:value-of select="concat($_processContext/ns1:ProcessContext/EngineName,': ',$_error/ns1:ErrorReport/StackTrace)"/>
+                    <xsl:value-of select="concat($_processContext/ns:ProcessContext/EngineName,': ',$_error/ns:ErrorReport/StackTrace)"/>
                 </message>
                 <to>
                     <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/SendNoveltys/Mail/ErrorTo"/>
@@ -85,7 +94,7 @@
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
-        <pd:from>Timer</pd:from>
+        <pd:from>ContingencyQueueReceiver</pd:from>
         <pd:to>GetNovetysFromBank</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
