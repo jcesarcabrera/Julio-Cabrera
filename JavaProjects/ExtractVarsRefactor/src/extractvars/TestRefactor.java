@@ -37,14 +37,30 @@ public class TestRefactor {
         Boolean TIBHawkNetwork = false;
         Boolean TIBHawkService = false;
         Boolean MessageEncoding = false;
+        
+        
+        UnZip descomprimir = new UnZip();
+        String PathSalida = "C:\\nprieto\\UnrarEar";
+        String PathOrigen = "C:\\nprieto\\DaviviendaHCS.ear";
+        descomprimir.unZipIt(PathOrigen, PathSalida);
+        File dir = new File(PathSalida);
+        File[] ficheros = dir.listFiles();
+        for (int i = 0; i < ficheros.length; i++) {
+            if (ficheros[i].getName().endsWith(".par")) {
+                descomprimir.unZipIt(ficheros[i].getAbsolutePath(), PathSalida+"\\_par");
+            }
+            if (ficheros[i].getName().endsWith(".sar")) {
+                descomprimir.unZipIt(ficheros[i].getAbsolutePath(), PathSalida+"\\_sar");
+            }
+        }        
 //      Esta la debemos cambiar es el directorio donde quedo el ear descomprimido    
-        String sDirectorio = "C:\\nprieto\\UnrarEar\\both";
+        //String sDirectorio = "C:\\nprieto\\UnrarEar\\both";
 //        File directorio = new File(sDirectorio);
         SearchProcessRefactor a = new SearchProcessRefactor();
         // a.obtenerlista(sDirectorio);
         //a.listarDirectorio(directorio, "");
         //a.obtenerpathcorto("C:\\nprieto\\UnrarEar\\both\\_sar\\GetNoveltysFromBank\\JDBCTIBCO-PR.sharedjdbc");
-        a.obtenerlistadepurada(sDirectorio);
+        a.obtenerlistadepurada(PathSalida);
 //        System.out.println(a.getFiles().size());
 //        for (int i = 0; i < a.getFiles().size(); i++) {
 //            System.out.println(a.getFiles().get(i));
