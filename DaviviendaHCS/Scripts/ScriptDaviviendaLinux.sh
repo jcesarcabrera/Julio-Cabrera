@@ -1,7 +1,5 @@
 #!/bin/bash
 QueueDestinoUsos=Davivienda_Transactions_Contingency
-QueueDestinoNovedades=1
-QueueDestinoRespuestaNovedades=1
 EMSServer=tcp://localhost:7222
 Opciones=0
 
