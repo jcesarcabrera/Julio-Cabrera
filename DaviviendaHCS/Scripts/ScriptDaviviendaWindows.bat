@@ -1,5 +1,6 @@
 @ECHO OFF
 CLS
+SET "ems_server=tcp://localhost:7222"
 :MENU
 CLS
 ECHO ..................................................
@@ -21,7 +22,6 @@ IF %M%==4 GOTO EOF
 CLS
 ECHO SE ENVIARA EL MENSAJE PARA GENERAR EL ARCHIVO DE CONTINGENCIA DAVIVIENDA
 SET "queuecontingencia=Davivienda_Transactions_Contingency"
-SET "ems_server=tcp://localhost:7222"
 SET "contingenciapath=C:\ArchivosRecaudo2\Usos\Contingencias\AEB03"
 SET "EMSUser=admin"
 SET /P message=Por favor indique la fecha a realizar la contingencia: 
@@ -31,11 +31,15 @@ PAUSE
 GOTO MENU
 
 :NVE
-java -jar tibjmsMsgProducer.jar -server tcp://localhost:7222 -user admin -queue hola.queue 20160809
+ECHO SE HA SELECCIONADO ENVIAR NOVEDADES AL FCS
+java -jar tibjmsMsgProducer.jar -server %ems_server% -user admin -queue ContingencyNovelty.Queue.Send
+ECHO LAS NOVEDADES HAN SIDO ENVIADAS AL FCS
 PAUSE
 GOTO MENU
 
 :NVR
-java -jar tibjmsMsgProducer.jar -server tcp://localhost:7222 -user admin -queue hola.queue 20160809
+ECHO SE HA SELECCIONADO ENVIAR RESPUESTA DE NOVEDADES AL BANCO
+java -jar tibjmsMsgProducer.jar -server %ems_server% -user admin -queue ContingencyNovelty.Queue.Reply
+ECHO SE HA ENVIADO RESPUESTA DE NOVEDADES AL BANCO
 PAUSE
 GOTO MENU

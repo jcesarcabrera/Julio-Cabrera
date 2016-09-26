@@ -2,7 +2,7 @@
 QueueDestinoUsos=Davivienda_Transactions_Contingency
 QueueDestinoNovedades=1
 QueueDestinoRespuestaNovedades=1
-EMSServer=tcp://192.168.54.194:7222
+EMSServer=tcp://localhost:7222
 Opciones=0
 
 function contingencias(){
@@ -18,14 +18,14 @@ echo "SE HA ENVIADO EL MENSAJE "$mensaje" PARA GENERAR LA CONTINGENCIA DE USOS D
 function menu(){
 echo "EJECUCION DE CONTIGENCIA DE USOS Y NOVEDADES DAVIVIENDA"
 echo ".................................................."
-echo "Seleccione una de las opciones disponibles"
+echo "SELECCIONE UNA DE LAS OPCIONES DIPSPONIBLES"
 echo "."
-echo "1 - Envío de usos por contingencia al Banco"
-echo "2 - Envio de novedades a FCS"
-echo "3 - Envio de respuesta de novedades al Banco"
-echo "4 - Salir"
+echo "1 - ENVIO DE USOS POR CONTINGENCIA AL BANCO"
+echo "2 - ENVIO DE NOVEDADES AL FCS"
+echo "3 - ENVIO DE RESPUESTA DE NOVEDADES AL BANCO"
+echo "4 - SALIR"
 echo "."
-echo "Opciones 1, 2, 3, o 4" 
+echo "OPCIONES 1, 2, 3, o 4" 
 }
 
 menu
@@ -39,15 +39,17 @@ contingencias
 menu
 
 elif [ "$Opciones" = 2 ]; then 
-echo "Se selecciona la opcion 2"
+echo "SE ENVIAN NOVEDADES AL FCS"
+java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue ContingencyNovelty.Queue.Send
 menu
 
 elif [ "$Opciones" = 3 ]; then 
 echo "Se ha seleccionado la opcion 3"
+java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue ContingencyNovelty.Queue.Reply
 menu
 
 elif [ "$Opciones" = 4 ]; then 
-echo "Adios salir"
+echo "FINALIZA EL SCRIPT"
 fi
 read Opciones
 done
