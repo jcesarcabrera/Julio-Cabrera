@@ -10,12 +10,12 @@
 			<modTime>1473258806215</modTime>
 		</globalVariable>
 		<globalVariable>
-			<name>ClaimDataResultVillas</name>
+			<name>ClaimDataResult</name>
 			<value>http://10.50.128.134:7033/InterfaceServer/rest/claim/upload</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473448702518</modTime>
+			<modTime>1474922964503</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
