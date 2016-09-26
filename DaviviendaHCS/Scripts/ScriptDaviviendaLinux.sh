@@ -41,11 +41,13 @@ menu
 elif [ "$Opciones" = 2 ]; then 
 echo "SE ENVIAN NOVEDADES AL FCS"
 java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue ContingencyNovelty.Queue.Send
+echo "SE HA REALIZADO ENVIO DE NOVEDADES AL FCS"
 menu
 
 elif [ "$Opciones" = 3 ]; then 
-echo "Se ha seleccionado la opcion 3"
+echo "SE ENVIA RESPUESTA DE NOVEDADES AL BANCO"
 java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue ContingencyNovelty.Queue.Reply
+echo "SE HA REALIZADO ENVIO DE RESPUESTA DE NOVEDADES AL BANCO"
 menu
 
 elif [ "$Opciones" = 4 ]; then 
