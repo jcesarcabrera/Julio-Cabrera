@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd">
     <pd:name>GetNoveltysFromBank/PGPCifrado.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -24,7 +24,7 @@
         <xsd:element name="fullNameFileExit" type="xsd:string"/>
     </pd:endType>
     <pd:endX>411</pd:endX>
-    <pd:endY>58</pd:endY>
+    <pd:endY>56</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1433340545044</pd:targetNamespace>
@@ -33,7 +33,7 @@
         <pd:resourceType>ae.activities.CmdExecActivity</pd:resourceType>
         <pd:description>Proceso para cifrar archivos</pd:description>
         <pd:x>295</pd:x>
-        <pd:y>58</pd:y>
+        <pd:y>56</pd:y>
         <config>
             <outputToString>true</outputToString>
             <lineSplit>None</lineSplit>
@@ -41,16 +41,16 @@
         <pd:inputBindings>
             <CmdInput>
                 <command>
-                    <xsl:value-of select="$External-Command-ASC/Input/ExternalCommand"/>
+                    <xsl:value-of select="$ExternalCommand/Input/ExternalCommand"/>
                 </command>
             </CmdInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="External Command ASC">
+    <pd:activity name="ExternalCommand">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
         <pd:x>156</pd:x>
-        <pd:y>64</pd:y>
+        <pd:y>56</pd:y>
         <config>
             <element>
                 <xsd:element name="Input">
@@ -65,20 +65,20 @@
         <pd:inputBindings>
             <Input>
                 <ExternalCommand>
-                    <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/Exe,&quot; -a --batch --yes --output &quot;,&#xA;$_globalVariables/ns2:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEREncryp,$Start/input/filename,&quot;.asc --always-trust -e -r &quot;,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/UserEncrypt,&#xA;&quot; &quot;, $Start/input/fullfilename)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/Exe,&quot; -a --batch --yes --output &quot;,&#xA;$_globalVariables/ns2:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEREncryp,$Start/input/filename,&quot;.&quot;,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/ReplyExtension,&quot; --always-trust -e -r &quot;,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/UserEncrypt,&#xA;&quot; &quot;, $Start/input/fullfilename)"/>
                 </ExternalCommand>
             </Input>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>External Command ASC</pd:to>
+        <pd:to>ExternalCommand</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>External Command ASC</pd:from>
+        <pd:from>ExternalCommand</pd:from>
         <pd:to>Cifrado</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

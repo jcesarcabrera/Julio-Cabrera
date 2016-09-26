@@ -10,7 +10,7 @@
             <authorProperty>RB</authorProperty>
             <processProperty>/GetNoveltysFromBank/SendNoveltysTimer.process,/GetNoveltysFromBank/ReplyNoveltysInterface.process</processProperty>
         </processArchive>
-        <versionProperty>2</versionProperty>
+        <versionProperty>3</versionProperty>
         <authorProperty>RB</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>AVVillasHCS</name>

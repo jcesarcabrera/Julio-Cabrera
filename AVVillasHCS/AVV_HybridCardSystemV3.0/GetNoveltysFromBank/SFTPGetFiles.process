@@ -197,7 +197,7 @@
         <pd:activity name="SFTP Dir">
             <pd:type>com.tibco.plugin.sp.SFTPDirActivity</pd:type>
             <pd:resourceType>ae.activities.SFTPDirActivityUI</pd:resourceType>
-            <pd:x>284</pd:x>
+            <pd:x>285</pd:x>
             <pd:y>58</pd:y>
             <config>
                 <NLST>true</NLST>
@@ -206,7 +206,7 @@
             <pd:inputBindings>
                 <Input>
                     <Directory>
-                        <xsl:value-of select="concat($_globalVariables/pfx:GlobalVariables/SendNoveltys/SFTP/RemotePathSendNoveltys,'EE',$_globalVariables/pfx:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*.pgp')"/>
+                        <xsl:value-of select="concat($_globalVariables/pfx:GlobalVariables/SendNoveltys/SFTP/RemotePathSendNoveltys,'EE',$_globalVariables/pfx:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMdd',tib:add-to-dateTime(current-dateTime(), 0, 0, 0 ,0, 0,0)),'*.',$_globalVariables/pfx:GlobalVariables/SendNoveltys/PGPDecrypt/SendExtension)"/>
                     </Directory>
                 </Input>
             </pd:inputBindings>

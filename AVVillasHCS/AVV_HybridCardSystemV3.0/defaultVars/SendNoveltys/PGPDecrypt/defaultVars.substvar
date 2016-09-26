@@ -18,6 +18,22 @@
 			<modTime>1472418140309</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ReplyExtension</name>
+			<value>.pgp</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474906173381</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SendExtension</name>
+			<value>.pgp</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474906173334</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>User</name>
 			<value>mvelasco</value>
 			<deploymentSettable>true</deploymentSettable>
