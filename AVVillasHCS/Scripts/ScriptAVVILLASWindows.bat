@@ -4,7 +4,7 @@ SET "ems_server=tcp://localhost:7222"
 :MENU
 CLS
 ECHO ..................................................
-ECHO EJECUCION DE CONTIGENCIA DE USOS Y NOVEDADES DAVIVIENDA
+ECHO EJECUCION DE CONTIGENCIA DE USOS Y NOVEDADES AV VILLAS
 ECHO ..................................................
 ECHO.
 ECHO 1 - ENVIO DE USOS POR AL BANCO
@@ -22,20 +22,20 @@ IF %M%==5 GOTO EOF
 
 :EUB
 CLS
-ECHO SE ENVIARA PETICION PARA GENERAR EL ARCHIVO DE USOS DAVIVIENDA DE FORMA MANUAL
-SET "queueusos=Davivienda_Transactions_Manual"
+ECHO SE PETICION PARA GENERAR EL ARCHIVO DE USOS PARA AV VILLAS
+SET "queueusos=AV_VILLAS_Transactions_Manual"
 SET "usospath=C:\ArchivosRecaudo2\Usos\AEFile\AEFiles\"
 SET "EMSUser=admin"
 java -jar tibjmsMsgProducer.jar -server %ems_server% -user %EMSUser% -queue %queueusos% ""
-ECHO SE HA ENVIADO LA PETICION DE FORMA MANUAL PARA GENERAR ARCHIVO DE USOS EN LA RUTA %usospath% PARA EL BANCO DAVIVIENDA'
+ECHO SE HA ENVIADO LA PETICION DE FORMA MANUAL PARA GENERAR ARCHIVO DE USOS EN LA RUTA: %usospath% PARA EL BANCO AV VILLAS
 PAUSE
 GOTO MENU
 
 :EUC
 CLS
-ECHO SE ENVIARA EL MENSAJE PARA GENERAR EL ARCHIVO DE CONTINGENCIA DAVIVIENDA
-SET "queuecontingencia=Davivienda_Transactions_Contingency"
-SET "contingenciapath=C:\ArchivosRecaudo2\Usos\Contingencias\AEB03"
+ECHO SE ENVIARA EL MENSAJE PARA GENERAR EL ARCHIVO DE CONTINGENCIA AV VILLAS
+SET "queuecontingencia=AV_VILLAS_Transactions_Contingency"
+SET "contingenciapath=C:\ArchivosRecaudo2\AVVillas\Contigencias\AEB01"
 SET "EMSUser=admin"
 SET /P message=Por favor indique la fecha a realizar la contingencia: 
 java -jar tibjmsMsgProducer.jar -server %ems_server% -user %EMSUser% -queue %queuecontingencia% %message%
@@ -45,14 +45,14 @@ GOTO MENU
 
 :NVE
 ECHO SE HA SELECCIONADO ENVIAR NOVEDADES AL FCS
-java -jar tibjmsMsgProducer.jar -server %ems_server% -user admin -queue ContingencyNovelty.Queue.Send ""
+java -jar tibjmsMsgProducer.jar -server %ems_server% -user admin -queue ContingencyNoveltyVillas.Queue.Send ""
 ECHO LAS NOVEDADES HAN SIDO ENVIADAS AL FCS
 PAUSE
 GOTO MENU
 
 :NVR
-ECHO SE HA SELECCIONADO ENVIAR RESPUESTA DE NOVEDADES AL BANCO DAVIVIENDA
-java -jar tibjmsMsgProducer.jar -server %ems_server% -user admin -queue ContingencyNovelty.Queue.Reply ""
-ECHO SE HA ENVIADO RESPUESTA DE NOVEDADES AL BANCO DAVIVIENDA
+ECHO SE HA SELECCIONADO ENVIAR RESPUESTA DE NOVEDADES AL BANCO AV VILLAS
+java -jar tibjmsMsgProducer.jar -server %ems_server% -user admin -queue ContingencyNoveltyVillas.Queue.Reply ""
+ECHO SE HA ENVIADO RESPUESTA DE NOVEDADES AL BANCO AV VILLAS
 PAUSE
 GOTO MENU

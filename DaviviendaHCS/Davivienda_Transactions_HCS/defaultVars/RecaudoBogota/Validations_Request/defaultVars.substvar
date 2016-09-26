@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>Manual_Starter_Queue</name>
+			<value>Davivienda_Transactions_Manual</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474925800330</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Validations_CifredFile_RemotePath</name>
 			<value>/Enviar_Davivienda/</value>
 			<deploymentSettable>true</deploymentSettable>

@@ -1,11 +1,11 @@
 #!/bin/bash
-QueueDestinoUsos=Davivienda_Transactions_Contingency
-QueueEnvioUsos=Davivienda_Transactions_Manual
+QueueDestinoUsos=AVVILLAS_Transactions_Contingency
+QueueEnvioUsos=AVVILLAS_Transactions_Manual
 EMSServer=tcp://localhost:7222
 Opciones=0
 
 function menu(){
-echo "EJECUCION DE CONTIGENCIA DE USOS Y NOVEDADES DAVIVIENDA"
+echo "EJECUCION DE CONTIGENCIA DE USOS Y NOVEDADES AV VILLAS"
 echo ".................................................."
 echo "SELECCIONE UNA DE LAS OPCIONES DIPSPONIBLES"
 echo "."
@@ -20,20 +20,20 @@ echo "OPCIONES 1, 2, 3, 4 O 5"
 
 function enviousos(){
 clear
-echo "SE ENVIARA PETICION PARA GENERAR Y ENVIAR ARCHIVO DE USOS HACIA EL BANCO DAVIVIENDA"
+echo "SE ENVIARA PETICION PARA GENERAR Y ENVIAR ARCHIVO DE USOS HACIA EL BANCO AV VILLAS"
 emsuser="EMSUser=admin"
 java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue "$QueueEnvioUsos" ""
-echo "SE HA ENVIADO PETICION PARA GENERAR Y ENVIAR ARCHIVO DE USOS HACIA EL BANCO DAVIVIENDA"
+echo "SE HA ENVIADO PETICION PARA GENERAR Y ENVIAR ARCHIVO DE USOS HACIA EL BANCO AV VILLAS"
 }
 
 function contingencias(){
 clear
-echo "SE ENVIARA EL MENSAJE PARA GENERAR EL ARCHIVO DE CONTINGENCIA DAVIVIENDA"
+echo "SE ENVIARA EL MENSAJE PARA GENERAR EL ARCHIVO DE CONTINGENCIA AV VILLAS"
 echo "Indique la fecha para consultar y enviar contingencia de usos" 
 read mensaje
 emsuser="EMSUser=admin"
 java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue "$QueueDestinoUsos" "$mensaje"
-echo "SE HA ENVIADO EL MENSAJE "$mensaje" PARA GENERAR LA CONTINGENCIA DE USOS DAVIVIENDA POR FAVOR REVISE EL TRACING EN EL ADMINISTRATOR PARA ASEGURAR LA EJECUCION CORRECTA DEL SERVICIO"
+echo "SE HA ENVIADO EL MENSAJE "$mensaje" PARA GENERAR LA CONTINGENCIA DE USOS AV VILLAS POR FAVOR REVISE EL TRACING EN EL ADMINISTRATOR PARA ASEGURAR LA EJECUCION CORRECTA DEL SERVICIO"
 }
 
 while [ "$Opciones" != 5 ]
@@ -55,9 +55,9 @@ echo "SE HA REALIZADO ENVIO DE NOVEDADES AL FCS"
 menu
 
 elif [ "$Opciones" = 4 ]; then 
-echo "SE ENVIA RESPUESTA DE NOVEDADES AL BANCO DAVIVIENDA"
+echo "SE ENVIA RESPUESTA DE NOVEDADES AL BANCO AV VILLAS"
 java -jar tibjmsMsgProducer.jar -server "$EMSServer" -user admin -queue ContingencyNovelty.Queue.Reply ""
-echo "SE HA REALIZADO ENVIO DE RESPUESTA DE NOVEDADES AL BANCO DAVIVIENDA"
+echo "SE HA REALIZADO ENVIO DE RESPUESTA DE NOVEDADES AL BANCO AV VILLAS"
 menu
 
 elif [ "$Opciones" = 5 ]; then 

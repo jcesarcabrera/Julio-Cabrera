@@ -8,7 +8,7 @@
         <processArchive name="DaviviendaHCS-Transactions">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Julio Cabrera</authorProperty>
-            <processProperty>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process</processProperty>
+            <processProperty>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter_Manual.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/ContingenciasMain.process</processProperty>
         </processArchive>
         <versionProperty>2</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\WorkSpaceRB\DaviviendaHCS\Deployments\Davivienda_Transactions_HCS_Contingencia.ear</fileLocationProperty>
+        <fileLocationProperty>C:\WorkSpaceRB\DaviviendaHCS\Deployments\Davivienda_Transactions_HCS.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

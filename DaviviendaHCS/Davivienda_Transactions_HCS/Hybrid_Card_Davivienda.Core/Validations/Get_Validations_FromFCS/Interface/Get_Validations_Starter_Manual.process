@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN">
-    <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process</pd:name>
-    <pd:startName>GetValidations_Timer</pd:startName>
+    <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter_Manual.process</pd:name>
+    <pd:startName>Manual_Transactions</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="GetValidations_Timer">
-        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
-        <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>54</pd:x>
+    <pd:starter name="Manual_Transactions">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>60</pd:x>
         <pd:y>35</pd:y>
         <config>
-            <StartTime>%%Timer_AV_Villas/AE_Start_Time%%</StartTime>
-            <Frequency>false</Frequency>
-            <TimeInterval>1</TimeInterval>
-            <FrequencyIndex>Day</FrequencyIndex>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%RecaudoBogota/Validations_Request/Manual_Starter_Queue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/JMS Connection.sharedjmscon</ConnectionReference>
         </config>
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>480</pd:endX>
+    <pd:endX>469</pd:endX>
     <pd:endY>35</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
@@ -27,8 +36,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>382</pd:x>
-        <pd:y>149</pd:y>
+        <pd:x>370</pd:x>
+        <pd:y>147</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -38,18 +47,18 @@
     <pd:activity name="Get_Validations">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>245</pd:x>
+        <pd:x>260</pd:x>
         <pd:y>35</pd:y>
         <config>
-            <processName>/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations_Main.process</processName>
+            <processName>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations_Main.process</processName>
         </config>
         <pd:inputBindings/>
     </pd:activity>
     <pd:activity name="Insert_Error">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>479</pd:x>
-        <pd:y>149</pd:y>
+        <pd:x>467</pd:x>
+        <pd:y>147</pd:y>
         <config>
             <spawn>true</spawn>
             <processName>/Audit_Management/Insert_Error.process</processName>
@@ -68,7 +77,7 @@
     <pd:activity name="Start_Log">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>150</pd:x>
+        <pd:x>158</pd:x>
         <pd:y>35</pd:y>
         <config>
             <spawn>true</spawn>
@@ -80,7 +89,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:process>
                 <ns3:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
                 </ns3:project>
                 <ns3:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -100,7 +109,7 @@
     <pd:activity name="End_log">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>365</pd:x>
+        <pd:x>370</pd:x>
         <pd:y>35</pd:y>
         <config>
             <spawn>true</spawn>
@@ -112,7 +121,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:process>
                 <ns3:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
                 </ns3:project>
                 <ns3:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -129,13 +138,6 @@
             </ns3:LOGS_SAVE>
         </pd:inputBindings>
     </pd:activity>
-    <pd:transition>
-        <pd:from>GetValidations_Timer</pd:from>
-        <pd:to>Start_Log</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
     <pd:transition>
         <pd:from>Start_Log</pd:from>
         <pd:to>Get_Validations</pd:to>
@@ -167,6 +169,13 @@
     <pd:transition>
         <pd:from>Get_Validations</pd:from>
         <pd:to>End_log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Manual_Transactions</pd:from>
+        <pd:to>Start_Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

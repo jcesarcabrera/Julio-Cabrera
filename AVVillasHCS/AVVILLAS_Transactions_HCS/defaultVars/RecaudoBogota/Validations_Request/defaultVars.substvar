@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>Manual_Process_Queue</name>
+			<value>AV_VILLAS_Transactions_Manual</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474928034087</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Validations_CifredFile_RemotePath</name>
 			<value>/HaciaBanco/CanalOtros/</value>
 			<deploymentSettable>true</deploymentSettable>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BWSharedResource>
-    <name>ContingenciasEMS</name>
+    <name>EMS_Connection</name>
     <resourceType>ae.shared.JMSConnectionKey</resourceType>
     <config>
         <NamingEnvironment>

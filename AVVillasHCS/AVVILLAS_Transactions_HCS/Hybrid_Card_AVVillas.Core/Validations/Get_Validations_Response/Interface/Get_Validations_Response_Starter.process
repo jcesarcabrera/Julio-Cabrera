@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
     <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process</pd:name>
-    <pd:startName>Timer</pd:startName>
+    <pd:startName>GetValidations_Response</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="Timer">
+    <pd:starter name="GetValidations_Response">
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>27</pd:x>
+        <pd:x>54</pd:x>
         <pd:y>35</pd:y>
         <config>
             <StartTime>%%Timer_AV_Villas/AR_StartTime%%</StartTime>
@@ -68,7 +68,7 @@
     <pd:activity name="Start_Log">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>136</pd:x>
+        <pd:x>156</pd:x>
         <pd:y>35</pd:y>
         <config>
             <spawn>true</spawn>
@@ -130,7 +130,7 @@
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
-        <pd:from>Timer</pd:from>
+        <pd:from>GetValidations_Response</pd:from>
         <pd:to>Start_Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

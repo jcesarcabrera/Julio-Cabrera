@@ -42,7 +42,7 @@ public class GlobalVariablesRefactor {
 
     public ArrayList<String> Variables() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException, XPathExpressionException // TODO code application logic here
     {
-        String direccion = "C:\\nprieto\\UnrarEar\\TIBCO.xml";
+        String direccion = "C:\\Proyectos\\Unzip\\TIBCO.xml";
         String registros = "";
 
         // TODO code application logic here

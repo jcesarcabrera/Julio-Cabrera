@@ -40,8 +40,8 @@ public class TestRefactor {
         
         
         UnZip descomprimir = new UnZip();
-        String PathSalida = "C:\\nprieto\\UnrarEar";
-        String PathOrigen = "C:\\nprieto\\DaviviendaHCS.ear";
+        String PathSalida = "C:\\Proyectos\\Unzip\\";
+        String PathOrigen = "C:\\WorkSpaceRB\\AVVillasHCS\\Deployments\\AVVillas_HCS_Transactions.ear";
         descomprimir.unZipIt(PathOrigen, PathSalida);
         File dir = new File(PathSalida);
         File[] ficheros = dir.listFiles();
