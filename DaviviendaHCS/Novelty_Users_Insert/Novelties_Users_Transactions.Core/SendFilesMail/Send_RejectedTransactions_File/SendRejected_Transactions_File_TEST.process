@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
-    <pd:name>Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File.process</pd:name>
-    <pd:startName>TimerRejectedAR</pd:startName>
-    <pd:startX>0</pd:startX>
-    <pd:startY>0</pd:startY>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
+    <pd:name>Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File_TEST.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>55</pd:startX>
+    <pd:startY>35</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="TimerRejectedAR">
-        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
-        <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>56</pd:x>
-        <pd:y>35</pd:y>
-        <config>
-            <StartTime>%%Mail/Timer%%</StartTime>
-            <Frequency>false</Frequency>
-            <TimeInterval>1</TimeInterval>
-            <FrequencyIndex>Day</FrequencyIndex>
-        </config>
-        <pd:inputBindings/>
-    </pd:starter>
     <pd:endName>End</pd:endName>
     <pd:endX>535</pd:endX>
     <pd:endY>35</pd:endY>
@@ -169,13 +156,6 @@
         <pd:inputBindings/>
     </pd:activity>
     <pd:transition>
-        <pd:from>TimerRejectedAR</pd:from>
-        <pd:to>Rejected_Transactions</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Start_Log</pd:from>
         <pd:to>SendMailAttachment</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -232,5 +212,12 @@
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>$Rejected_Transactions/Rejected_Transactions_File=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Rejected_Transactions</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>
