@@ -10,6 +10,22 @@
 			<modTime>1474574677744</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ContingencyQueueReply</name>
+			<value>ContingencyNovelty.Queue.Reply</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474908003518</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ContingencyQueueSend</name>
+			<value>ContingencyNovelty.Queue.Send</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474908003456</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>ReplyQueues</name>
 			<value>ReplyNovelty.Queues</value>
 			<deploymentSettable>true</deploymentSettable>

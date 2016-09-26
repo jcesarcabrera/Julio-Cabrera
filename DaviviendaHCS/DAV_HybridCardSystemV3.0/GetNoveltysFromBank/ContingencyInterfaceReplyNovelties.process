@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <pd:name>GetNoveltysFromBank/ContingencyInterface.process</pd:name>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>GetNoveltysFromBank/ContingencyInterfaceReplyNovelties.process</pd:name>
     <pd:startName>ContingencyQueueReceiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
@@ -8,15 +8,15 @@
     <pd:starter name="ContingencyQueueReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>70</pd:x>
-        <pd:y>54</pd:y>
+        <pd:x>60</pd:x>
+        <pd:y>45</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
                 <transacted>false</transacted>
                 <acknowledgeMode>1</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%SendNoveltys/Queues/ContingencyQueue%%</destination>
+                <destination>%%SendNoveltys/Queues/ContingencyQueueReply%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -28,16 +28,16 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>423</pd:endX>
-    <pd:endY>54</pd:endY>
+    <pd:endX>464</pd:endX>
+    <pd:endY>45</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1474573299788</pd:targetNamespace>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>233</pd:x>
-        <pd:y>151</pd:y>
+        <pd:x>268</pd:x>
+        <pd:y>145</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -47,8 +47,8 @@
     <pd:activity name="ErrorLog">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>331</pd:x>
-        <pd:y>151</pd:y>
+        <pd:x>358</pd:x>
+        <pd:y>145</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -60,21 +60,30 @@
             </ns1:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="GetNovetysFromBank">
+    <pd:activity name="GenerateReplyToBank">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>249</pd:x>
-        <pd:y>54</pd:y>
+        <pd:x>328</pd:x>
+        <pd:y>46</pd:y>
         <config>
-            <processName>/GetNoveltysFromBank/GetNovetysFromBank.process</processName>
+            <processName>/GetNoveltysFromBank/GenerateReplyToBank.process</processName>
         </config>
-        <pd:inputBindings/>
+        <pd:inputBindings>
+            <root>
+                <Message>
+                    <xsl:value-of select="$RequestIDQuery/resultSet/Record[1]/detail"/>
+                </Message>
+                <Flag>
+                    <xsl:value-of select="'true'"/>
+                </Flag>
+            </root>
+        </pd:inputBindings>
     </pd:activity>
     <pd:activity name="MailSendError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>425</pd:x>
-        <pd:y>151</pd:y>
+        <pd:x>467</pd:x>
+        <pd:y>146</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/MailSend.process</processName>
             <spawn>true</spawn>
@@ -82,7 +91,7 @@
         <pd:inputBindings>
             <input>
                 <subject>
-                    <xsl:value-of select="'Error en procesamiento envio de novedades por contingencia'"/>
+                    <xsl:value-of select="'Error en procesamiento respuesta de novedades'"/>
                 </subject>
                 <message>
                     <xsl:value-of select="concat($_processContext/ns:ProcessContext/EngineName,': ',$_error/ns:ErrorReport/StackTrace)"/>
@@ -93,15 +102,59 @@
             </input>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="RequestIDQuery">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>45</pd:y>
+        <config>
+            <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
+            <statement>select detail  from dbo.AUDIT 
+where Project = ?
+and Message='Finaliza correctamente procesamineto de envio de novedades'
+and DateTime like ?
+order by DateTime Desc</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Project</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>Date</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>detail</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Project>
+                    <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/ProjectName, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                </Project>
+                <Date>
+                    <xsl:value-of select="concat(tib:format-date('yyyy-MM-dd',current-date()),'%')"/>
+                </Date>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>ContingencyQueueReceiver</pd:from>
-        <pd:to>GetNovetysFromBank</pd:to>
+        <pd:to>RequestIDQuery</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GetNovetysFromBank</pd:from>
+        <pd:from>GenerateReplyToBank</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -124,6 +177,13 @@
     <pd:transition>
         <pd:from>MailSendError</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RequestIDQuery</pd:from>
+        <pd:to>GenerateReplyToBank</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

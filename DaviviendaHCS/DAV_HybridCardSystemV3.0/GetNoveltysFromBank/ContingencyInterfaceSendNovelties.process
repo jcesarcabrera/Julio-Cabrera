@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <pd:name>GetNoveltysFromBank/ReplyNoveltysInterface.process</pd:name>
-    <pd:startName>ReplyActivationQueueReceiver</pd:startName>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>GetNoveltysFromBank/ContingencyInterfaceSendNovelties.process</pd:name>
+    <pd:startName>ContingencyQueueReceiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
     <pd:returnBindings/>
-    <pd:starter name="ReplyActivationQueueReceiver">
+    <pd:starter name="ContingencyQueueReceiver">
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
-        <pd:x>63</pd:x>
-        <pd:y>42</pd:y>
+        <pd:x>69</pd:x>
+        <pd:y>54</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
                 <transacted>false</transacted>
                 <acknowledgeMode>1</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%SendNoveltys/Queues/ReplyQueues%%</destination>
+                <destination>%%SendNoveltys/Queues/ContingencyQueueSend%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -28,16 +28,16 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>354</pd:endX>
-    <pd:endY>42</pd:endY>
+    <pd:endX>423</pd:endX>
+    <pd:endY>54</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1472403885930</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1474573299788</pd:targetNamespace>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>194</pd:x>
-        <pd:y>158</pd:y>
+        <pd:x>233</pd:x>
+        <pd:y>151</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -47,43 +47,34 @@
     <pd:activity name="ErrorLog">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>277</pd:x>
-        <pd:y>158</pd:y>
+        <pd:x>331</pd:x>
+        <pd:y>151</pd:y>
         <config>
             <role>User</role>
         </config>
         <pd:inputBindings>
             <ns1:ActivityInput>
                 <message>
-                    <xsl:value-of select="$_error/ns2:ErrorReport/StackTrace"/>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
                 </message>
             </ns1:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="GenerateReplyToBank">
+    <pd:activity name="GetNovetysFromBank">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>209</pd:x>
-        <pd:y>43</pd:y>
+        <pd:x>249</pd:x>
+        <pd:y>54</pd:y>
         <config>
-            <processName>/GetNoveltysFromBank/GenerateReplyToBank.process</processName>
+            <processName>/GetNoveltysFromBank/GetNovetysFromBank.process</processName>
         </config>
-        <pd:inputBindings>
-            <root>
-                <Message>
-                    <xsl:value-of select="$ReplyActivationQueueReceiver/ns:ActivityOutput/Body"/>
-                </Message>
-                <Flag>
-                    <xsl:value-of select="'false'"/>
-                </Flag>
-            </root>
-        </pd:inputBindings>
+        <pd:inputBindings/>
     </pd:activity>
     <pd:activity name="MailSendError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>360</pd:x>
-        <pd:y>158</pd:y>
+        <pd:x>425</pd:x>
+        <pd:y>151</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/MailSend.process</processName>
             <spawn>true</spawn>
@@ -91,26 +82,26 @@
         <pd:inputBindings>
             <input>
                 <subject>
-                    <xsl:value-of select="'Error en procesamiento respuesta de novedades'"/>
+                    <xsl:value-of select="'Error en procesamiento envio de novedades por contingencia'"/>
                 </subject>
                 <message>
-                    <xsl:value-of select="concat($_processContext/ns2:ProcessContext/EngineName,': ',$_error/ns2:ErrorReport/StackTrace)"/>
+                    <xsl:value-of select="concat($_processContext/ns:ProcessContext/EngineName,': ',$_error/ns:ErrorReport/StackTrace)"/>
                 </message>
                 <to>
-                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendNoveltys/Mail/ErrorTo"/>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/SendNoveltys/Mail/ErrorTo"/>
                 </to>
             </input>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
-        <pd:from>ReplyActivationQueueReceiver</pd:from>
-        <pd:to>GenerateReplyToBank</pd:to>
+        <pd:from>ContingencyQueueReceiver</pd:from>
+        <pd:to>GetNovetysFromBank</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GenerateReplyToBank</pd:from>
+        <pd:from>GetNovetysFromBank</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -133,7 +124,7 @@
     <pd:transition>
         <pd:from>MailSendError</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>

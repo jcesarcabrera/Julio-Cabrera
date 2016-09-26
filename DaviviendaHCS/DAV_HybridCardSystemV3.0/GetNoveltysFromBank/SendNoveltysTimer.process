@@ -8,8 +8,8 @@
     <pd:starter name="Timer">
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>105</pd:x>
-        <pd:y>69</pd:y>
+        <pd:x>40</pd:x>
+        <pd:y>46</pd:y>
         <config>
             <StartTime>%%SendNoveltys/Timer%%</StartTime>
             <Frequency>false</Frequency>
@@ -19,16 +19,16 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>450</pd:endX>
-    <pd:endY>69</pd:endY>
+    <pd:endX>385</pd:endX>
+    <pd:endY>46</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1472336600275</pd:targetNamespace>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>241</pd:x>
-        <pd:y>193</pd:y>
+        <pd:x>173</pd:x>
+        <pd:y>145</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -38,8 +38,8 @@
     <pd:activity name="ErrorLog">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>343</pd:x>
-        <pd:y>193</pd:y>
+        <pd:x>275</pd:x>
+        <pd:y>145</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -54,8 +54,8 @@
     <pd:activity name="GetNovetysFromBank">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>276</pd:x>
-        <pd:y>69</pd:y>
+        <pd:x>211</pd:x>
+        <pd:y>46</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/GetNovetysFromBank.process</processName>
         </config>
@@ -64,8 +64,8 @@
     <pd:activity name="MailSendError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>451</pd:x>
-        <pd:y>192</pd:y>
+        <pd:x>383</pd:x>
+        <pd:y>144</pd:y>
         <config>
             <processName>/GetNoveltysFromBank/MailSend.process</processName>
             <spawn>true</spawn>

@@ -63,18 +63,18 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>ParseBL</pd:from>
-            <pd:to>end</pd:to>
-            <pd:lineType>Default</pd:lineType>
-            <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>otherwise</pd:conditionType>
-        </pd:transition>
-        <pd:transition>
             <pd:from>ParseRealBL</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ParseBL</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>ParseBL</pd:from>
@@ -389,7 +389,7 @@ $ParseDL/Output/Rows/root/estado="25"</pd:xpath>
     <pd:activity name="Insert_log_End">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1622</pd:x>
+        <pd:x>1617</pd:x>
         <pd:y>175</pd:y>
         <config>
             <processName>/Audit_Management/Insert_Log.process</processName>
@@ -410,7 +410,7 @@ $ParseDL/Output/Rows/root/estado="25"</pd:xpath>
                     <xsl:value-of select="'Info'"/>
                 </ns12:level>
                 <ns12:message>
-                    <xsl:value-of select="'Finaliza correctamente procesamineto de envio de novedades'"/>
+                    <xsl:value-of select="'Finaliza correctamente procesamiento de envio de novedades'"/>
                 </ns12:message>
                 <ns12:detail>
                     <xsl:value-of select="$validate/root"/>
