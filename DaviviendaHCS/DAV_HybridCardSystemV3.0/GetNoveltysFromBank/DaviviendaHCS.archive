@@ -8,9 +8,9 @@
         <processArchive name="Process Archive">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>RB</authorProperty>
-            <processProperty>/GetNoveltysFromBank/SendNoveltysTimer.process,/GetNoveltysFromBank/ReplyNoveltysInterface.process</processProperty>
+            <processProperty>/GetNoveltysFromBank/SendNoveltysTimer.process,/GetNoveltysFromBank/ReplyNoveltysInterface.process,/GetNoveltysFromBank/ContingencyInterfaceReplyNovelties.process,/GetNoveltysFromBank/ContingencyInterfaceSendNovelties.process</processProperty>
         </processArchive>
-        <versionProperty>44</versionProperty>
+        <versionProperty>46</versionProperty>
         <authorProperty>RB</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>DaviviendaHCS</name>
