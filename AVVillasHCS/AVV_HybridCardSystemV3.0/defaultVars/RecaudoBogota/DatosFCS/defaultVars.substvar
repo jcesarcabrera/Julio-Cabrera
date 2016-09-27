@@ -3,7 +3,7 @@
 	<globalVariables>
 		<globalVariable>
 			<name>password_WS_FCS</name>
-			<value>#!E4QVef9AtAR8Z1OKZSyckzkN3e5qqcQ/jvq0zAJlOs0=</value>
+			<value>#!JthAHPWahMjcvT5TAJbZDR0mP64Zoi0AuW3EbXvSp5A=</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>Password</type>

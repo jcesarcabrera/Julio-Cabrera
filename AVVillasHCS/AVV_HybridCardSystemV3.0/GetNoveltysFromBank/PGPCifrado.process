@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd">
     <pd:name>GetNoveltysFromBank/PGPCifrado.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -16,7 +16,7 @@
     <pd:startY>56</pd:startY>
     <pd:returnBindings>
         <fullNameFileExit>
-            <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEREncryp,$Start/input/filename,'.asc')"/>
+            <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEREncryp,$Start/input/filename,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/ReplyExtension)"/>
         </fullNameFileExit>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
@@ -65,7 +65,7 @@
         <pd:inputBindings>
             <Input>
                 <ExternalCommand>
-                    <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/Exe,&quot; -a --batch --yes --output &quot;,&#xA;$_globalVariables/ns2:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEREncryp,$Start/input/filename,&quot;.&quot;,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/ReplyExtension,&quot; --always-trust -e -r &quot;,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/UserEncrypt,&#xA;&quot; &quot;, $Start/input/fullfilename)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/Exe,&quot; -a --batch --yes --output &quot;,&#xA;$_globalVariables/ns2:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEREncryp,$Start/input/filename,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/ReplyExtension,&quot; --always-trust -e -r &quot;,$_globalVariables/ns2:GlobalVariables/SendNoveltys/PGPDecrypt/UserEncrypt,&#xA;&quot; &quot;, $Start/input/fullfilename)"/>
                 </ExternalCommand>
             </Input>
         </pd:inputBindings>

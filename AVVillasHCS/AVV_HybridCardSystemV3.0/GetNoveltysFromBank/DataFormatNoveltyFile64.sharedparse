@@ -22,7 +22,7 @@ email(144,194)
 phone(194,211)
 mobile(211,223)
 occupation(223,243)</OffsetString>
-        <LineLength>245</LineLength>
+        <LineLength>244</LineLength>
         <DataFormat>
             <xsd:element name="root">
                 <xsd:complexType>

@@ -11,67 +11,83 @@
 		</globalVariable>
 		<globalVariable>
 			<name>BlackListResult</name>
-			<value>C:\RBFiles\BlackListResult\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\BlackListResult\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472502077066</modTime>
+			<modTime>1474995864094</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DailyBlackList</name>
-			<value>C:\RBFiles\BlackList\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\BlackList\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472419223994</modTime>
+			<modTime>1474995864163</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DebitList</name>
-			<value>C:\RBFiles\DebitList\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\DebitList\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472420322836</modTime>
+			<modTime>1474995864202</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DebitListResult</name>
-			<value>C:\RBFiles\DebitListResult\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\DebitListResult\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472502077123</modTime>
+			<modTime>1474995864240</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PathFileEE</name>
-			<value>C:\RBFiles\FileEE\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\FileEE\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472417361359</modTime>
+			<modTime>1474995864273</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PathFileEEDecryp</name>
-			<value>C:\RBFiles\FileEEDecryp\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\FileEEDecryp\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472417962931</modTime>
+			<modTime>1474995864309</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PathFileEEHex</name>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\FileEEHex\</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474995864347</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PathFileER</name>
-			<value>C:\RBFiles\FileER\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\FileER\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472574767749</modTime>
+			<modTime>1474995864383</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PathFileEREncryp</name>
-			<value>C:\RBFiles\FileEREncryp\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\FileEREncryp\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472746040261</modTime>
+			<modTime>1474995864419</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>PathFileERHex</name>
+			<value>C:\ArchivosRecaudoAVVillas\Novedades\FileERHex\</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474995864454</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

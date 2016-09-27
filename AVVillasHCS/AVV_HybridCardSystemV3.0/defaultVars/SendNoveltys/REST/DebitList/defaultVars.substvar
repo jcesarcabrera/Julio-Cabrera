@@ -3,19 +3,19 @@
 	<globalVariables>
 		<globalVariable>
 			<name>URI</name>
-			<value>http://10.50.98.21:81/InterfaceServer/rest/dailydl/upload</value>
+			<value>http://10.50.128.134:7033/InterfaceServer/rest/dailydl/upload</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472419697303</modTime>
+			<modTime>1475002711514</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>URIResult</name>
-			<value>http://10.50.98.21:81/InterfaceServer/rest/dailydl/download</value>
+			<value>http://10.50.128.134:7033/InterfaceServer/rest/dailydl/download</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472507224935</modTime>
+			<modTime>1475002711544</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

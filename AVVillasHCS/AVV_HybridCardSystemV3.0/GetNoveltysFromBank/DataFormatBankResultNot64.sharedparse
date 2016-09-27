@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <name>DataFormatBankResult</name>
+    <name>DataFormatBankResultNot64</name>
     <resourceType>ae.shared.ParseSharedResource</resourceType>
     <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <FormatType>Fixed format</FormatType>
@@ -9,7 +9,7 @@
         <LineSeparator>
 </LineSeparator>
         <FillCharacter>Space</FillCharacter>
-        <LineLength>144</LineLength>
+        <LineLength>145</LineLength>
         <OffsetString>document_id(0,16)
 card_number(16,32)
 names(32,62)

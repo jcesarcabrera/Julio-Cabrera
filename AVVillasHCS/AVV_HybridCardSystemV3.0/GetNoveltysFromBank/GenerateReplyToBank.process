@@ -100,12 +100,12 @@
             <pd:inputBindings>
                 <Rows>
                     <root>
-                        <xsl:variable name="var" select="tib:hex-to-base64($rowbl/pfx:body/pfx:FCSCardNumber)"/>
+                        <xsl:variable name="var" select="$rowbl/pfx:body/pfx:FCSCardNumber"/>
                         <document_id>
                             <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/document_id"/>
                         </document_id>
                         <card_number>
-                            <xsl:value-of select="$var"/>
+                            <xsl:value-of select="tib:hex-to-base64($var)"/>
                         </card_number>
                         <names>
                             <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/names"/>
@@ -138,12 +138,12 @@
                 <xsl:choose>
                     <xsl:when test="$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'">
                         <root>
-                            <xsl:value-of select="concat($BlackListContent/root,$RenderBlackList64/Text,&quot;&#xA;&quot;)"/>
+                            <xsl:value-of select="concat($BlackListContent/root,$RenderBlackList64/Text)"/>
                         </root>
                     </xsl:when>
                     <xsl:otherwise>
                         <root>
-                            <xsl:value-of select="concat($BlackListContent/root,$RenderBlackList/Text,&quot;&#xA;&quot;)"/>
+                            <xsl:value-of select="concat($BlackListContent/root,$RenderBlackList/Text)"/>
                         </root>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -250,19 +250,19 @@
             <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
             <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
             <pd:x>1329</pd:x>
-            <pd:y>470</pd:y>
+            <pd:y>469</pd:y>
             <config>
                 <ParseSharedConfig>/GetNoveltysFromBank/DataFormatBankResult64.sharedparse</ParseSharedConfig>
             </config>
             <pd:inputBindings>
                 <Rows>
                     <root>
-                        <xsl:variable name="var" select="tib:hex-to-base64($rowdl/pfx2:body/pfx2:FCSCardNumber)"/>
+                        <xsl:variable name="var" select="$rowdl/pfx2:body/pfx2:FCSCardNumber"/>
                         <document_id>
                             <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/document_id"/>
                         </document_id>
                         <card_number>
-                            <xsl:value-of select="$var"/>
+                            <xsl:value-of select="tib:hex-to-base64($var)"/>
                         </card_number>
                         <names>
                             <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/names"/>
@@ -295,12 +295,12 @@
                 <xsl:choose>
                     <xsl:when test="$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'">
                         <root>
-                            <xsl:value-of select="concat($DebitListContent/root,$RenderDebitList64/Text,&quot;&#xA;&quot;)"/>
+                            <xsl:value-of select="concat($DebitListContent/root,$RenderDebitList64/Text)"/>
                         </root>
                     </xsl:when>
                     <xsl:otherwise>
                         <root>
-                            <xsl:value-of select="concat($DebitListContent/root,$RenderDebitList/Text,&quot;&#xA;&quot;)"/>
+                            <xsl:value-of select="concat($DebitListContent/root,$RenderDebitList/Text)"/>
                         </root>
                     </xsl:otherwise>
                 </xsl:choose>
