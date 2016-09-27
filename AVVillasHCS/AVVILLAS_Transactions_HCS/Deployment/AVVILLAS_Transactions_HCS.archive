@@ -10,11 +10,15 @@
             <authorProperty>Julio Cabrera</authorProperty>
             <processProperty>/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Contingencias/Interface/ContingenciasVillas.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Manual_Starter.process,/Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process</processProperty>
         </processArchive>
-        <versionProperty>2</versionProperty>
+        <versionProperty>3</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>AVVILLAS_Transactions_HCS</name>
-        <designer/>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
         <fileLocationProperty>C:\WorkSpaceRB\AVVillasHCS\Deployments\AVVillas_HCS_Transactions.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
