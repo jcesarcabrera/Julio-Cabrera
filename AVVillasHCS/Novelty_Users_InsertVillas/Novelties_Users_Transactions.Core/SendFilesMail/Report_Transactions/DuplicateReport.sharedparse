@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>DuplicateReport</name>
+    <resourceType>ae.shared.ParseSharedResource</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FormatType>Delimiter separated</FormatType>
+        <ColumnSeparator> </ColumnSeparator>
+        <ColSeparatorRule>Treat all characters as entered as a single column separator string</ColSeparatorRule>
+        <LineSeparator>
+</LineSeparator>
+        <FillCharacter>Space</FillCharacter>
+        <OffsetString>document_id(0,16)
+card_number(16,32)
+names(32,62)
+last_name(62,82)
+second_last_name(82,102)
+address(102,142)
+estado(142,144)
+document_type(144,146)
+gender(146,148)
+email(148,198)
+phone(198,215)
+mobile(215,227)
+occupation(227,247)</OffsetString>
+        <LineLength>248</LineLength>
+        <DataFormat>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="document_id" type="xsd:string"/>
+                        <xsd:element name="card_number" type="xsd:string"/>
+                        <xsd:element name="names" type="xsd:string"/>
+                        <xsd:element name="last_name" type="xsd:string"/>
+                        <xsd:element name="second_last_name" type="xsd:string"/>
+                        <xsd:element name="address" type="xsd:string"/>
+                        <xsd:element name="estado" type="xsd:string"/>
+                        <xsd:element name="document_type" type="xsd:string"/>
+                        <xsd:element name="gender" type="xsd:string"/>
+                        <xsd:element name="email" type="xsd:string"/>
+                        <xsd:element name="phone" type="xsd:string"/>
+                        <xsd:element name="mobile" type="xsd:string"/>
+                        <xsd:element name="occupation" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </DataFormat>
+    </config>
+</BWSharedResource>

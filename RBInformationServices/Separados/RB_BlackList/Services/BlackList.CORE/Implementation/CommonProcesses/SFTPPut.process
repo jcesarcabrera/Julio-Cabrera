@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd">
+    <xsd:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="/Schemas/Error.xsd"/>
+    <pd:name>Services/BlackList.CORE/Implementation/CommonProcesses/SFTPPut.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="RemoteFileName" type="xsd:string"/>
+                    <xsd:element name="LocalFileName" type="xsd:string"/>
+                    <xsd:element name="Host" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Port" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="UserName" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="Password" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>67</pd:startX>
+    <pd:startY>80</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$varErrorMessage/pfx:Error"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:Error"/>
+    <pd:endX>480</pd:endX>
+    <pd:endY>80</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <varErrorMessage ref="pfx:Error"/>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1458748777355</pd:targetNamespace>
+    <pd:activity name="SFTP Put">
+        <pd:type>com.tibco.plugin.sp.SFTPPutActivity</pd:type>
+        <pd:resourceType>ae.activities.SFTPPutActivityUI</pd:resourceType>
+        <pd:x>209</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <Timeout>%%Connections/SFTP/TimeOut%%</Timeout>
+            <FireWall>false</FireWall>
+            <isBinary>false</isBinary>
+            <Append>false</Append>
+            <useProcessData>false</useProcessData>
+            <persistTimestamp>false</persistTimestamp>
+            <Overwrite>true</Overwrite>
+            <SharedUserData>/SharedResources/Connections/SFTP RB Connection.sharedsftp</SharedUserData>
+        </config>
+        <pd:inputBindings>
+            <SFTPPutInputDataFile>
+                <RemoteFileName>
+                    <xsl:value-of select="$Start/root/RemoteFileName"/>
+                </RemoteFileName>
+                <LocalFileName>
+                    <xsl:value-of select="$Start/root/LocalFileName"/>
+                </LocalFileName>
+                <xsl:if test="$Start/root/Host">
+                    <Host>
+                        <xsl:value-of select="$Start/root/Host"/>
+                    </Host>
+                </xsl:if>
+                <xsl:if test="$Start/root/Port">
+                    <Port>
+                        <xsl:value-of select="$Start/root/Port"/>
+                    </Port>
+                </xsl:if>
+                <xsl:if test="$Start/root/UserName">
+                    <UserName>
+                        <xsl:value-of select="$Start/root/UserName"/>
+                    </UserName>
+                </xsl:if>
+                <xsl:if test="$Start/root/Password">
+                    <Password>
+                        <xsl:value-of select="$Start/root/Password"/>
+                    </Password>
+                </xsl:if>
+            </SFTPPutInputDataFile>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Ok Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>371</pd:x>
+        <pd:y>82</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;00&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Transferencia Exitosa&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch Connection Timeout">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>207</pd:x>
+        <pd:y>187</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=ConnectionTimeoutException</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch Connection Error">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>207</pd:x>
+        <pd:y>288</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=ConnectionErrorException</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch Command Exception">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>209</pd:x>
+        <pd:y>400</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=CommandExecutionException</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Catch Put Files Error">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>209</pd:x>
+        <pd:y>512</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <fault>localname=PutFilesException</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Connection Timeout Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>371</pd:x>
+        <pd:y>186</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;16&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Conexión expirada al servidor SFTP&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Connection Error Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>372</pd:x>
+        <pd:y>289</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;16&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Error de conexión al servidor SFTP&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Command Exception Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>370</pd:x>
+        <pd:y>399</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;16&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Error de comando SFTP&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Put Files Error Response">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>371</pd:x>
+        <pd:y>511</pd:y>
+        <config>
+            <variableName>varErrorMessage</variableName>
+        </config>
+        <pd:inputBindings>
+            <pfx:Error>
+                <pfx:ErrorCode>
+                    <xsl:value-of select="&quot;16&quot;"/>
+                </pfx:ErrorCode>
+                <pfx:ErrorMessage>
+                    <xsl:value-of select="&quot;Error copiando los archivos especificados en el servidor SFTP&quot;"/>
+                </pfx:ErrorMessage>
+            </pfx:Error>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SFTP Put</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFTP Put</pd:from>
+        <pd:to>Ok Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Ok Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch Connection Timeout</pd:from>
+        <pd:to>Connection Timeout Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Connection Timeout Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch Connection Error</pd:from>
+        <pd:to>Connection Error Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Connection Error Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch Command Exception</pd:from>
+        <pd:to>Command Exception Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Command Exception Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch Put Files Error</pd:from>
+        <pd:to>Put Files Error Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Put Files Error Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

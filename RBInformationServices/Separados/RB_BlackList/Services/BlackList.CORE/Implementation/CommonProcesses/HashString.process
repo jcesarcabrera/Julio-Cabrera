@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Services/BlackList.CORE/Implementation/CommonProcesses/HashString.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="plainString" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>97</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <hash>
+            <xsl:value-of select="$Hash-String/javaCodeActivityOutput/hash"/>
+        </hash>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="hash" type="xsd:long"/>
+    </pd:endType>
+    <pd:endX>403</pd:endX>
+    <pd:endY>69</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.rbsas.co/1450903500607</pd:targetNamespace>
+    <pd:activity name="Hash String">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>240</pd:x>
+        <pd:y>66</pd:y>
+        <config>
+            <fileName>HashStringHashString</fileName>
+            <packageName>Services.BlackList_CORE.Implementation.CommonProcesses.HashString</packageName>
+            <fullsource>package Services.BlackList_CORE.Implementation.CommonProcesses.HashString;
+import java.util.*;
+import java.io.*;
+public class HashStringHashString{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String plainString = "";
+	protected long hash = 0;
+	public String getplainString() {
+		return plainString;
+	}
+	public void setplainString(String val) {
+		plainString = val;
+	}
+	public long gethash() {
+		return hash;
+	}
+	public void sethash(long val) {
+		hash = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public HashStringHashString() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String plainString
+	Out : long hash
+* Available Variables: DO NOT MODIFY *****/
+
+hash = plainString.hashCode();}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>hash</fieldName>
+                    <fieldType>long</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>plainString</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>HashStringHashString</name>
+                    <byteCode>yv66vgAAADMAKQkABgAdCQAGAB4KAAcAHwgAIAoAIQAiBwAjBwAkAQALcGxhaW5TdHJpbmcBABJMamF2YS9sYW5nL1N0cmluZzsBAARoYXNoAQABSgEADmdldHBsYWluU3RyaW5nAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAOc2V0cGxhaW5TdHJpbmcBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAdnZXRoYXNoAQADKClKAQAHc2V0aGFzaAEABChKKVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwAlAQAKU291cmNlRmlsZQEAGUhhc2hTdHJpbmdIYXNoU3RyaW5nLmphdmEMAAgACQwACgALDAAWABcBAAAHACYMACcAKAEAVlNlcnZpY2VzL0JsYWNrTGlzdF9DT1JFL0ltcGxlbWVudGF0aW9uL0NvbW1vblByb2Nlc3Nlcy9IYXNoU3RyaW5nL0hhc2hTdHJpbmdIYXNoU3RyaW5nAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABBqYXZhL2xhbmcvU3RyaW5nAQAIaGFzaENvZGUBAAMoKUkAIQAGAAcAAAACAAQACAAJAAAABAAKAAsAAAAGAAEADAANAAEADgAAAB0AAQABAAAABSq0AAGwAAAAAQAPAAAABgABAAAACQABABAAEQABAA4AAAAiAAIAAgAAAAYqK7UAAbEAAAABAA8AAAAKAAIAAAAMAAUADQABABIAEwABAA4AAAAdAAIAAQAAAAUqtAACrQAAAAEADwAAAAYAAQAAAA8AAQAUABUAAQAOAAAAIgADAAMAAAAGKh+1AAKxAAAAAQAPAAAACgACAAAAEgAFABMAAQAWABcAAQAOAAAANAADAAEAAAAQKrcAAyoSBLUAASoJtQACsQAAAAEADwAAABIABAAAABUABAAGAAoABwAPABYAAQAYABcAAgAOAAAAJQADAAEAAAANKiq0AAG2AAWFtQACsQAAAAEADwAAAAYAAQAAAB0AGQAAAAQAAQAaAAEAGwAAAAIAHA==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <plainString>
+                    <xsl:value-of select="$Start/plainString"/>
+                </plainString>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Hash String</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Hash String</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

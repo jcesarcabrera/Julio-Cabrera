@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>Database</name>
-			<value>bd_pruebasQA</value>
+			<value>AV_Villas_HCS</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1474577038784</modTime>
+			<modTime>1474994349443</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Host</name>

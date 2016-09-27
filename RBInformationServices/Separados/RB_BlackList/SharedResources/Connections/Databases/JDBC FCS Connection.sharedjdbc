@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC FCS Connection</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>tibcosoftwareinc.jdbc.oracle.OracleDriver</driver>
+        <maxConnections>%%Connections/FCS/MaxConnections%%</maxConnections>
+        <loginTimeout>%%Connections/FCS/Timeout%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:tibcosoftwareinc:oracle://%%Connections/FCS/Host%%:%%Connections/FCS/Port%%;SID=%%Connections/FCS/Instance%%</location>
+        <user>%%Connections/FCS/Username%%</user>
+        <password>%%Connections/FCS/Password%%</password>
+    </config>
+</BWSharedResource>

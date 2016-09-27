@@ -107,7 +107,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:process>
                 <ns1:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
                 </ns1:project>
                 <ns1:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -189,7 +189,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:process>
                 <ns1:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
                 </ns1:project>
                 <ns1:datetime>
                     <xsl:value-of select="current-dateTime()"/>

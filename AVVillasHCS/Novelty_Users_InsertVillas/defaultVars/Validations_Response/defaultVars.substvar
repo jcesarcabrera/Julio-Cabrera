@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Encoding</name>
+			<value>UTF-8</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474992929949</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>NotValid_Transactions_File</name>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\ARFile\NotValidARFiles\</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474993386239</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Validations_ResponseFileName_Prefix</name>
+			<value>AR</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1472498022963</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Validations_ResponseFile_BankPrefix</name>
+			<value>B01</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1475001078206</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Validations_Response_UncifredFile</name>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\ARFile\UncifredFiles\</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1474993386376</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

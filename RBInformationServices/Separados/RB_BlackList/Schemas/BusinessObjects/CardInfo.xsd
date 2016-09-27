@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/CardInfo.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="CardInfo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CardNumber" minOccurs="0"/>
+				<xs:element ref="StatusCode" minOccurs="0"/>
+				<xs:element ref="Status" minOccurs="0"/>
+				<xs:element ref="ProfileCode" minOccurs="0"/>
+				<xs:element ref="Profile" minOccurs="0"/>
+				<xs:element ref="CardTypeCode" minOccurs="0"/>
+				<xs:element ref="CardType" minOccurs="0"/>
+				<xs:element ref="PrepaidBalance" minOccurs="0"/>
+				<xs:element ref="PospaidBalance" minOccurs="0"/>
+				<xs:element ref="CreatedAt" minOccurs="0"/>
+				<xs:element ref="LastModify" minOccurs="0"/>
+				<xs:element ref="CardAcquisitionFormCode" minOccurs="0"/>
+				<xs:element ref="CardAcquisitionForm" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CardNumber" type="xs:string"/>
+	<xs:element name="Status" type="xs:string"/>
+	<xs:element name="CardTypeCode" type="xs:string"/>
+	<xs:element name="CardType" type="xs:string"/>
+	<xs:element name="PrepaidBalance" type="xs:decimal"/>
+	<xs:element name="PospaidBalance" type="xs:decimal"/>
+	<xs:element name="CreatedAt" type="xs:dateTime"/>
+	<xs:element name="LastModify" type="xs:dateTime"/>
+	<xs:element name="StatusCode" type="xs:string"/>
+	<xs:element name="CardAcquisitionFormCode" type="xs:string"/>
+	<xs:element name="CardAcquisitionForm" type="xs:string"/>
+	<xs:element name="ProfileCode" type="xs:string"/>
+	<xs:element name="Profile" type="xs:string"/>
+</xs:schema>

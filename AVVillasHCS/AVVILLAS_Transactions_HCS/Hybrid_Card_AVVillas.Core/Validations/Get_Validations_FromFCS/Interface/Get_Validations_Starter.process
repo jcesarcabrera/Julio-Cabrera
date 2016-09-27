@@ -80,7 +80,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:process>
                 <ns3:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
                 </ns3:project>
                 <ns3:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -89,7 +89,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns3:level>
                 <ns3:message>
-                    <xsl:value-of select="concat(&quot;Inicia la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;TARJETA HIBRIDA AV VILLAS | Inicia la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:message>
                 <ns3:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
@@ -112,7 +112,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:process>
                 <ns3:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
                 </ns3:project>
                 <ns3:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -121,7 +121,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns3:level>
                 <ns3:message>
-                    <xsl:value-of select="concat(&quot;Finaliza la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;TARJETA HIBRIDA AV VILLAS | Finaliza la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:message>
                 <ns3:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>

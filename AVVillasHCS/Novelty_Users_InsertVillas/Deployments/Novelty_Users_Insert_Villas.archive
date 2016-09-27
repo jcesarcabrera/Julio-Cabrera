@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Catalina Montero</authorProperty>
+        </sharedArchive>
+        <processArchive name="Novelty_Users_Insert">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Julio Cabrera</authorProperty>
+            <processProperty>/Novelties_Users_Transactions.Core/Insert_Novelties/TimerInsertNoveltysCards.process,/Novelties_Users_Transactions.Core/Insert_Users/Timer_InsertHistoryUsers.process,/Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File.process,/Novelties_Users_Transactions.Core/SendFilesMail/Send_AE_File/Send_AE_File.process,/Novelties_Users_Transactions.Core/Insert_Transactions/Insert_Transactions_Timer.process,/Novelties_Users_Transactions.Core/SendFilesMail/Report_Transactions/Rejected_Transactions.process,/Novelties_Users_Transactions.Core/Insert_Novelties_Response/Timer_Insert_Novelties_Response.process,/Novelties_Users_Transactions.Core/Insert_Transactions_Response/Timer_Insert_Transactions_Response.process</processProperty>
+        </processArchive>
+        <versionProperty>2</versionProperty>
+        <authorProperty>Julio Cabrera</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>Novelty_Users_Insert_Villas</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\WorkSpaceRB\AVVillasHCS\Deployments\Novelty_Users_Insert.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

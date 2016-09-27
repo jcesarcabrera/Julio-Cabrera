@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC MiddlewareDB Connection</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>tibcosoftwareinc.jdbc.sqlserver.SQLServerDriver</driver>
+        <maxConnections>%%Connections/MiddlewareProject/MaxConnections%%</maxConnections>
+        <loginTimeout>%%Connections/MiddlewareProject/Timeout%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:tibcosoftwareinc:sqlserver://%%Connections/MiddlewareProject/Host%%:%%Connections/MiddlewareProject/Port%%;databaseName=%%Connections/MiddlewareProject/Instance%%</location>
+        <password>%%Connections/MiddlewareProject/Password%%</password>
+        <user>%%Connections/MiddlewareProject/Username%%</user>
+    </config>
+</BWSharedResource>

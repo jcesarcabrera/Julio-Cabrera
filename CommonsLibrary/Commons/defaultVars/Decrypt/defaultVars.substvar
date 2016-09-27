@@ -3,35 +3,35 @@
 	<globalVariables>
 		<globalVariable>
 			<name>ClaveDecrypt</name>
-			<value>daviviendarb1234</value>
+			<value>villasrb1234</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472353787763</modTime>
+			<modTime>1475002593272</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>FileType</name>
-			<value>.asc</value>
+			<value>.pgp</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472353823044</modTime>
+			<modTime>1475002593287</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>KeyUser</name>
-			<value>intercambioseguro</value>
+			<value>FtpSeguro</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472353858263</modTime>
+			<modTime>1475002593307</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>KeyUserPrivate</name>
-			<value>mvelasco</value>
+			<value>TestVillasRB</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472353893622</modTime>
+			<modTime>1475002593309</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PGPExe</name>
@@ -43,19 +43,19 @@
 		</globalVariable>
 		<globalVariable>
 			<name>PrivateKey</name>
-			<value>C:\PGP\Llaves\DaviviendaRB.asc</value>
+			<value>C:\PGP\Llaves\Villas\TestVillasRBpriv.asc</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472354010372</modTime>
+			<modTime>1475002593325</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>PublicKey</name>
-			<value>C:\PGP\Llaves\PublicaDaviviendaPrd.asc</value>
+			<value>C:\PGP\Llaves\Villas\FtpSeguro.asc</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1472354010403</modTime>
+			<modTime>1475002593340</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>
