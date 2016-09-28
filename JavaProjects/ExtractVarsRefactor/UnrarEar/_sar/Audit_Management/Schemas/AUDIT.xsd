@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT"
+	 targetNamespace="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="LOGS_SAVE">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="process" type="xs:string"/>
+				<xs:element name="project" type="xs:string"/>
+				<xs:element name="datetime" type="xs:string"/>
+				<xs:element name="level" type="xs:string" minOccurs="0"/>
+				<xs:element name="message" type="xs:string"/>
+				<xs:element name="detail" type="xs:string" minOccurs="0"/>
+				<xs:element name="id_process" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

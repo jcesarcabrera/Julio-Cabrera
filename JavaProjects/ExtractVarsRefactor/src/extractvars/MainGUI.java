@@ -17,9 +17,10 @@ import org.xml.sax.SAXException;
  *
  * @author camilo prieto, jpalvis cocreador del codigo y asesor experto (MAESTRO)
  */
-public class TestRefactor {
+public class MainGUI {
 
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, XPathExpressionException, TransformerException {
+    public String extraer(String Path) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException, XPathExpressionException, TransformerException {
+        String Result = "";
         Boolean Deployment = false;
         Boolean DirLedger = false;
         Boolean DirTrace = false;
@@ -37,11 +38,11 @@ public class TestRefactor {
         Boolean TIBHawkNetwork = false;
         Boolean TIBHawkService = false;
         Boolean MessageEncoding = false;
-        String ResultadodeVars="";
+        
         
         UnZip descomprimir = new UnZip();
-        String PathSalida = "C:\\nprieto\\UnrarEar";
-        String PathOrigen = "C:\\nprieto\\AVVillasHCS.ear";
+        String PathSalida = ".\\UnrarEar";
+        String PathOrigen = Path;
         descomprimir.unZipIt(PathOrigen, PathSalida);
         File dir = new File(PathSalida);
         File[] ficheros = dir.listFiles();
@@ -72,7 +73,7 @@ public class TestRefactor {
                 File archivo = new File(a.getFiles().get(j));
                 if (FileSearch.find(archivo, "%%" + gv.Variables().get(i) + "%%")
                         || FileSearch.find(archivo, ":GlobalVariables/" + gv.Variables().get(i))) {
-                    ResultadodeVars+=gv.getVars(gv.Variables().get(i));
+                    Result+=gv.getVars(gv.Variables().get(i));
                     if ("Deployment".equals(gv.Variables().get(i))) {
                         Deployment = true;
                     }
@@ -130,56 +131,61 @@ public class TestRefactor {
         }
 
         if (Deployment == false) {
-             ResultadodeVars+=gv.getVars("Deployment");
+            
+            Result+=gv.getVars("Deployment");
         }
         if (DirLedger == false) {
-             ResultadodeVars+=gv.getVars("DirLedger");
+            Result+=gv.getVars("DirLedger");
         }
         if (DirTrace == false) {
-             ResultadodeVars+=gv.getVars("DirTrace");
+            Result+=gv.getVars("DirTrace");
         }
         if (Domain == false) {
-             ResultadodeVars+=gv.getVars("Domain");
+         Result+=gv.getVars("Domain");
         }
         if (HawkEnabled == false) {
-             ResultadodeVars+=gv.getVars("HawkEnabled");
+           Result+=gv.getVars("HawkEnabled");
         }
         if (JmsProviderUrl == false) {
-             ResultadodeVars+=gv.getVars("JmsProviderUrl");
+           Result+=gv.getVars("JmsProviderUrl");
         }
-        if (JmsSslProviderUrl == false) {
-             ResultadodeVars+=gv.getVars("JmsSslProviderUrl");
+        if (JmsSslProviderUrl == false) {          
+    Result+=gv.getVars("JmsSslProviderUrl");
         }
         if (RemoteRvDaemon == false) {
-             ResultadodeVars+=gv.getVars("RemoteRvDaemon");
+        Result+=gv.getVars("RemoteRvDaemon");            
         }
         if (RvDaemon == false) {
-             ResultadodeVars+=gv.getVars("RvDaemon");
+       Result+=gv.getVars("RvDaemon");
         }
         if (RvNetwork == false) {
-             ResultadodeVars+=gv.getVars("RvNetwork");
+          Result+=gv.getVars("RvNetwork");
         }
         if (RvService == false) {
-             ResultadodeVars+=gv.getVars("RvService");
+         Result+=gv.getVars("RvService");
         }
         if (RvaHost == false) {
-             ResultadodeVars+=gv.getVars("RvaHost");
+         Result+=gv.getVars("RvaHost");
         }
         if (RvaPort == false) {
-             ResultadodeVars+=gv.getVars("RvaPort");
+         Result+=gv.getVars("RvaPort");
         }
-        if (TIBHawkDaemon == false) {
-             ResultadodeVars+=gv.getVars("TIBHawkDaemon");
+        if (TIBHawkDaemon == false) {           
+           Result+=gv.getVars("TIBHawkDaemon");
         }
-        if (TIBHawkNetwork == false) {
-             ResultadodeVars+=gv.getVars("TIBHawkNetwork");
+        if (TIBHawkNetwork == false) {          
+            Result+=gv.getVars("TIBHawkNetwork");
         }
-        if (TIBHawkService == false) {
-             ResultadodeVars+=gv.getVars("TIBHawkService");
+        if (TIBHawkService == false) {           
+            Result+=gv.getVars("TIBHawkService");
         }
-        if (MessageEncoding == false) {
-             ResultadodeVars+=gv.getVars("MessageEncoding");
-        }        
-        System.out.println(ResultadodeVars);
+        if (MessageEncoding == false) {         
+                    Result+=gv.getVars("MessageEncoding");
+        }  
+    return Result;
+    }    
+
+    boolean extraer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

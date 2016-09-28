@@ -4,6 +4,7 @@
  */
 package extractvars;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,10 +40,14 @@ public class GlobalVariablesRefactor {
      * @param args the command line arguments
      */
     Node etiHi;
-
+    String direccion=null; 
+    public GlobalVariablesRefactor(String path){
+        direccion=path+"\\TIBCO.xml";
+    };
+    
+    
     public ArrayList<String> Variables() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException, XPathExpressionException // TODO code application logic here
     {
-        String direccion = "C:\\Proyectos\\Unzip\\TIBCO.xml";
         String registros = "";
 
         // TODO code application logic here
@@ -130,8 +135,8 @@ public class GlobalVariablesRefactor {
         return resultado;
     }
 
-    public void getVars(String ww) throws TransformerConfigurationException, ParserConfigurationException, SAXException, IOException, TransformerException {
-
+    public String getVars(String ww) throws TransformerConfigurationException, ParserConfigurationException, SAXException, IOException, TransformerException {
+        String Result="";
         NodeList lista = etiHi.getChildNodes();
 
         for (int i = 0; i < lista.getLength(); i++) {
@@ -166,7 +171,9 @@ public class GlobalVariablesRefactor {
                             DOMSource source = new DOMSource(nodo);
                             trans.transform(source, result);
                             String xmlString = sw.toString();
-                            System.out.print(xmlString);
+                            //System.out.print(xmlString);
+                            Result=xmlString;
+                            // System.out.println("Rs: "+Result);
 
                         }
                     }
@@ -185,7 +192,9 @@ public class GlobalVariablesRefactor {
                             DOMSource source = new DOMSource(nodo);
                             trans.transform(source, result);
                             String xmlString = sw.toString();
-                            System.out.print(xmlString);
+                            //System.out.print(xmlString);
+                            Result=xmlString;
+                          //   System.out.println("Rs: "+Result);
                         }
                     }
                 }
@@ -203,7 +212,9 @@ public class GlobalVariablesRefactor {
                             DOMSource source = new DOMSource(nodo);
                             trans.transform(source, result);
                             String xmlString = sw.toString();
-                            System.out.print(xmlString);
+                            //System.out.print(xmlString);
+                            Result=xmlString;
+                          //   System.out.println("Rs: "+Result);
                         }
                     }
                 }
@@ -221,11 +232,14 @@ public class GlobalVariablesRefactor {
                             DOMSource source = new DOMSource(nodo);
                             trans.transform(source, result);
                             String xmlString = sw.toString();
-                            System.out.print(xmlString);
+                            //System.out.print(xmlString);
+                            Result=xmlString;
+                        //    System.out.println("Rs: "+Result);
                         }
                     }
                 }
             }
         }
-    }
+    return Result;
+    }   
 }
