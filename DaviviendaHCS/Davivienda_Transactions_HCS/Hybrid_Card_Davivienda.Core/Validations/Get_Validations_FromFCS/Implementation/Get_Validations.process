@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns13="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns13="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
     <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>27</pd:startX>
@@ -369,10 +369,10 @@
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/Errors_Mail_To"/>
                     </to>
                     <subject>
-                        <xsl:value-of select="&quot;Error al invocar FCS para usos&quot;"/>
+                        <xsl:value-of select="&quot;Tarjeta Híbrida Davivienda | Error al invocar FCS para traer archivo de usos&quot;"/>
                     </subject>
                     <message>
-                        <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Ha ocurrido un error al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error, reintento: &quot;,$Retries/Retries, &quot;&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                        <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Ha ocurrido un error al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error: &quot;,$_error/ns2:ErrorReport/Msg,&#xA;&quot; reintento: &quot;,$Retries/Retries, &quot;&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
                     </message>
                     <id_proceso>
                         <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
@@ -415,7 +415,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns13:level>
                 <ns13:message>
-                    <xsl:value-of select="&quot;Se recibe del FCS para usos&quot;"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida Davivienda | Se recibe respuesta del FCS y se obtiene archivo de usos&quot;"/>
                 </ns13:message>
                 <ns13:detail>
                     <xsl:value-of select="concat($Invoke-FCS/ns1:RESTOutput/StatusCode, &quot; | &quot;, $Invoke-FCS/ns1:RESTOutput/ReasonPhrase)"/>
@@ -450,7 +450,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns13:level>
                 <ns13:message>
-                    <xsl:value-of select="&quot;Se envía petición al FCS para usos&quot;"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida Davivienda | Se envía petición al FCS para traer archivo de usos&quot;"/>
                 </ns13:message>
                 <ns13:detail>
                     <xsl:value-of select="tib:render-xml($ClaimData/ns1:ActivityOutputClass/jsonString)"/>
@@ -521,10 +521,10 @@
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of select="&quot;Se ha superado el número de reintentos al invocar FCS para usos&quot;"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida Davivienda | Se ha superado el número de reintentos al invocar FCS para usos&quot;"/>
                 </subject>
                 <message>
-                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se ha superado el número de reintentos al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Tarjeta híbrida Davivienda | Se ha superado el número de reintentos al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error: Se ha superado el máximo de reintentos para traer archivo de usos desde el FCS para Davivienda&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
                 </message>
                 <id_proceso>
                     <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>

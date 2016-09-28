@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN">
     <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter_Manual.process</pd:name>
     <pd:startName>Manual_Transactions</pd:startName>
     <pd:startX>0</pd:startX>
@@ -98,7 +98,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns3:level>
                 <ns3:message>
-                    <xsl:value-of select="concat(&quot;Inicia la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Inicia la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:message>
                 <ns3:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
@@ -130,7 +130,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns3:level>
                 <ns3:message>
-                    <xsl:value-of select="concat(&quot;Finaliza la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Finaliza la operación de extracción y envío de usos desde el FCS al Banco  ID Audit: &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:message>
                 <ns3:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>

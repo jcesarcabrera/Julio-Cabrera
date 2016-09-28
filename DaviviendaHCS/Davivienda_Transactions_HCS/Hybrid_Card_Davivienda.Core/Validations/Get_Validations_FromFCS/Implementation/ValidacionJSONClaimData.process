@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx1="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:ns41="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN" xmlns:ns61="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/CanonicoRB" xmlns:pfx3="nsDailyBlackListResultFcs" xmlns:pfx2="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" xmlns:pfx7="nsClaimDataBank" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.recaudo.bogota.com/schemas/ws/GetWSUsos" xmlns:ns6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd" xmlns:ns7="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="nsClaimResponseFcs" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx1="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:ns41="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN" xmlns:ns61="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/CanonicoRB" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="nsDailyBlackListResultFcs" xmlns:pfx2="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" xmlns:pfx7="nsClaimDataBank" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.recaudo.bogota.com/schemas/ws/GetWSUsos" xmlns:ns6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd" xmlns:ns7="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="nsClaimResponseFcs" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" schemaLocation="/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd"/>
     <xsd:import namespace="nsDailyBlackListResultFcs" schemaLocation="/SharedResources/Schemas/Response/FcsDailyBlackListResult.xsd"/>
     <xsd:import namespace="http://www.recaudo.bogota.com/schemas/CanonicoRB" schemaLocation="/SharedResources/Schemas/CanonicoRecaudoBogota.xsd"/>
@@ -320,14 +320,14 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Sleep_Retries</pd:from>
+            <pd:from>Send_PGP_File</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>Send_PGP_File</pd:from>
+            <pd:from>Sleep_Retries</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -422,10 +422,10 @@
                         <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Mail/Errors_Mail_To"/>
                     </to>
                     <subject>
-                        <xsl:value-of select="&quot;Errores presentados al cargar archivos de usos&quot;"/>
+                        <xsl:value-of select="&quot;Tarjeta híbrida Davivienda | Errores presentados al cargar archivos de usos&quot;"/>
                     </subject>
                     <message>
-                        <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se han presentado errores al procesar el archivo de usos&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$_error_Send_PGP_File/ActivityErrors/*,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                        <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Tarjeta híbrida Davivienda | Se han presentado errores al procesar el archivo de usos&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error: Se ha encontrado un error al intentar enviar el archivo de usos generado al servidor SFTP del banco Davivienda&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA;&quot;&lt;p>Archivo que se intenta enviar: &quot;,tib:substring-after-last($PGPCifrado/Cifred_File/FileName, &quot;\&quot;),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$_error_Send_PGP_File/ActivityErrors/*,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
                     </message>
                     <id_proceso>
                         <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
@@ -616,7 +616,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns7:level>
                 <ns7:message>
-                    <xsl:value-of select="&quot;Se ha cifrado el archivo y ha sido enviado al SFTP del Banco&quot;"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida Davivienda | Se ha cifrado el archivo y ha sido enviado al SFTP del Banco&quot;"/>
                 </ns7:message>
                 <ns7:detail>
                     <xsl:value-of select="$Send_PGP_File/SFTPPutOutputFile/FileTransferred[1]/Name"/>

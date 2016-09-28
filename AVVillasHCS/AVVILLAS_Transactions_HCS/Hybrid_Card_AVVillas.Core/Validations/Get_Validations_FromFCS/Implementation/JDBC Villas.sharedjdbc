@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBC Villas</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+        <maxConnections>%%Connections/MiddlewareDB/Maximun_Connections%%</maxConnections>
+        <loginTimeout>%%Connections/MiddlewareDB/TimeOut%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:sqlserver://%%Connections/MiddlewareDB/Host%%:%%Connections/MiddlewareDB/Port%%;databaseName=AV_Villas_HCS</location>
+        <user>%%Connections/MiddlewareDB/UserName%%</user>
+        <password>%%Connections/MiddlewareDB/Password%%</password>
+    </config>
+</BWSharedResource>

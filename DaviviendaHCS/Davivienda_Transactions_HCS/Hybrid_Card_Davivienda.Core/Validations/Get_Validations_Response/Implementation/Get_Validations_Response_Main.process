@@ -48,14 +48,14 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>RetrieAR_SUM</pd:from>
+            <pd:from>ClaimDataResult_Upload</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>ClaimDataResult_Upload</pd:from>
+            <pd:from>RetrieAR_SUM</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -399,10 +399,10 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns:datetime>
                 <ns:level>
-                    <xsl:value-of select="&quot;Info&quot;"/>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="concat(&quot;Se envía JSON generado de vuelta al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Se envía JSON generado de vuelta al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:id_process>
                     <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
@@ -431,10 +431,10 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns:datetime>
                 <ns:level>
-                    <xsl:value-of select="&quot;Info&quot;"/>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="concat(&quot;Se ha cargado Respuesta de usos al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Se ha cargado Respuesta de usos al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:detail>
                     <xsl:value-of select="concat($ClaimDataResult_Upload/ns12:RESTOutput/StatusCode, &quot; | &quot;, $ClaimDataResult_Upload/ns12:RESTOutput/ReasonPhrase)"/>
@@ -465,10 +465,10 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns:datetime>
                 <ns:level>
-                    <xsl:value-of select="&quot;Info&quot;"/>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Se descifra el archivo AR para luego ser validado y procesado a json&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Se descifra el archivo AR para luego ser validado y procesado a json &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:detail>
                     <xsl:value-of select="$PGP_Descifrado/Uncifred_File/FileName"/>
@@ -684,10 +684,10 @@
                     <xsl:value-of select="current-dateTime()"/>
                 </ns:datetime>
                 <ns:level>
-                    <xsl:value-of select="&quot;Info&quot;"/>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Se extrae el archivo AR cifrado del servidor SFTP para luego proceder a descifrarlo&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Se extrae el archivo AR cifrado del servidor SFTP para luego proceder a descifrarlo &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <xsl:if test="$Get_AR_File/SFTPGetOutputFile/FileTransferred[1]/Name">
                     <ns:detail>
