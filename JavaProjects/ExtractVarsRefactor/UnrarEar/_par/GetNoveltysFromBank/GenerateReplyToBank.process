@@ -1,0 +1,1349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="www.tibco.com/plugin/Sleep" xmlns:ns5="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns13="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="nsDailyBlackListResultFcs" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" xmlns:pfx2="nsDailyDebitListResultFcs">
+    <xsd:import namespace="nsDailyBlackListResultFcs" schemaLocation="/SharedResources/Schemas/Response/FcsDailyBlackListResult.xsd"/>
+    <xsd:import namespace="nsDailyDebitListResultFcs" schemaLocation="/SharedResources/Schemas/Response/FcsDailyDebitListResult.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/GetNoveltysFromBank/DataFormatBankResult.sharedparse" schemaLocation="/GetNoveltysFromBank/DataFormatBankResult64.sharedparse"/>
+    <pd:name>GetNoveltysFromBank/GenerateReplyToBank.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="message" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>597</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>2081</pd:endX>
+    <pd:endY>604</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <DebitListContent>
+            <xsd:element name="root" type="xsd:string"/>
+        </DebitListContent>
+        <DebitListFileName>
+            <xsd:element name="root" type="xsd:string"/>
+        </DebitListFileName>
+        <BlackListContent>
+            <xsd:element name="root" type="xsd:string"/>
+        </BlackListContent>
+        <BlackListFileName>
+            <xsd:element name="root" type="xsd:string"/>
+        </BlackListFileName>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1472501340843</pd:targetNamespace>
+    <pd:group name="BlackListGroup">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1204</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>319</pd:width>
+        <pd:height>251</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$ParseJSONBlackList/ns4:ActivityOutputClass/pfx:root/pfx:body</pd:over>
+            <pd:iterationElementSlot>rowbl</pd:iterationElementSlot>
+            <pd:indexSlot>ibl</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>RenderBlackList64</pd:to>
+            <pd:xpathDescription>Base64Encoded</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>RenderBlackList</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>BlackListRow</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RenderBlackList64</pd:from>
+            <pd:to>BlackListRow</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RenderBlackList</pd:from>
+            <pd:to>BlackListRow</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="RenderBlackList64">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>1295</pd:x>
+            <pd:y>197</pd:y>
+            <config>
+                <ParseSharedConfig>/GetNoveltysFromBank/DataFormatBankResult64.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <root>
+                        <xsl:variable name="var" select="$rowbl/pfx:body/pfx:FCSCardNumber"/>
+                        <document_id>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/document_id"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="tib:hex-to-base64($var)"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/names"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/last_name"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/second_last_name"/>
+                        </second_last_name>
+                        <address>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/address"/>
+                        </address>
+                        <status>
+                            <xsl:value-of select="if($rowbl/pfx:body/pfx:ReturnCode=1) then&#xA;'02'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=0) then &#xA;'02'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=3) then &#xA;'03'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=4) then &#xA;'04'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=5) then &#xA;'05'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=8) then &#xA;'08'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=10) then &#xA;'10'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=2) then &#xA;'11'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=15) then &#xA;'15'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=16) then &#xA;'16'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=22) then &#xA;'22'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=23) then &#xA;'23'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=24) then &#xA;'24'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=26) then &#xA;'26'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=27) then &#xA;'27'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=30) then &#xA;'30'&#xA;else&#xA;'  '"/>
+                        </status>
+                    </root>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="BlackListRow">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1406</pd:x>
+            <pd:y>133</pd:y>
+            <config>
+                <variableName>BlackListContent</variableName>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'">
+                        <root>
+                            <xsl:value-of select="concat($BlackListContent/root,$RenderBlackList64/Text)"/>
+                        </root>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <root>
+                            <xsl:value-of select="concat($BlackListContent/root,$RenderBlackList/Text)"/>
+                        </root>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="RenderBlackList">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>1296</pd:x>
+            <pd:y>57</pd:y>
+            <config>
+                <ParseSharedConfig>/GetNoveltysFromBank/DataFormatBankResult64.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <root>
+                        <xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="var" select="$rowbl/pfx:body/pfx:FCSCardNumber"/>
+                        <document_id>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/document_id"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="$var"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/names"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/last_name"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/second_last_name"/>
+                        </second_last_name>
+                        <address>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/address"/>
+                        </address>
+                        <status>
+                            <xsl:value-of select="if($rowbl/pfx:body/pfx:ReturnCode=1) then&#xA;'02'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=0) then &#xA;'02'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=3) then &#xA;'03'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=4) then &#xA;'04'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=5) then &#xA;'05'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=8) then &#xA;'08'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=10) then &#xA;'10'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=2) then &#xA;'11'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=15) then &#xA;'15'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=16) then &#xA;'16'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=22) then &#xA;'22'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=23) then &#xA;'23'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=24) then &#xA;'24'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=26) then &#xA;'26'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=27) then &#xA;'27'&#xA;else if($rowbl/pfx:body/pfx:ReturnCode=30) then &#xA;'30'&#xA;else&#xA;'  '"/>
+                        </status>
+                    </root>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:group name="DebitListGroup">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1204</pd:x>
+        <pd:y>277</pd:y>
+        <pd:width>325</pd:width>
+        <pd:height>249</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$ParseJSONDebitList/ns4:ActivityOutputClass/pfx2:root/pfx2:body</pd:over>
+            <pd:iterationElementSlot>rowdl</pd:iterationElementSlot>
+            <pd:indexSlot>idl</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>RenderDebitList64</pd:to>
+            <pd:xpathDescription>Base64Encoded</pd:xpathDescription>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>RenderDebitList</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DebitListRow</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RenderDebitList64</pd:from>
+            <pd:to>DebitListRow</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RenderDebitList</pd:from>
+            <pd:to>DebitListRow</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="RenderDebitList64">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>1329</pd:x>
+            <pd:y>470</pd:y>
+            <config>
+                <ParseSharedConfig>/GetNoveltysFromBank/DataFormatBankResult64.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <root>
+                        <xsl:variable name="var" select="$rowdl/pfx2:body/pfx2:FCSCardNumber"/>
+                        <document_id>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/document_id"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="tib:hex-to-base64($var)"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/names"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/last_name"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/second_last_name"/>
+                        </second_last_name>
+                        <address>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/address"/>
+                        </address>
+                        <status>
+                            <xsl:value-of select="if($rowdl/pfx2:body/pfx2:ReturnCode=1) then&#xA;'02'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=0) then &#xA;'02'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=3) then &#xA;'03'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=4) then &#xA;'04'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=5) then &#xA;'05'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=8) then &#xA;'08'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=10) then &#xA;'10'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=2) then &#xA;'11'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=15) then &#xA;'15'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=16) then &#xA;'16'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=22) then &#xA;'22'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=23) then &#xA;'23'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=24) then &#xA;'24'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=26) then &#xA;'26'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=27) then &#xA;'27'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=30) then &#xA;'30'&#xA;else&#xA;'  '"/>
+                        </status>
+                    </root>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="DebitListRow">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1393</pd:x>
+            <pd:y>407</pd:y>
+            <config>
+                <variableName>DebitListContent</variableName>
+            </config>
+            <pd:inputBindings>
+                <xsl:choose>
+                    <xsl:when test="$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'">
+                        <root>
+                            <xsl:value-of select="concat($DebitListContent/root,$RenderDebitList64/Text)"/>
+                        </root>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <root>
+                            <xsl:value-of select="concat($DebitListContent/root,$RenderDebitList/Text)"/>
+                        </root>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="RenderDebitList">
+            <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+            <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+            <pd:x>1328</pd:x>
+            <pd:y>334</pd:y>
+            <config>
+                <ParseSharedConfig>/GetNoveltysFromBank/DataFormatBankResult64.sharedparse</ParseSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <Rows>
+                    <root>
+                        <xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="var" select="$rowdl/pfx2:body/pfx2:FCSCardNumber"/>
+                        <document_id>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/document_id"/>
+                        </document_id>
+                        <card_number>
+                            <xsl:value-of select="$var"/>
+                        </card_number>
+                        <names>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/names"/>
+                        </names>
+                        <last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/last_name"/>
+                        </last_name>
+                        <second_last_name>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/second_last_name"/>
+                        </second_last_name>
+                        <address>
+                            <xsl:value-of select="$ParseData/Output/Rows/root[card_number=$var][1]/address"/>
+                        </address>
+                        <status>
+                            <xsl:value-of select="if($rowdl/pfx2:body/pfx2:ReturnCode=1) then&#xA;'02'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=0) then &#xA;'02'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=3) then &#xA;'03'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=4) then &#xA;'04'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=5) then &#xA;'05'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=8) then &#xA;'08'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=10) then &#xA;'10'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=2) then &#xA;'11'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=15) then &#xA;'15'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=16) then &#xA;'16'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=22) then &#xA;'22'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=23) then &#xA;'23'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=24) then &#xA;'24'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=26) then &#xA;'26'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=27) then &#xA;'27'&#xA;else if($rowdl/pfx2:body/pfx2:ReturnCode=30) then &#xA;'30'&#xA;else&#xA;'  '"/>
+                        </status>
+                    </root>
+                </Rows>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1773</pd:x>
+        <pd:y>706</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ConvertFileERToHex">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1722</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/ConvertFileERToHex.process</processName>
+        </config>
+        <pd:inputBindings>
+            <fullfilename>
+                <xsl:value-of select="$WriteERFile/ns3:WriteActivityOutputClass/fileInfo/fullName"/>
+            </fullfilename>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorLog">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>1869</pd:x>
+        <pd:y>706</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                </message>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ExtractZipBlacList">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>665</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <fileName>GenerateReplyToBankExtractZipBlacList</fileName>
+            <packageName>GetNoveltysFromBank.GenerateReplyToBank</packageName>
+            <fullsource>package GetNoveltysFromBank.GenerateReplyToBank;
+import java.util.*;
+import java.util.zip.*;
+import java.io.*;
+public class GenerateReplyToBankExtractZipBlacList{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String inputPathFile = "";
+	protected String outPathFile = "";
+	protected String internNameFile = "";
+	protected String outTrue = "";
+	protected String outFalse = "";
+	public String getinputPathFile() {
+		return inputPathFile;
+	}
+	public void setinputPathFile(String val) {
+		inputPathFile = val;
+	}
+	public String getoutPathFile() {
+		return outPathFile;
+	}
+	public void setoutPathFile(String val) {
+		outPathFile = val;
+	}
+	public String getinternNameFile() {
+		return internNameFile;
+	}
+	public void setinternNameFile(String val) {
+		internNameFile = val;
+	}
+	public String getoutTrue() {
+		return outTrue;
+	}
+	public void setoutTrue(String val) {
+		outTrue = val;
+	}
+	public String getoutFalse() {
+		return outFalse;
+	}
+	public void setoutFalse(String val) {
+		outFalse = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	private static final int BUFFER_SIZE = 1024;
+	public GenerateReplyToBankExtractZipBlacList() {
+	}
+
+     public void Zippear(String pFile, String pZipFile) throws Exception {
+
+		// objetos en memoria
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		ZipOutputStream zipos = null;
+ 
+		// buffer
+		byte[] buffer = new byte[BUFFER_SIZE];
+		try {
+			// fichero a comprimir
+			fis = new FileInputStream(pFile);
+			// fichero contenedor del zip
+			fos = new FileOutputStream(pZipFile);
+			// fichero comprimido
+			zipos = new ZipOutputStream(fos);
+			String nameFileIntern =pFile.split("/")[pFile.split("/").length-1];
+			ZipEntry zipEntry = new ZipEntry(nameFileIntern);
+			zipos.putNextEntry(zipEntry);
+			int len = 0;
+			// zippear
+			while ((len = fis.read(buffer, 0, BUFFER_SIZE)) != -1)
+				zipos.write(buffer, 0, len);
+			// volcar la memoria al disco
+			zipos.flush();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// cerramos los files
+			zipos.close();
+			fis.close();
+			fos.close();
+		} // end try
+	} // end Zippear
+	
+	public void UnZip(String pZipFile, String pFile) throws Exception {
+		BufferedOutputStream bos = null;
+		FileInputStream fis = null;
+		ZipInputStream zipis = null;
+		FileOutputStream fos = null;
+ 
+		try {
+			fis = new FileInputStream(pZipFile);
+			zipis = new ZipInputStream(new BufferedInputStream(fis));
+			if (zipis.getNextEntry() != null) {
+				int len = 0;
+				byte[] buffer = new byte[BUFFER_SIZE];
+				fos = new FileOutputStream(pFile);
+				bos = new BufferedOutputStream(fos, BUFFER_SIZE);
+ 
+				while  ((len = zipis.read(buffer, 0, BUFFER_SIZE)) != -1)
+					bos.write(buffer, 0, len);
+				bos.flush();
+			} else {
+				throw new Exception("El zip no contenia fichero alguno");
+			} // end if
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			bos.close();
+			zipis.close();
+			fos.close();
+			fis.close();
+		} // end try
+	} // end UnZip
+
+
+public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String inputPathFile
+	In  : String outPathFile
+	In  : String internNameFile
+	Out : String outTrue
+	Out : String outFalse
+* Available Variables: DO NOT MODIFY *****/
+try {
+String extension=""+inputPathFile.split("\\.")[inputPathFile.split("\\.").length-1];
+ if(extension.equals("zip")){
+			UnZip(inputPathFile, outPathFile);
+			outTrue="Descomprimido!";
+}
+		} catch (Exception e) {
+			
+StringWriter errors = new StringWriter();
+e.printStackTrace(new PrintWriter(errors));
+outFalse= errors.toString();
+		}
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>outTrue</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outFalse</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>inputPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>internNameFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>GenerateReplyToBankExtractZipBlacList</name>
+                    <byteCode>yv66vgAAADMAqwkANwBmCQA3AGcJADcAaAkANwBpCQA3AGoKADgAawgAbAcAbQoACABuBwBvCgAKAG4HAHAKAAwAcQgAcgoAcwB0BwB1CgAQAG4KAAwAdgoACAB3CgAMAHgKAAwAeQoADAB6CgAIAHoKAAoAegcAewcAfAcAfQoAGwB+CgAaAH4KABoAfwcAgAoAHwCBCgAaAHcKAB8AeAoAHwB5CACCCgAZAG4KAB8AegoAGgB6BwCDCgAoAGsKACgAhAgAhQoAKACGCACHCgBzAIgKADcAiQgAigcAiwoAMQBrBwCMCgAzAI0KABkAjgoAMQCGBwCPBwCQAQANaW5wdXRQYXRoRmlsZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAC291dFBhdGhGaWxlAQAOaW50ZXJuTmFtZUZpbGUBAAdvdXRUcnVlAQAIb3V0RmFsc2UBAAtCVUZGRVJfU0laRQEAAUkBAA1Db25zdGFudFZhbHVlAwAABAABABBnZXRpbnB1dFBhdGhGaWxlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAQc2V0aW5wdXRQYXRoRmlsZQEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADmdldG91dFBhdGhGaWxlAQAOc2V0b3V0UGF0aEZpbGUBABFnZXRpbnRlcm5OYW1lRmlsZQEAEXNldGludGVybk5hbWVGaWxlAQAKZ2V0b3V0VHJ1ZQEACnNldG91dFRydWUBAAtnZXRvdXRGYWxzZQEAC3NldG91dEZhbHNlAQAGPGluaXQ+AQADKClWAQAHWmlwcGVhcgEAJyhMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspVgEADVN0YWNrTWFwVGFibGUHAI8HAJEHAG0HAG8HAHAHAJIHAHUHAHsHAJMBAApFeGNlcHRpb25zAQAFVW5aaXAHAIAHAHwBAAZpbnZva2UBAApTb3VyY2VGaWxlAQAqR2VuZXJhdGVSZXBseVRvQmFua0V4dHJhY3RaaXBCbGFjTGlzdC5qYXZhDAA5ADoMADsAOgwAPAA6DAA9ADoMAD4AOgwAUQBSAQAAAQAXamF2YS9pby9GaWxlSW5wdXRTdHJlYW0MAFEASAEAGGphdmEvaW8vRmlsZU91dHB1dFN0cmVhbQEAHWphdmEvdXRpbC96aXAvWmlwT3V0cHV0U3RyZWFtDABRAJQBAAEvBwCRDACVAJYBABZqYXZhL3V0aWwvemlwL1ppcEVudHJ5DACXAJgMAJkAmgwAmwCcDACdAFIMAJ4AUgEAE2phdmEvbGFuZy9FeGNlcHRpb24BABxqYXZhL3V0aWwvemlwL1ppcElucHV0U3RyZWFtAQAbamF2YS9pby9CdWZmZXJlZElucHV0U3RyZWFtDABRAJ8MAKAAoQEAHGphdmEvaW8vQnVmZmVyZWRPdXRwdXRTdHJlYW0MAFEAogEAIUVsIHppcCBubyBjb250ZW5pYSBmaWNoZXJvIGFsZ3VubwEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyDACjAKQBAAJcLgwApQBEAQADemlwDACmAKcMAGAAVAEADkRlc2NvbXByaW1pZG8hAQAUamF2YS9pby9TdHJpbmdXcml0ZXIBABNqYXZhL2lvL1ByaW50V3JpdGVyDABRAKgMAKkAqgEATUdldE5vdmVsdHlzRnJvbUJhbmsvR2VuZXJhdGVSZXBseVRvQmFuay9HZW5lcmF0ZVJlcGx5VG9CYW5rRXh0cmFjdFppcEJsYWNMaXN0AQAQamF2YS9sYW5nL09iamVjdAEAEGphdmEvbGFuZy9TdHJpbmcBAAJbQgEAE2phdmEvbGFuZy9UaHJvd2FibGUBABkoTGphdmEvaW8vT3V0cHV0U3RyZWFtOylWAQAFc3BsaXQBACcoTGphdmEvbGFuZy9TdHJpbmc7KVtMamF2YS9sYW5nL1N0cmluZzsBAAxwdXROZXh0RW50cnkBABsoTGphdmEvdXRpbC96aXAvWmlwRW50cnk7KVYBAARyZWFkAQAHKFtCSUkpSQEABXdyaXRlAQAHKFtCSUkpVgEABWZsdXNoAQAFY2xvc2UBABgoTGphdmEvaW8vSW5wdXRTdHJlYW07KVYBAAxnZXROZXh0RW50cnkBABooKUxqYXZhL3V0aWwvemlwL1ppcEVudHJ5OwEAGihMamF2YS9pby9PdXRwdXRTdHJlYW07SSlWAQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAIdG9TdHJpbmcBAAZlcXVh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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <inputPathFile>
+                    <xsl:value-of select="$InvokeBlackListReply/fullfilename"/>
+                </inputPathFile>
+                <outPathFile>
+                    <xsl:value-of select="$BlackListFileName/root"/>
+                </outPathFile>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ExtractZipDebitList">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>673</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <fileName>GenerateReplyToBankExtractZipDebitList</fileName>
+            <packageName>GetNoveltysFromBank.GenerateReplyToBank</packageName>
+            <fullsource>package GetNoveltysFromBank.GenerateReplyToBank;
+import java.util.*;
+import java.util.zip.*;
+import java.io.*;
+public class GenerateReplyToBankExtractZipDebitList{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String inputPathFile = "";
+	protected String outPathFile = "";
+	protected String internNameFile = "";
+	protected String outTrue = "";
+	protected String outFalse = "";
+	public String getinputPathFile() {
+		return inputPathFile;
+	}
+	public void setinputPathFile(String val) {
+		inputPathFile = val;
+	}
+	public String getoutPathFile() {
+		return outPathFile;
+	}
+	public void setoutPathFile(String val) {
+		outPathFile = val;
+	}
+	public String getinternNameFile() {
+		return internNameFile;
+	}
+	public void setinternNameFile(String val) {
+		internNameFile = val;
+	}
+	public String getoutTrue() {
+		return outTrue;
+	}
+	public void setoutTrue(String val) {
+		outTrue = val;
+	}
+	public String getoutFalse() {
+		return outFalse;
+	}
+	public void setoutFalse(String val) {
+		outFalse = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	private static final int BUFFER_SIZE = 1024;
+	public GenerateReplyToBankExtractZipDebitList() {
+	}
+
+     public void Zippear(String pFile, String pZipFile) throws Exception {
+
+		// objetos en memoria
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		ZipOutputStream zipos = null;
+ 
+		// buffer
+		byte[] buffer = new byte[BUFFER_SIZE];
+		try {
+			// fichero a comprimir
+			fis = new FileInputStream(pFile);
+			// fichero contenedor del zip
+			fos = new FileOutputStream(pZipFile);
+			// fichero comprimido
+			zipos = new ZipOutputStream(fos);
+			String nameFileIntern =pFile.split("/")[pFile.split("/").length-1];
+			ZipEntry zipEntry = new ZipEntry(nameFileIntern);
+			zipos.putNextEntry(zipEntry);
+			int len = 0;
+			// zippear
+			while ((len = fis.read(buffer, 0, BUFFER_SIZE)) != -1)
+				zipos.write(buffer, 0, len);
+			// volcar la memoria al disco
+			zipos.flush();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			// cerramos los files
+			zipos.close();
+			fis.close();
+			fos.close();
+		} // end try
+	} // end Zippear
+	
+	public void UnZip(String pZipFile, String pFile) throws Exception {
+		BufferedOutputStream bos = null;
+		FileInputStream fis = null;
+		ZipInputStream zipis = null;
+		FileOutputStream fos = null;
+ 
+		try {
+			fis = new FileInputStream(pZipFile);
+			zipis = new ZipInputStream(new BufferedInputStream(fis));
+			if (zipis.getNextEntry() != null) {
+				int len = 0;
+				byte[] buffer = new byte[BUFFER_SIZE];
+				fos = new FileOutputStream(pFile);
+				bos = new BufferedOutputStream(fos, BUFFER_SIZE);
+ 
+				while  ((len = zipis.read(buffer, 0, BUFFER_SIZE)) != -1)
+					bos.write(buffer, 0, len);
+				bos.flush();
+			} else {
+				throw new Exception("El zip no contenia fichero alguno");
+			} // end if
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			bos.close();
+			zipis.close();
+			fos.close();
+			fis.close();
+		} // end try
+	} // end UnZip
+
+
+public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String inputPathFile
+	In  : String outPathFile
+	In  : String internNameFile
+	Out : String outTrue
+	Out : String outFalse
+* Available Variables: DO NOT MODIFY *****/
+try {
+String extension=""+inputPathFile.split("\\.")[inputPathFile.split("\\.").length-1];
+ if(extension.equals("zip")){
+			UnZip(inputPathFile, outPathFile);
+			outTrue="Descomprimido!";
+}
+		} catch (Exception e) {
+			
+StringWriter errors = new StringWriter();
+e.printStackTrace(new PrintWriter(errors));
+outFalse= errors.toString();
+		}
+}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>outTrue</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outFalse</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>inputPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>outPathFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>internNameFile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>GenerateReplyToBankExtractZipDebitList</name>
+                    <byteCode>yv66vgAAADMAqwkANwBmCQA3AGcJADcAaAkANwBpCQA3AGoKADgAawgAbAcAbQoACABuBwBvCgAKAG4HAHAKAAwAcQgAcgoAcwB0BwB1CgAQAG4KAAwAdgoACAB3CgAMAHgKAAwAeQoADAB6CgAIAHoKAAoAegcAewcAfAcAfQoAGwB+CgAaAH4KABoAfwcAgAoAHwCBCgAaAHcKAB8AeAoAHwB5CACCCgAZAG4KAB8AegoAGgB6BwCDCgAoAGsKACgAhAgAhQoAKACGCACHCgBzAIgKADcAiQgAigcAiwoAMQBrBwCMCgAzAI0KABkAjgoAMQCGBwCPBwCQAQANaW5wdXRQYXRoRmlsZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAC291dFBhdGhGaWxlAQAOaW50ZXJuTmFtZUZpbGUBAAdvdXRUcnVlAQAIb3V0RmFsc2UBAAtCVUZGRVJfU0laRQEAAUkBAA1Db25zdGFudFZhbHVlAwAABAABABBnZXRpbnB1dFBhdGhGaWxlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAQc2V0aW5wdXRQYXRoRmlsZQEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADmdldG91dFBhdGhGaWxlAQAOc2V0b3V0UGF0aEZpbGUBABFnZXRpbnRlcm5OYW1lRmlsZQEAEXNldGludGVybk5hbWVGaWxlAQAKZ2V0b3V0VHJ1ZQEACnNldG91dFRydWUBAAtnZXRvdXRGYWxzZQEAC3NldG91dEZhbHNlAQAGPGluaXQ+AQADKClWAQAHWmlwcGVhcgEAJyhMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspVgEADVN0YWNrTWFwVGFibGUHAI8HAJEHAG0HAG8HAHAHAJIHAHUHAHsHAJMBAApFeGNlcHRpb25zAQAFVW5aaXAHAIAHAHwBAAZpbnZva2UBAApTb3VyY2VGaWxlAQArR2VuZXJhdGVSZXBseVRvQmFua0V4dHJhY3RaaXBEZWJpdExpc3QuamF2YQwAOQA6DAA7ADoMADwAOgwAPQA6DAA+ADoMAFEAUgEAAAEAF2phdmEvaW8vRmlsZUlucHV0U3RyZWFtDABRAEgBABhqYXZhL2lvL0ZpbGVPdXRwdXRTdHJlYW0BAB1qYXZhL3V0aWwvemlwL1ppcE91dHB1dFN0cmVhbQwAUQCUAQABLwcAkQwAlQCWAQAWamF2YS91dGlsL3ppcC9aaXBFbnRyeQwAlwCYDACZAJoMAJsAnAwAnQBSDACeAFIBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAcamF2YS91dGlsL3ppcC9aaXBJbnB1dFN0cmVhbQEAG2phdmEvaW8vQnVmZmVyZWRJbnB1dFN0cmVhbQwAUQCfDACgAKEBABxqYXZhL2lvL0J1ZmZlcmVkT3V0cHV0U3RyZWFtDABRAKIBACFFbCB6aXAgbm8gY29udGVuaWEgZmljaGVybyBhbGd1bm8BABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgwAowCkAQACXC4MAKUARAEAA3ppcAwApgCnDABgAFQBAA5EZXNjb21wcmltaWRvIQEAFGphdmEvaW8vU3RyaW5nV3JpdGVyAQATamF2YS9pby9QcmludFdyaXRlcgwAUQCoDACpAKoBAE5HZXROb3ZlbHR5c0Zyb21CYW5rL0dlbmVyYXRlUmVwbHlUb0JhbmsvR2VuZXJhdGVSZXBseVRvQmFua0V4dHJhY3RaaXBEZWJpdExpc3QBABBqYXZhL2xhbmcvT2JqZWN0AQAQamF2YS9sYW5nL1N0cmluZwEAAltCAQATamF2YS9sYW5nL1Rocm93YWJsZQEAGShMamF2YS9pby9PdXRwdXRTdHJlYW07KVYBAAVzcGxpdAEAJyhMamF2YS9sYW5nL1N0cmluZzspW0xqYXZhL2xhbmcvU3RyaW5nOwEADHB1dE5leHRFbnRyeQEAGyhMamF2YS91dGlsL3ppcC9aaXBFbnRyeTspVgEABHJlYWQBAAcoW0JJSSlJAQAFd3JpdGUBAAcoW0JJSSlWAQAFZmx1c2gBAAVjbG9zZQEAGChMamF2YS9pby9JbnB1dFN0cmVhbTspVgEADGdldE5leHRFbnRyeQEAGigpTGphdmEvdXRpbC96aXAvWmlwRW50cnk7AQAaKExqYXZhL2lvL091dHB1dFN0cmVhbTtJKVYBAAZhcHBlbmQBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAh0b1N0cmluZwEABmVx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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <inputPathFile>
+                    <xsl:value-of select="$InvokeDebitListReply/fullfilename"/>
+                </inputPathFile>
+                <outPathFile>
+                    <xsl:value-of select="$DebitListFileName/root"/>
+                </outPathFile>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FileNameBlackList">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>544</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <variableName>BlackListFileName</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat(tib:substring-before-last($InvokeBlackListReply/fullfilename,'\'),'\',tib:substring-before-last(tib:substring-after-last($InvokeBlackListReply/fullfilename, '\'), '.'))"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FileNameDebitList">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>544</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <variableName>DebitListFileName</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="concat(tib:substring-before-last($InvokeDebitListReply/fullfilename,'\'),'\',tib:substring-before-last(tib:substring-after-last($InvokeDebitListReply/fullfilename, '\'), '.'))"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>2082</pd:x>
+        <pd:y>706</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <pfx4:Errors_Save>
+                <pfx4:error_message>
+                    <xsl:value-of select="$_error/ns5:ErrorReport/StackTrace"/>
+                </pfx4:error_message>
+                <pfx4:id_process>
+                    <xsl:value-of select="$_processContext/ns5:ProcessContext/ProcessId"/>
+                </pfx4:id_process>
+            </pfx4:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>128</pd:x>
+        <pd:y>597</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns13:LOGS_SAVE>
+                <ns13:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns5:ProcessContext/ProcessId)"/>
+                </ns13:process>
+                <ns13:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/ProjectName, &quot; | &quot;, $_processContext/ns5:ProcessContext/EngineName)"/>
+                </ns13:project>
+                <ns13:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns13:datetime>
+                <ns13:level>
+                    <xsl:value-of select="'Info'"/>
+                </ns13:level>
+                <ns13:message>
+                    <xsl:value-of select="'Inicia procesamiento de respuesta de novedades'"/>
+                </ns13:message>
+                <ns13:id_process>
+                    <xsl:value-of select="$_processContext/ns5:ProcessContext/ProcessId"/>
+                </ns13:id_process>
+            </ns13:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Log_End">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>2081</pd:x>
+        <pd:y>137</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns13:LOGS_SAVE>
+                <ns13:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns5:ProcessContext/ProcessId)"/>
+                </ns13:process>
+                <ns13:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/ProjectName, &quot; | &quot;, $_processContext/ns5:ProcessContext/EngineName)"/>
+                </ns13:project>
+                <ns13:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns13:datetime>
+                <ns13:level>
+                    <xsl:value-of select="'Info'"/>
+                </ns13:level>
+                <ns13:message>
+                    <xsl:value-of select="'Finaliza correctamente procesamiento de respuesta de novedades'"/>
+                </ns13:message>
+                <ns13:detail>
+                    <xsl:value-of select="''"/>
+                </ns13:detail>
+                <ns13:id_process>
+                    <xsl:value-of select="$_processContext/ns5:ProcessContext/ProcessId"/>
+                </ns13:id_process>
+            </ns13:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InvokeBlackListReply">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>412</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/InvokeWSRESTReply.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Parameters>
+                <URI>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/SendNoveltys/REST/BlackList/URIResult"/>
+                </URI>
+                <FilePath>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/BlackListResult"/>
+                </FilePath>
+                <RQID>
+                    <xsl:value-of select="tib:tokenize-allow-empty($Start/message,';')[2]"/>
+                </RQID>
+                <RQDate>
+                    <xsl:value-of select="tib:tokenize-allow-empty($Start/message,';')[3]"/>
+                </RQDate>
+            </Parameters>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InvokeDebitListReply">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>411</pd:x>
+        <pd:y>340</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/InvokeWSRESTReply.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Parameters>
+                <URI>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/SendNoveltys/REST/DebitList/URIResult"/>
+                </URI>
+                <FilePath>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/DebitListResult"/>
+                </FilePath>
+                <RQID>
+                    <xsl:value-of select="tib:tokenize-allow-empty($Start/message,';')[4]"/>
+                </RQID>
+                <RQDate>
+                    <xsl:value-of select="tib:tokenize-allow-empty($Start/message,';')[5]"/>
+                </RQDate>
+            </Parameters>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSendError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1970</pd:x>
+        <pd:y>706</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/MailSend.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <subject>
+                    <xsl:value-of select="'Error en procesamiento respuesta de novedades'"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat($_processContext/ns5:ProcessContext/EngineName,': ',$_error/ns5:ErrorReport/StackTrace)"/>
+                </message>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/SendNoveltys/Mail/ErrorTo"/>
+                </to>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ParseData">
+        <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+        <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+        <pd:x>1052</pd:x>
+        <pd:y>273</pd:y>
+        <config>
+            <InputType>File</InputType>
+            <Encoding>ASCII</Encoding>
+            <ParseSharedConfig>/GetNoveltysFromBank/DataFormatNoveltyFileNot64.sharedparse</ParseSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <fileName>
+                    <xsl:value-of select="tib:tokenize-allow-empty($Start/message,';')[6]"/>
+                </fileName>
+                <noOfRecords>
+                    <xsl:value-of select="-1"/>
+                </noOfRecords>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ParseJSONBlackList">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>913</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx:root"/>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$ReadFileBlackList/ns3:ReadActivityOutputTextClass/fileContent/textContent"/>
+                </jsonString>
+            </ns4:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ParseJSONDebitList">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>926</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx2:root"/>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$ReadFileDebitList/ns3:ReadActivityOutputTextClass/fileContent/textContent"/>
+                </jsonString>
+            </ns4:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PGPCifrado">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1850</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/PGPCifrado.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <fullfilename>
+                    <xsl:value-of select="$WriteERFile/ns3:WriteActivityOutputClass/fileInfo/fullName"/>
+                </fullfilename>
+                <filename>
+                    <xsl:value-of select="$WriteERFile/ns3:WriteActivityOutputClass/fileInfo/fileName"/>
+                </filename>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ReadFileBlackList">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>789</pd:x>
+        <pd:y>211</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns2:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$BlackListFileName/root"/>
+                </fileName>
+            </ns2:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ReadFileDebitList">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>797</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns2:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$DebitListFileName/root"/>
+                </fileName>
+            </ns2:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFTPPutFiles">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1953</pd:x>
+        <pd:y>136</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/SFTPPutFiles.process</processName>
+        </config>
+        <pd:inputBindings>
+            <FullFileName>
+                <xsl:value-of select="$PGPCifrado/fullNameFileExit"/>
+            </FullFileName>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="WaitTimeForReply">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>271</pd:x>
+        <pd:y>597</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="{--$_globalVariables/ns1:GlobalVariables/SendNoveltys/REST/WaitTimeForReply--}&#xA;1000"/>
+                </IntervalInMillisec>
+            </ns:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="WriteERFile">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>1603</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+        </config>
+        <pd:inputBindings>
+            <ns3:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/PathFileER,'ER',$_globalVariables/ns1:GlobalVariables/SendNoveltys/BankInfo/FileCode,tib:format-dateTime('yyyyMMddHHmmss',current-dateTime()))"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="concat($DebitListContent/root,$BlackListContent/root)"/>
+                </textContent>
+            </ns3:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1101</pd:x>
+        <pd:y>551</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Insert_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InvokeBlackListReply</pd:from>
+        <pd:to>FileNameBlackList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InvokeDebitListReply</pd:from>
+        <pd:to>FileNameDebitList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExtractZipBlacList</pd:from>
+        <pd:to>ReadFileBlackList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ExtractZipDebitList</pd:from>
+        <pd:to>ReadFileDebitList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReadFileBlackList</pd:from>
+        <pd:to>ParseJSONBlackList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FileNameBlackList</pd:from>
+        <pd:to>ExtractZipBlacList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FileNameDebitList</pd:from>
+        <pd:to>ExtractZipDebitList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ReadFileDebitList</pd:from>
+        <pd:to>ParseJSONDebitList</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseJSONBlackList</pd:from>
+        <pd:to>ParseData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseJSONDebitList</pd:from>
+        <pd:to>ParseData</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WriteERFile</pd:from>
+        <pd:to>ConvertFileERToHex</pd:to>
+        <pd:xpathDescription>Base64Encoded</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns1:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>DebitListGroup</pd:from>
+        <pd:to>WriteERFile</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseData</pd:from>
+        <pd:to>DebitListGroup</pd:to>
+        <pd:xpathDescription>ExistsDebitList</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$ParseJSONDebitList/ns4:ActivityOutputClass/pfx2:root/pfx2:header/pfx2:TotalBodyRecordCount&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WaitTimeForReply</pd:from>
+        <pd:to>InvokeBlackListReply</pd:to>
+        <pd:xpathDescription>BlackList</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>contains(tib:tokenize($Start/message,';')[1],'BL')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WaitTimeForReply</pd:from>
+        <pd:to>InvokeDebitListReply</pd:to>
+        <pd:xpathDescription>DebitList</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>contains(tib:tokenize($Start/message,';')[1],'DL')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WaitTimeForReply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseData</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseData</pd:from>
+        <pd:to>BlackListGroup</pd:to>
+        <pd:xpathDescription>ExistsBlackList</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$ParseJSONBlackList/ns4:ActivityOutputClass/pfx:root/pfx:header/pfx:TotalBodyRecordCount&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BlackListGroup</pd:from>
+        <pd:to>WriteERFile</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGPCifrado</pd:from>
+        <pd:to>SFTPPutFiles</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFTPPutFiles</pd:from>
+        <pd:to>Insert_Log_End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrorLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorLog</pd:from>
+        <pd:to>MailSendError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSendError</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Log</pd:from>
+        <pd:to>WaitTimeForReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Log_End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>WriteERFile</pd:from>
+        <pd:to>PGPCifrado</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConvertFileERToHex</pd:from>
+        <pd:to>PGPCifrado</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="nsDailyDebitListResultFcs"
+	 targetNamespace="nsDailyDebitListResultFcs"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="header"/>
+				<xs:element ref="body" maxOccurs="unbounded"/>
+				<xs:element ref="trailer"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MessageTypeCode"/>
+				<xs:element ref="TotalBodyRecordCount"/>
+				<xs:element ref="RequestDate"/>
+				<xs:element ref="PeriodStartTime"/>
+				<xs:element ref="PeriodEndTime"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MessageTypeCode" type="xs:string"/>
+	<xs:element name="TotalBodyRecordCount" type="xs:string"/>
+	<xs:element name="RequestDate" type="xs:string"/>
+	<xs:element name="PeriodStartTime" type="xs:string"/>
+	<xs:element name="PeriodEndTime" type="xs:string"/>
+	<xs:element name="body">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="BankID"/>
+				<xs:element ref="FCSCardNumber"/>
+				<xs:element ref="DebitListOperationCode"/>
+				<xs:element ref="DebitLimitCode"/>
+				<xs:element ref="ReasonCode"/>
+				<xs:element ref="ReturnCode"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BankID" type="xs:string"/>
+	<xs:element name="FCSCardNumber" type="xs:string"/>
+	<xs:element name="DebitListOperationCode" type="xs:string"/>
+	<xs:element name="DebitLimitCode" type="xs:string"/>
+	<xs:element name="ReasonCode" type="xs:string"/>
+	<xs:element name="ReturnCode" type="xs:string"/>
+	<xs:element name="trailer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TotalBodyRecordCount"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>JDBCTIBCO-PR</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:sqlserver://middlewaredbpro.cr0k1tnuhdai.us-west-2.rds.amazonaws.com:1433;databaseName=bd_pruebasPR</location>
+        <user>MiddleWare_db</user>
+        <password>#!w7SAZ5eQ2s/PeaUebje0ftpY709UooKu3CaFAPDxqrl4qXWfdJJ0Cg==</password>
+    </config>
+</BWSharedResource>

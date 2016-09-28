@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd">
+    <pd:name>GetNoveltysFromBank/PGPDescifrado.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="fullfilename" type="xsd:string"/>
+                    <xsd:element name="filename" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>36</pd:startX>
+    <pd:startY>55</pd:startY>
+    <pd:returnBindings>
+        <fullNameFileExit>
+            <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEEDecryp, tib:substring-before-last($Start/Input/filename, '.'))"/>
+        </fullNameFileExit>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="fullNameFileExit" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>442</pd:endX>
+    <pd:endY>59</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1433883614947</pd:targetNamespace>
+    <pd:activity name="External Command">
+        <pd:type>com.tibco.plugin.cmdexec.CmdExecActivity</pd:type>
+        <pd:resourceType>ae.activities.CmdExecActivity</pd:resourceType>
+        <pd:x>308</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <outputToString>true</outputToString>
+            <lineSplit>None</lineSplit>
+        </config>
+        <pd:inputBindings>
+            <CmdInput>
+                <command>
+                    <xsl:value-of select="$Externalcommand/Input/Externalcommand"/>
+                </command>
+            </CmdInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Externalcommand">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>158</pd:x>
+        <pd:y>55</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Input">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Externalcommand" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <Externalcommand>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/SendNoveltys/PGPDecrypt/Exe,&quot; --batch --yes --passphrase &quot;,&#xA;$_globalVariables/ns:GlobalVariables/SendNoveltys/PGPDecrypt/Phrase,  &quot; -o &quot;,&#xA;$_globalVariables/ns:GlobalVariables/SendNoveltys/LocalDirectories/PathFileEEDecryp, tib:substring-before-last($Start/Input/filename, '.'),&quot; --decrypt -r &quot;,&#xA;$_globalVariables/ns:GlobalVariables/SendNoveltys/PGPDecrypt/User,&quot; &quot;,  $Start/Input/fullfilename)"/>
+                </Externalcommand>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Externalcommand</pd:from>
+        <pd:to>External Command</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Externalcommand</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>External Command</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

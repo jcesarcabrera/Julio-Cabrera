@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.recaudo.bogota.com/schemas/ws/GetFilesSFTP" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>GetNoveltysFromBank/GetNovetysFromBank.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>39</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>669</pd:endX>
+    <pd:endY>40</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472336755642</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>466</pd:x>
+        <pd:y>199</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ConvertFileToHex">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>408</pd:x>
+        <pd:y>109</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/ConvertFileEEToHex.process</processName>
+        </config>
+        <pd:inputBindings>
+            <fullfilename>
+                <xsl:value-of select="$PGPDescifrado/fullNameFileExit"/>
+            </fullfilename>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorLog">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>558</pd:x>
+        <pd:y>197</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/StackTrace"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InvokeWebService">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>544</pd:x>
+        <pd:y>39</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/InvokeWebService.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="$_globalVariables/ns3:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'">
+                    <fullfilename>
+                        <xsl:value-of select="$ConvertFileToHex/fullfilename"/>
+                    </fullfilename>
+                </xsl:when>
+                <xsl:otherwise>
+                    <fullfilename>
+                        <xsl:value-of select="$PGPDescifrado/fullNameFileExit"/>
+                    </fullfilename>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSendError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>668</pd:x>
+        <pd:y>199</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/MailSend.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <subject>
+                    <xsl:value-of select="'Error en procesamiento envio de novedades'"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat($_processContext/ns1:ProcessContext/EngineName,': ',$_error/ns1:ErrorReport/StackTrace)"/>
+                </message>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/SendNoveltys/Mail/ErrorTo"/>
+                </to>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PGPDescifrado">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>39</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/PGPDescifrado.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <fullfilename>
+                    <xsl:value-of select="$SFTPGetFiles/root/fullfilename"/>
+                </fullfilename>
+                <filename>
+                    <xsl:value-of select="$SFTPGetFiles/root/filename"/>
+                </filename>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFTPGetFiles">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>120</pd:x>
+        <pd:y>39</pd:y>
+        <config>
+            <processName>/GetNoveltysFromBank/SFTPGetFiles.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:requestGetFilesSFTP/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SFTPGetFiles</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFTPGetFiles</pd:from>
+        <pd:to>PGPDescifrado</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGPDescifrado</pd:from>
+        <pd:to>ConvertFileToHex</pd:to>
+        <pd:xpathDescription>Base64Encoded</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns3:GlobalVariables/SendNoveltys/LocalDirectories/Base64Encoded='true'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InvokeWebService</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrorLog</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorLog</pd:from>
+        <pd:to>MailSendError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSendError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGPDescifrado</pd:from>
+        <pd:to>InvokeWebService</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ConvertFileToHex</pd:from>
+        <pd:to>InvokeWebService</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
