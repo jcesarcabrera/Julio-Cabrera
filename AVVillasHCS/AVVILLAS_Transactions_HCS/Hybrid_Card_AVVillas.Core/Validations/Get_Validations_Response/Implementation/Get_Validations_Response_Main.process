@@ -393,7 +393,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:process>
                 <ns:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns:project>
                 <ns:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -425,7 +425,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:process>
                 <ns:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns:project>
                 <ns:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -459,7 +459,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:process>
                 <ns:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns:project>
                 <ns:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -509,7 +509,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:process>
                 <ns:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns:project>
                 <ns:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -543,7 +543,7 @@
                     <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas | Se ha superado el número de reintentos para cargar la respuesta de usos al FCS&quot;"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  Se ha superado el número de reintentos para cargar la respuesta de usos al FCS&quot;)"/>
                 </subject>
                 <message>
                     <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se ha superado el número de reintentos al cargar respuesta de usos al FCS&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch-Retries/exceptiondata/*,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
@@ -569,7 +569,7 @@
                     <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas | Ha ocurrido un error al traer el archivo de Respuestas de usos del servidor SFTP&quot;"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | Ha ocurrido un error al traer el archivo de Respuestas de usos del servidor SFTP&quot;)"/>
                 </subject>
                 <xsl:if test="$_error_Get_AR_File/ActivityErrors/GetFilesException/FailedFiles[1]/Error">
                     <message>
@@ -678,7 +678,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:process>
                 <ns:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns:project>
                 <ns:datetime>
                     <xsl:value-of select="current-dateTime()"/>

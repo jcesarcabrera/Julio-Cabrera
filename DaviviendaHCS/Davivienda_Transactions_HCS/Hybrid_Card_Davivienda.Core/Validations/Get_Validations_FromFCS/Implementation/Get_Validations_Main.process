@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.recaudo.bogota.com/schemas/ws/GetWSUsos" xmlns:ns5="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns6="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pfx="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd" xmlns:ns12="http://www.recaudo.bogota.com/schemas/ws/GetWSUsos" xmlns:ns5="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns6="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Implementation/Get_Validations_Main.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>27</pd:startX>
@@ -66,7 +66,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns5:process>
                 <ns5:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns3:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns5:project>
                 <ns5:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -109,7 +109,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns5:process>
                 <ns5:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns3:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
                 </ns5:project>
                 <ns5:datetime>
                     <xsl:value-of select="current-dateTime()"/>

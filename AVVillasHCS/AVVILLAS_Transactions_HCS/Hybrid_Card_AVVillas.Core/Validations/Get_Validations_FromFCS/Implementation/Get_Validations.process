@@ -369,7 +369,7 @@
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/Errors_Mail_To"/>
                     </to>
                     <subject>
-                        <xsl:value-of select="&quot;Error al invocar FCS para usos&quot;"/>
+                        <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/RecaudoBogota/Project_Name, &quot; | Error al invocar FCS para obtener archivo de usos&quot;)"/>
                     </subject>
                     <message>
                         <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Ha ocurrido un error al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error, reintento: &quot;,$Retries/Retries, &quot;&lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
@@ -406,7 +406,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns13:process>
                 <ns13:project>
-                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/RecaudoBogota/Project_Name"/>
                 </ns13:project>
                 <ns13:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -441,7 +441,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns13:process>
                 <ns13:project>
-                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/RecaudoBogota/Project_Name"/>
                 </ns13:project>
                 <ns13:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -521,7 +521,7 @@
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of select="&quot;Se ha superado el número de reintentos al invocar FCS para usos&quot;"/>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/RecaudoBogota/Project_Name, &quot; | Se ha superado el número de reintentos al invocar FCS para obtener archivo de usos&quot;)"/>
                 </subject>
                 <message>
                     <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Tarjeta Híbrida AV Villas | Se ha superado el número de reintentos al invocar el FCS para traer usos del día&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch_FCS/exceptiondata,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>

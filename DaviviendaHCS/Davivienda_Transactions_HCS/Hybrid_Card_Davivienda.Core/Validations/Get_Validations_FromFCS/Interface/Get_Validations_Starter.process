@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/schemas/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Schema.xsd" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns3="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Logs_Save.IN">
     <pd:name>Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process</pd:name>
     <pd:startName>Timer</pd:startName>
     <pd:startX>0</pd:startX>
@@ -80,7 +80,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:process>
                 <ns3:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
                 </ns3:project>
                 <ns3:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -112,7 +112,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns3:process>
                 <ns3:project>
-                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida DAVIVIENDA&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
                 </ns3:project>
                 <ns3:datetime>
                     <xsl:value-of select="current-dateTime()"/>

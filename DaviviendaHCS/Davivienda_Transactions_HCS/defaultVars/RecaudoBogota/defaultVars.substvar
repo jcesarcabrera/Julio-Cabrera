@@ -26,6 +26,14 @@
 			<modTime>1473717739713</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>Project_Name</name>
+			<value>Tarjeta Híbrida Davivienda</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1475165961620</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Reservado</name>
 			<value>REGICTRL</value>
 			<deploymentSettable>true</deploymentSettable>

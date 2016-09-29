@@ -26,6 +26,14 @@
 			<modTime>1472419501355</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>Project_Name</name>
+			<value>Tarjeta Híbrida AV Villas</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1475166767347</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Reservado</name>
 			<value>99999999</value>
 			<deploymentSettable>true</deploymentSettable>

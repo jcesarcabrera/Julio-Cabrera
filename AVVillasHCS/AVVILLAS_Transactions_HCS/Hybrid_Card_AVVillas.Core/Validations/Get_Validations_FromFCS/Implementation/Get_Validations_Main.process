@@ -66,7 +66,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns5:process>
                 <ns5:project>
-                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RecaudoBogota/Project_Name"/>
                 </ns5:project>
                 <ns5:datetime>
                     <xsl:value-of select="current-dateTime()"/>
@@ -109,7 +109,7 @@
                     <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns5:process>
                 <ns5:project>
-                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas&quot;"/>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RecaudoBogota/Project_Name"/>
                 </ns5:project>
                 <ns5:datetime>
                     <xsl:value-of select="current-dateTime()"/>
