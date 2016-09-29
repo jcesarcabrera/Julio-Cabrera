@@ -48,14 +48,14 @@
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>RetrieAR_SUM</pd:from>
+            <pd:from>ClaimDataResult_Upload</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>ClaimDataResult_Upload</pd:from>
+            <pd:from>RetrieAR_SUM</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -402,7 +402,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="concat(&quot;Se envía JSON generado de vuelta al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se envía JSON generado de vuelta al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:id_process>
                     <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
@@ -434,7 +434,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="concat(&quot;Se ha cargado Respuesta de usos al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se ha cargado Respuesta de usos al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:detail>
                     <xsl:value-of select="concat($ClaimDataResult_Upload/ns12:RESTOutput/StatusCode, &quot; | &quot;, $ClaimDataResult_Upload/ns12:RESTOutput/ReasonPhrase)"/>
@@ -468,7 +468,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Se descifra el archivo AR para luego ser validado y procesado a json&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se descifra el archivo AR para luego ser validado y procesado a json &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:detail>
                     <xsl:value-of select="$PGP_Descifrado/Uncifred_File/FileName"/>
@@ -518,7 +518,7 @@
                     <xsl:value-of select="&quot;ERROR&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Se ha superado el número de reintentos para cargar respuesta de usos al FCS&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se ha superado el número de reintentos para cargar respuesta de usos al FCS &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:detail>
                     <xsl:value-of select="$Catch-Retries/exceptiondata/*"/>
@@ -540,10 +540,10 @@
         <pd:inputBindings>
             <input>
                 <to>
-                    <xsl:value-of select="&quot;jcabrera@rbsas.co&quot;"/>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of select="&quot;Se ha superado el número de reintentos para cargar la respuesta de usos al FCS&quot;"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas | Se ha superado el número de reintentos para cargar la respuesta de usos al FCS&quot;"/>
                 </subject>
                 <message>
                     <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se ha superado el número de reintentos al cargar respuesta de usos al FCS&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch-Retries/exceptiondata/*,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
@@ -569,7 +569,7 @@
                     <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/Errors_Mail_To"/>
                 </to>
                 <subject>
-                    <xsl:value-of select="&quot;Ha ocurrido un error al traer el archivo de Respuestas de usos del servidor SFTP&quot;"/>
+                    <xsl:value-of select="&quot;Tarjeta Híbrida AV Villas | Ha ocurrido un error al traer el archivo de Respuestas de usos del servidor SFTP&quot;"/>
                 </subject>
                 <xsl:if test="$_error_Get_AR_File/ActivityErrors/GetFilesException/FailedFiles[1]/Error">
                     <message>
@@ -687,7 +687,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Se extrae el archivo AR cifrado del servidor SFTP para luego proceder a descifrarlo&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se extrae el archivo AR cifrado del servidor SFTP para luego proceder a descifrarlo &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <xsl:if test="$Get_AR_File/SFTPGetOutputFile/FileTransferred[1]/Name">
                     <ns:detail>

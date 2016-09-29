@@ -54,7 +54,7 @@
                     <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Mail/AEFile_MailTo"/>
                 </mail_to>
                 <subject>
-                    <xsl:value-of select="concat(&quot;Davivienda - Usos &quot;, tib:add-to-date(current-date(), 0, 0, -1))"/>
+                    <xsl:value-of select="concat(&quot;AV Villas - Usos &quot;, tib:add-to-date(current-date(), 0, 0, -1))"/>
                 </subject>
                 <fullfilename>
                     <xsl:value-of select="$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fullName"/>
@@ -91,7 +91,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </pfx:level>
                 <pfx:message>
-                    <xsl:value-of select="concat(&quot;Comienza el proceso de envio del archivo de usos: &quot;,$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fullName)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Comienza el proceso de envio del archivo de usos: &quot;,$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fullName)"/>
                 </pfx:message>
                 <xsl:if test="$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fileName">
                     <pfx:detail>
@@ -146,7 +146,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </pfx:level>
                 <pfx:message>
-                    <xsl:value-of select="concat(&quot;Finaliza el proceso de envio del archivo de usos: &quot;,$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fullName)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Finaliza el proceso de envio del archivo de usos: &quot;,$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fullName)"/>
                 </pfx:message>
                 <xsl:if test="$GET_AE_File/ns1:ListFilesActivityOutput/files/fileInfo[1]/fileName">
                     <pfx:detail>

@@ -47,7 +47,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns1:level>
                 <ns1:message>
-                    <xsl:value-of select="concat(&quot;Se inicia el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se inicia el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:message>
                 <ns1:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
@@ -78,7 +78,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns1:level>
                 <ns1:message>
-                    <xsl:value-of select="concat(&quot;Finaliza el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Finaliza el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:message>
                 <ns1:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>

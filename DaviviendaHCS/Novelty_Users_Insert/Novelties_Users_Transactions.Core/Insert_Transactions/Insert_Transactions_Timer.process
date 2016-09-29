@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns="http://www.tibco.com/pe/EngineTypes">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes">
     <pd:name>Novelties_Users_Transactions.Core/Insert_Transactions/Insert_Transactions_Timer.process</pd:name>
     <pd:startName>Timer_Transactions</pd:startName>
     <pd:startX>0</pd:startX>
@@ -67,7 +67,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns1:level>
                 <ns1:message>
-                    <xsl:value-of select="&quot;Inicia la insercion de usos en la base de datos&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Inicia la insercion de usos en la base de datos &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:message>
                 <ns1:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
@@ -99,7 +99,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns1:level>
                 <ns1:message>
-                    <xsl:value-of select="&quot;Finaliza la insercion de usos en la base de datos&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Finaliza la insercion de usos en la base de datos &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:message>
                 <ns1:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>

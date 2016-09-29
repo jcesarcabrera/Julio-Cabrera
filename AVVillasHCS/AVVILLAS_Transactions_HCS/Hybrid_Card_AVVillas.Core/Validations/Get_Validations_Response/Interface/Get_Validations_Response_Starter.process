@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save">
     <pd:name>Hybrid_Card_AVVillas.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process</pd:name>
     <pd:startName>GetValidations_Response</pd:startName>
     <pd:startX>0</pd:startX>
@@ -89,7 +89,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Inicia el proceso de extracción y procesamiento de archivo de respuesta de usos&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Inicia el proceso de extracción y procesamiento de archivo de respuesta de usos &quot;, $_processContext/ns1:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:id_process>
                     <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
@@ -121,7 +121,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns:level>
                 <ns:message>
-                    <xsl:value-of select="&quot;Finaliza el proceso de extracción y procesamiento de archivo de respuesta de usos&quot;"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Finaliza el proceso de extracción y procesamiento de archivo de respuesta de usos &quot;, $_processContext/ns1:ProcessContext/ProcessId)"/>
                 </ns:message>
                 <ns:id_process>
                     <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>

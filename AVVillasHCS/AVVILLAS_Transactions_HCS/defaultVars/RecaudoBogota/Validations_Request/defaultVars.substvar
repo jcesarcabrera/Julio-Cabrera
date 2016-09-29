@@ -27,35 +27,35 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_File_Cifred_Path</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\AEFile\CifredFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\AEFile\CifredFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444166906</modTime>
+			<modTime>1475096780421</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_File_Local_Path</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\AEFile\AEFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\AEFile\AEFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444166936</modTime>
+			<modTime>1475096780457</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_File_Local_Unzipped_Path</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\AEFile\UnzipedFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\AEFile\UnzipedFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444166969</modTime>
+			<modTime>1475096780491</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_File_Local_Zipped_Path</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\AEFile\ZippedFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\AEFile\ZippedFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444166999</modTime>
+			<modTime>1475096780519</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

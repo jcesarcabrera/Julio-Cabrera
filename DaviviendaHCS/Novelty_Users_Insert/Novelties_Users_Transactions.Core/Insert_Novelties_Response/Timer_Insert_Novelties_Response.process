@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>Novelties_Users_Transactions.Core/Insert_Novelties_Response/Timer_Insert_Novelties_Response.process</pd:name>
     <pd:startName>Timer_Insert_ER</pd:startName>
     <pd:startX>0</pd:startX>
@@ -47,7 +47,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns1:level>
                 <ns1:message>
-                    <xsl:value-of select="concat(&quot;Se inicia el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Se inicia el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:message>
                 <ns1:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
@@ -78,7 +78,7 @@
                     <xsl:value-of select="&quot;Info&quot;"/>
                 </ns1:level>
                 <ns1:message>
-                    <xsl:value-of select="concat(&quot;Finaliza el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Finaliza el proceso de inservción de Respuesta de Novedades para tarjetas del día &quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, -1,0,0,0), &quot; ProcessID: &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
                 </ns1:message>
                 <ns1:id_process>
                     <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>

@@ -10,7 +10,7 @@
             <authorProperty>Julio Cabrera</authorProperty>
             <processProperty>/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter_Manual.process,/Hybrid_Card_Davivienda.Core/Validations/Get_Validations_FromFCS/Contingencias/ContingenciasMain.process</processProperty>
         </processArchive>
-        <versionProperty>3</versionProperty>
+        <versionProperty>4</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>DaviviendaHCS-Transactions</name>

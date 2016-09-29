@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>NotValid_Transactions_File</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\ARFile\NotValidARFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\ARFile\NotValidARFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444167028</modTime>
+			<modTime>1475096780548</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_ResponseFileName_Prefix</name>
@@ -19,11 +19,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_ResponseFile_LocalPath</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\ARFile\PGPGFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\ARFile\PGPGFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444167061</modTime>
+			<modTime>1475096780579</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_ResponseFile_RemotePath</name>
@@ -35,11 +35,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Validations_Response_UncifredFile</name>
-			<value>C:\ArchivosRecaudo2\AVVillas\ARFile\UncifredFiles\</value>
+			<value>C:\ArchivosRecaudoAVVillas\Usos\ARFile\UncifredFiles\</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1473444167116</modTime>
+			<modTime>1475096780610</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

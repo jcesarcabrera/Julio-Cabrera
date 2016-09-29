@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT">
     <pd:name>Novelties_Users_Transactions.Core/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File.process</pd:name>
     <pd:startName>TimerRejectedAR</pd:startName>
     <pd:startX>0</pd:startX>
@@ -85,7 +85,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns12:level>
                 <ns12:message>
-                    <xsl:value-of select="concat(&quot;Comienza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Comienza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
                 </ns12:message>
                 <ns12:detail>
                     <xsl:value-of select="tib:substring-after-last($Rejected_Transactions/Rejected_Transactions_File, &quot;\&quot;)"/>
@@ -138,7 +138,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns12:level>
                 <ns12:message>
-                    <xsl:value-of select="concat(&quot;Finaliza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Finaliza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
                 </ns12:message>
                 <ns12:detail>
                     <xsl:value-of select="tib:substring-after-last($Rejected_Transactions/Rejected_Transactions_File, &quot;\&quot;)"/>

@@ -9,7 +9,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="header"/>
-				<xs:element ref="body" maxOccurs="unbounded"/>
+				<xs:element ref="body" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

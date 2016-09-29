@@ -48,7 +48,7 @@
                     <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Mail/RejectedTransactions_MailTo"/>
                 </mail_to>
                 <subject>
-                    <xsl:value-of select="concat(&quot;Davivienda - Usos rechazados &quot;, tib:add-to-date(current-date(), 0, 0, -1))"/>
+                    <xsl:value-of select="concat(&quot;AV Villas - Usos rechazados &quot;, tib:add-to-date(current-date(), 0, 0, -1))"/>
                 </subject>
                 <fullfilename>
                     <xsl:value-of select="$Rejected_Transactions/Rejected_Transactions_File"/>
@@ -85,7 +85,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns12:level>
                 <ns12:message>
-                    <xsl:value-of select="concat(&quot;Comienza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Comienza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
                 </ns12:message>
                 <ns12:detail>
                     <xsl:value-of select="tib:substring-after-last($Rejected_Transactions/Rejected_Transactions_File, &quot;\&quot;)"/>
@@ -138,7 +138,7 @@
                     <xsl:value-of select="&quot;INFO&quot;"/>
                 </ns12:level>
                 <ns12:message>
-                    <xsl:value-of select="concat(&quot;Finaliza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Finaliza el proceso de envio del archivo de Respuesta de Usos Rechazados por el Banco: &quot;,$Rejected_Transactions/Rejected_Transactions_File)"/>
                 </ns12:message>
                 <ns12:detail>
                     <xsl:value-of select="tib:substring-after-last($Rejected_Transactions/Rejected_Transactions_File, &quot;\&quot;)"/>

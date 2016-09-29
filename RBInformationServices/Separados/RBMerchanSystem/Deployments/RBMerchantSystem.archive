@@ -5,20 +5,20 @@
             <resourceType>shared.archive.resource</resourceType>
             <authorProperty>Catalina Montero</authorProperty>
         </sharedArchive>
-        <processArchive name="RBMerchanSystem">
+        <processArchive name="RBMerchantSystem">
             <resourceType>process.archive.resource</resourceType>
             <authorProperty>Catalina Montero</authorProperty>
             <processProperty>/MerchanSystem.core/Interface/RestService.process,/MerchanSystem.core/Interface/TimerMerchantClosing.process,/MerchanSystem.core/Interface/TimerMerchantOpening.process</processProperty>
         </processArchive>
-        <versionProperty>2</versionProperty>
+        <versionProperty>3</versionProperty>
         <authorProperty>Julio Cabrera</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
-        <name>RBMerchanSystem</name>
+        <name>RBMerchantSystem</name>
         <designer>
             <lockedProperties/>
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\WorkSpaceRB\RBInformationServices\Deployments\RBMerchanSystem.ear</fileLocationProperty>
+        <fileLocationProperty>C:\WorkSpaceRB\RBInformationServices\Deployments\RBMerchantSystem.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
