@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns6="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="nsClaimResponseFcs" xmlns:ns4="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:pfx5="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.recaudo.bogota.com/schemas/CanonicoRB" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="nsDailyBlackListResultFcs" xmlns:pfx2="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" xmlns:pfx7="nsClaimDataBank" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/CommonLE2/namespace/Private/InsertLogRequest.xsd">
+    <xsd:import namespace="http://www.recaudo.bogota.com/schemas/JSON/NovedadesRespuesta" schemaLocation="/SharedResources/Schemas/JSON/NovedadesRespuesta.xsd"/>
+    <xsd:import namespace="nsDailyBlackListResultFcs" schemaLocation="/SharedResources/Schemas/Response/FcsDailyBlackListResult.xsd"/>
+    <xsd:import namespace="http://www.recaudo.bogota.com/schemas/CanonicoRB" schemaLocation="/SharedResources/Schemas/CanonicoRecaudoBogota.xsd"/>
+    <xsd:import namespace="nsClaimDataBank" schemaLocation="/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Schemas/BodyFormat.xsd"/>
+    <xsd:import namespace="nsClaimResponseFcs" schemaLocation="/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Schemas/ValidatorFcsClaimResponse.xsd"/>
+    <pd:name>Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Contingencias/ValidacionJSONClaimData_Contingencia.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="fullNameInputFile" type="xsd:string"/>
+                    <xsd:element name="Fecha_Contingencia" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings>
+        <output>
+            <Filename>
+                <xsl:value-of select="$Body/ns:WriteActivityOutputClass/fileInfo/fileName"/>
+            </Filename>
+            <fullname>
+                <xsl:value-of select="$Body/ns:WriteActivityOutputClass/fileInfo/fullName"/>
+            </fullname>
+            <isValid>
+                <xsl:value-of select="if (count($Parse-JSON/ns2:ActivityOutputClass/ns1:JSON/ns1:header/ns1:TotalBodyRecordsCount)>0) then true() else false()"/>
+            </isValid>
+            <TextContent>
+                <xsl:value-of select="$Read-File/ns:ReadActivityOutputTextClass/fileContent/textContent"/>
+            </TextContent>
+        </output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Filename" type="xsd:string"/>
+                    <xsd:element name="fullname" type="xsd:string"/>
+                    <xsd:element name="isValid" type="xsd:string"/>
+                    <xsd:element name="TextContent" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>646</pd:endX>
+    <pd:endY>286</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1435776779610</pd:targetNamespace>
+    <pd:group name="Body_Generator">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>656</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>115</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Acumulated/AccumulatedOutput/Body_Mapper/pfx7:body</pd:over>
+            <pd:iterationElementSlot>BodyJSON</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Body</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Body</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Body">
+            <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+            <pd:x>715</pd:x>
+            <pd:y>79</pd:y>
+            <config>
+                <encoding>text</encoding>
+                <compressFile>None</compressFile>
+                <append>true</append>
+                <createMissingDirectories>false</createMissingDirectories>
+            </config>
+            <pd:inputBindings>
+                <ns:WriteActivityInputTextClass>
+                    <fileName>
+                        <xsl:value-of select="$FileName/FileName/FileName"/>
+                    </fileName>
+                    <textContent>
+                        <xsl:value-of select="concat($BodyJSON/pfx7:body/pfx7:IdentificadordeTransaccion,&#xA;$BodyJSON/pfx7:body/pfx7:CodigoBanco,&#xA;$BodyJSON/pfx7:body/pfx7:FechadeTransaccion,&#xA;$BodyJSON/pfx7:body/pfx7:MontodeUso,&#xA;$BodyJSON/pfx7:body/pfx7:DocumentodeIdentidad,&#xA;$BodyJSON/pfx7:body/pfx7:SerialTarjeta,&#xA;$BodyJSON/pfx7:body/pfx7:NombreEstacion-Parada,&#xA;$BodyJSON/pfx7:body/pfx7:CodigoEstacion-Parada,&quot;&#xA;&quot;)"/>
+                    </textContent>
+                    <encoding>
+                        <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Encoding"/>
+                    </encoding>
+                </ns:WriteActivityInputTextClass>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:group name="Body_JSON">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>117</pd:x>
+        <pd:y>104</pd:y>
+        <pd:width>276</pd:width>
+        <pd:height>218</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-JSON/ns2:ActivityOutputClass/ns1:JSON/ns1:body</pd:over>
+            <pd:iterationElementSlot>body_format</pd:iterationElementSlot>
+            <pd:indexSlot>h</pd:indexSlot>
+            <pd:outSlot>Acumulated</pd:outSlot>
+            <pd:activityOutputName>Body_Data</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetDocumentUsos</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Body_Data</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetDocumentUsos</pd:from>
+            <pd:to>Body_Data</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Body_Data">
+            <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+            <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+            <pd:x>320</pd:x>
+            <pd:y>169</pd:y>
+            <config>
+                <element>
+                    <xsd:element name="Body_Mapper">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="pfx7:body" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </element>
+            </config>
+            <pd:inputBindings>
+                <Body_Mapper>
+                    <pfx7:body>
+                        <pfx7:IdentificadordeTransaccion>
+                            <xsl:value-of select="&quot;10000000000000000000&quot;"/>
+                        </pfx7:IdentificadordeTransaccion>
+                        <pfx7:CodigoBanco>
+                            <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Bank_Code"/>
+                        </pfx7:CodigoBanco>
+                        <pfx7:FechadeTransaccion>
+                            <xsl:value-of select="$body_format/ns1:body/ns1:UsageDate"/>
+                        </pfx7:FechadeTransaccion>
+                        <pfx7:MontodeUso>
+                            <xsl:value-of select="tib:pad-front($body_format/ns1:body/ns1:AmountUsed, 7,'0')"/>
+                        </pfx7:MontodeUso>
+                        <xsl:choose>
+                            <xsl:when test="empty($GetDocumentUsos/resultSet/Record/DocumentID)">
+                                <pfx7:DocumentodeIdentidad>
+                                    <xsl:value-of select="tib:pad-front('0', 16, '0')"/>
+                                </pfx7:DocumentodeIdentidad>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx7:DocumentodeIdentidad>
+                                    <xsl:value-of select="tib:pad-front($GetDocumentUsos/resultSet/Record[1]/DocumentID, 16, '0')"/>
+                                </pfx7:DocumentodeIdentidad>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx7:SerialTarjeta>
+                            <xsl:value-of select="$body_format/ns1:body/ns1:FCSCardNumber"/>
+                        </pfx7:SerialTarjeta>
+                        <xsl:choose>
+                            <xsl:when test="string-length($body_format/ns1:body/ns1:StationBusStopNm)&lt;40">
+                                <pfx7:NombreEstacion-Parada>
+                                    <xsl:value-of select="tib:pad($body_format/ns1:body/ns1:StationBusStopNm, 40, &quot; &quot;)"/>
+                                </pfx7:NombreEstacion-Parada>
+                            </xsl:when>
+                            <xsl:when test="string-length($body_format/ns1:body/ns1:StationBusStopNm)>40">
+                                <pfx7:NombreEstacion-Parada>
+                                    <xsl:value-of select="substring($body_format/ns1:body/ns1:StationBusStopNm, 1, 40)"/>
+                                </pfx7:NombreEstacion-Parada>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <pfx7:NombreEstacion-Parada>
+                                    <xsl:value-of select="tib:pad($body_format/ns1:body/ns1:StationBusStopNm, 40, &quot; &quot;)"/>
+                                </pfx7:NombreEstacion-Parada>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx7:CodigoEstacion-Parada>
+                            <xsl:value-of select="tib:pad-front($body_format/ns1:body/ns1:StationBusStopID, 7, '0')"/>
+                        </pfx7:CodigoEstacion-Parada>
+                    </pfx7:body>
+                </Body_Mapper>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GetDocumentUsos">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>202</pd:x>
+            <pd:y>167</pd:y>
+            <config>
+                <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                <commit>false</commit>
+                <maxRows>%%Connections/MiddlewareDB/Max_Rows%%</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>select DocumentID from hcusers where TransportCardNumber=?</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>card_number</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>DocumentID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <card_number>
+                        <xsl:choose>
+                            <xsl:when test="exists($body_format/ns1:body/ns1:FCSCardNumber)">
+                                <xsl:value-of select="$body_format/ns1:body/ns1:FCSCardNumber"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </card_number>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>323</pd:x>
+            <pd:y>253</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Catch_Errors">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>192</pd:x>
+        <pd:y>382</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="FileName">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>469</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <element>
+                <xsd:element name="FileName">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="FileName" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <FileName>
+                <FileName>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Contingencias/Local_Path, &#xA;$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Validations_Request/Validations_FileName_Prefix,&#xA;$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Bank_Code,&#xA;$Start/input/Fecha_Contingencia,&#xA;tib:format-dateTime(&quot;HHmmss&quot;,current-dateTime()))"/>
+                </FileName>
+            </FileName>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Header">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>580</pd:x>
+        <pd:y>79</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+            <append>true</append>
+            <createMissingDirectories>true</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <ns:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="$FileName/FileName/FileName"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Reservado, &#xA;tib:pad-front($Parse-JSON/ns2:ActivityOutputClass/ns1:JSON/ns1:header/ns1:TotalBodyRecordsCount, 8, '0'),&#xA;tib:pad-front($Sumatory/Output/SumTotal, 13, '0'),&#xA;$Start/input/Fecha_Contingencia,&#xA;tib:pad('0', 82, '0'),&quot;&#xA;&quot;)"/>
+                </textContent>
+                <encoding>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Encoding"/>
+                </encoding>
+            </ns:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFTP_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>753</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns4:ProcessContext/ProcessId))"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns4:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="concat(&quot;Se envía el archivo creado por cointingencia al SFTP del banco &quot;, $_processContext/ns4:ProcessContext/ProcessId)"/>
+                </ns12:message>
+                <xsl:if test="$Send_PGP_File/SFTPPutOutputFile/FileTransferred[1]/Name">
+                    <ns12:detail>
+                        <xsl:value-of select="$Send_PGP_File/SFTPPutOutputFile/FileTransferred[1]/Name"/>
+                    </ns12:detail>
+                </xsl:if>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>382</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Mail/Errors_Mail_To"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Project_Name, &quot; Errores presentados al cargar archivos de usos&quot;)"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se han presentado errores al procesar el archivo de usos&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$_error/ns4:ErrorReport/StackTrace,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                </message>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>247</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>false</ValidateOutputEnable>
+            <ActivityOutputEditor ref="ns1:JSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Read-File/ns:ReadActivityOutputTextClass/fileContent/textContent"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PGPCifrado">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>854</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/Commons/PGP_Cifrado.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <fullNameInputFile>
+                    <xsl:value-of select="$Header/ns:WriteActivityOutputClass/fileInfo/fullName"/>
+                </fullNameInputFile>
+                <pathOutputFile>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Validations_Request/Validations_File_Cifred_Path, &#xA;$Header/ns:WriteActivityOutputClass/fileInfo/fileName,&#xA;$_globalVariables/ns5:GlobalVariables/Decrypt/FileType)"/>
+                </pathOutputFile>
+                <idBank>
+                    <xsl:value-of select="1"/>
+                </idBank>
+                <methodType>
+                    <xsl:value-of select="'ClaimData'"/>
+                </methodType>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>132</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns3:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$Start/input/fullNameInputFile"/>
+                </fileName>
+                <encoding>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Encoding"/>
+                </encoding>
+            </ns3:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>401</pd:x>
+        <pd:y>382</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Send_PGP_File">
+        <pd:type>com.tibco.plugin.sp.SFTPPutActivity</pd:type>
+        <pd:resourceType>ae.activities.SFTPPutActivityUI</pd:resourceType>
+        <pd:x>865</pd:x>
+        <pd:y>286</pd:y>
+        <config>
+            <Timeout>%%Connections/SFTP/TimeOut%%</Timeout>
+            <FireWall>false</FireWall>
+            <isBinary>false</isBinary>
+            <Append>false</Append>
+            <useProcessData>false</useProcessData>
+            <persistTimestamp>false</persistTimestamp>
+            <Overwrite>true</Overwrite>
+            <logout>true</logout>
+            <SharedUserData>/Connections/SFTP Connection.sharedsftp</SharedUserData>
+        </config>
+        <pd:inputBindings>
+            <SFTPPutInputDataFile>
+                <RemoteFileName>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RecaudoBogota/Validations_Request/Validations_CifredFile_RemotePath"/>
+                </RemoteFileName>
+                <LocalFileName>
+                    <xsl:value-of select="$PGPCifrado/Cifred_File/FileName"/>
+                </LocalFileName>
+                <Host>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/Host"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/Port"/>
+                </Port>
+                <UserName>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/UserName"/>
+                </UserName>
+                <Password>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/Password"/>
+                </Password>
+                <Timeout>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/Connections/SFTP/TimeOut"/>
+                </Timeout>
+            </SFTPPutInputDataFile>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sumatory">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>468</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <processName>/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Implementation/CountersTotal.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <xsl:for-each select="$Acumulated/AccumulatedOutput/Body_Mapper/pfx7:body">
+                    <CountersTotal>
+                        <Body>
+                            <Montodeuso>
+                                <xsl:value-of select="pfx7:MontodeUso"/>
+                            </Montodeuso>
+                        </Body>
+                    </CountersTotal>
+                </xsl:for-each>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PGP_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>858</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:LOGS_SAVE>
+                <ns12:process>
+                    <xsl:value-of select="upper-case(BW:getCurrentProcessName($_processContext/ns4:ProcessContext/ProcessId))"/>
+                </ns12:process>
+                <ns12:project>
+                    <xsl:value-of select="concat($_globalVariables/ns5:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns4:ProcessContext/EngineName)"/>
+                </ns12:project>
+                <ns12:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns12:datetime>
+                <ns12:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns12:level>
+                <ns12:message>
+                    <xsl:value-of select="concat(&quot;Se cifra el archivo creado por cointingencia &quot;, $_processContext/ns4:ProcessContext/ProcessId)"/>
+                </ns12:message>
+                <ns12:detail>
+                    <xsl:value-of select="$PGPCifrado/Cifred_File/FileName"/>
+                </ns12:detail>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns4:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Body_Generator</pd:from>
+        <pd:to>PGPCifrado</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Header</pd:from>
+        <pd:to>Body_Generator</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Body_JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FileName</pd:from>
+        <pd:to>Header</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGPCifrado</pd:from>
+        <pd:to>PGP_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send_PGP_File</pd:from>
+        <pd:to>SFTP_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Body_JSON</pd:from>
+        <pd:to>Sumatory</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sumatory</pd:from>
+        <pd:to>FileName</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch_Errors</pd:from>
+        <pd:to>MailSend</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFTP_Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGP_Log</pd:from>
+        <pd:to>Send_PGP_File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

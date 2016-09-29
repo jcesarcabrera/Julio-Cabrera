@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Catalina Montero</authorProperty>
+        </sharedArchive>
+        <processArchive name="NOVELTIESTRANSACTIONS.INSERT">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Julio Cabrera</authorProperty>
+            <processProperty>/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Novelties/TimerInsertNoveltysCards.process,/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Users/Timer_InsertHistoryUsers.process,/Services/NOVELTIESTRANSACTIONS.INSERT/SendFilesMail/Send_RejectedTransactions_File/SendRejected_Transactions_File.process,/Services/NOVELTIESTRANSACTIONS.INSERT/SendFilesMail/Send_AE_File/Send_AE_File.process,/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Transactions/Insert_Transactions_Timer.process,/Services/NOVELTIESTRANSACTIONS.INSERT/SendFilesMail/Report_Transactions/Rejected_Transactions.process,/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Novelties_Response/Timer_Insert_Novelties_Response.process,/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Transactions_Response/Timer_Insert_Transactions_Response.process</processProperty>
+        </processArchive>
+        <versionProperty>50</versionProperty>
+        <authorProperty>Julio Cabrera</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>NOVELTIESTRANSACTIONS.INSERT</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\WorkSpaceRB\TARJETA HIBRIDA DAVIVIENDA\DEPLOYMENTS\RB.DAVIVIENDA.NOVELTIESTRANSACTIONS.INSERT.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

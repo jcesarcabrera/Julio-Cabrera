@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/Sleep" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Services/TARJETAHIBRIDA.TRANSACTIONS/UnitTest/Test.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>684</pd:endX>
+    <pd:endY>45</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <SFTP_Retries>
+            <xsd:element name="SFTP_Retries" type="xsd:string"/>
+        </SFTP_Retries>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1473904306602</pd:targetNamespace>
+    <pd:group name="Retries">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>260</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>304</pd:width>
+        <pd:height>302</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>s</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$SFTP_Retries/SFTP_Retries=5 or count($Send_PGP_File/SFTPPutOutputFile/FileTransferred)&gt;0</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send_PGP_File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep_Retries</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send_PGP_File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch_Errors</pd:from>
+            <pd:to>Retries+1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Retries+1</pd:from>
+            <pd:to>Sleep_Retries</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Send_PGP_File">
+            <pd:type>com.tibco.plugin.sp.SFTPPutActivity</pd:type>
+            <pd:resourceType>ae.activities.SFTPPutActivityUI</pd:resourceType>
+            <pd:x>376</pd:x>
+            <pd:y>65</pd:y>
+            <config>
+                <Timeout>%%Connections/SFTP/TimeOut%%</Timeout>
+                <FireWall>false</FireWall>
+                <isBinary>false</isBinary>
+                <Append>false</Append>
+                <useProcessData>false</useProcessData>
+                <persistTimestamp>false</persistTimestamp>
+                <Overwrite>true</Overwrite>
+                <logout>true</logout>
+                <SharedUserData>/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Connections/SFTP Connection Test.sharedsftp</SharedUserData>
+            </config>
+            <pd:inputBindings>
+                <SFTPPutInputDataFile>
+                    <RemoteFileName>
+                        <xsl:value-of select="'/Enviar_Davivienda/'"/>
+                    </RemoteFileName>
+                    <LocalFileName>
+                        <xsl:value-of select="'D:\Localfiles\ARB0320160914002505'"/>
+                    </LocalFileName>
+                    <Host>
+                        <xsl:value-of select="'localhost'"/>
+                    </Host>
+                    <Port>
+                        <xsl:value-of select="22"/>
+                    </Port>
+                    <UserName>
+                        <xsl:value-of select="'jcesarcabrera'"/>
+                    </UserName>
+                    <Password>
+                        <xsl:value-of select="'wolf2284'"/>
+                    </Password>
+                </SFTPPutInputDataFile>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch_Errors">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>399</pd:x>
+            <pd:y>142</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Retries+1">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>313</pd:x>
+            <pd:y>227</pd:y>
+            <config>
+                <variableName>SFTP_Retries</variableName>
+            </config>
+            <pd:inputBindings>
+                <SFTP_Retries>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$SFTP_Retries/SFTP_Retries + 1"/>
+                </SFTP_Retries>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Sleep_Retries">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>477</pd:x>
+            <pd:y>227</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns1:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="5000"/>
+                    </IntervalInMillisec>
+                </ns1:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="SFTP_Retries_Initial">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>120</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <variableName>SFTP_Retries</variableName>
+        </config>
+        <pd:inputBindings>
+            <SFTP_Retries>
+                <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="0"/>
+            </SFTP_Retries>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SFTP_Retries_Initial</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SFTP_Retries_Initial</pd:from>
+        <pd:to>Retries</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retries</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

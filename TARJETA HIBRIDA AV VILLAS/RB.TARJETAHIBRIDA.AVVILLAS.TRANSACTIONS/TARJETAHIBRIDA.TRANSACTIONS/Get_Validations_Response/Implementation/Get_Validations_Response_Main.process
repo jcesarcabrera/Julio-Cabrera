@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns4="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx7="nsUsosResponseBank">
+    <xsd:import namespace="nsUsosResponseBank" schemaLocation="/TARJETAHIBRIDA.TRANSACTIONS/Get_Validations_Response/Schemas/BankValidationsResponse.xsd"/>
+    <pd:name>TARJETAHIBRIDA.TRANSACTIONS/Get_Validations_Response/Implementation/Get_Validations_Response_Main.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>35</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1398</pd:endX>
+    <pd:endY>35</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <RetriesAR>
+            <xsd:element name="RetriesAR" type="xsd:string"/>
+        </RetriesAR>
+        <Retries_SFTP_AR>
+            <xsd:element name="Retries_SFTP_AR" type="xsd:string"/>
+        </Retries_SFTP_AR>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1472482883821</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>884</pd:x>
+        <pd:y>120</pd:y>
+        <pd:width>248</pd:width>
+        <pd:height>214</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>while</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>Retries</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:whileCondition>$RetriesAR/RetriesAR=10 or $ClaimDataResult_Upload/ns12:RESTOutput/StatusCode='200'</pd:whileCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>ClaimDataResult_Upload</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>RetrieAR_SUM</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ClaimDataResult_Upload</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch-Retries</pd:from>
+            <pd:to>RetrieAR_SUM</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="ClaimDataResult_Upload">
+            <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
+            <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
+            <pd:x>999</pd:x>
+            <pd:y>180</pd:y>
+            <config>
+                <enableProtocolUI>None</enableProtocolUI>
+                <restMethodUI>POST</restMethodUI>
+                <restResponseType>JSON</restResponseType>
+                <authChoiceUI>Basic Authentication</authChoiceUI>
+                <WADLPaths/>
+                <WADLBaseURL/>
+                <restMethodIDUI/>
+                <username>%%Connections/FCS_Service/User%%</username>
+                <password>%%Connections/FCS_Service/Password%%</password>
+                <restURI/>
+                <richOutputEnableUI>true</richOutputEnableUI>
+                <restInputReferNode>
+                    <xsd:element name="Parameters">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Query" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Header" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="Accept" type="xsd:string"/>
+                                            <xsd:element name="Content-Disposition" type="xsd:string"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Body" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Form" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Text" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Binary" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" type="xsd:base64Binary" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Multipart" minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="content-disposition" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content-id" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="content" minOccurs="0">
+                                                            <xsd:complexType>
+                                                                <xsd:choice>
+                                                                    <xsd:element name="binary" type="xsd:base64Binary"/>
+                                                                    <xsd:element name="text" type="xsd:string"/>
+                                                                    <xsd:element name="fileName" type="xsd:string"/>
+                                                                </xsd:choice>
+                                                            </xsd:complexType>
+                                                        </xsd:element>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </restInputReferNode>
+                <restOutputReferNode>
+                    <xsd:element name="header">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="date" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="set-cookie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-type" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="content-length" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="requestid" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="x-powered-by" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="resmsg" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="rescd" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </restOutputReferNode>
+            </config>
+            <pd:inputBindings>
+                <ns12:ActivityInput>
+                    <URI>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/FCS_Service/Request_URI/ClaimDataResult"/>
+                    </URI>
+                    <Timeout>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/FCS_Service/TimeOut"/>
+                    </Timeout>
+                    <ns12:Parameters>
+                        <Header>
+                            <Content-Type>
+                                <xsl:value-of select="'application/json'"/>
+                            </Content-Type>
+                            <Accept>
+                                <xsl:value-of select="'application/octet-stream'"/>
+                            </Accept>
+                            <Content-Disposition>
+                                <xsl:value-of select="concat('attachment; filename=&quot;', $Read_Uncifred_AR/JSON_ResponseAR/AR_FileName ,'&quot;')"/>
+                            </Content-Disposition>
+                        </Header>
+                        <Body>
+                            <Text>
+                                <type>
+                                    <xsl:value-of select="'application/json'"/>
+                                </type>
+                                <content>
+                                    <xsl:value-of select="$Read_Uncifred_AR/JSON_ResponseAR/JSON_ResponseAR"/>
+                                </content>
+                            </Text>
+                        </Body>
+                    </ns12:Parameters>
+                </ns12:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch-Retries">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>940</pd:x>
+            <pd:y>265</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="RetrieAR_SUM">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1043</pd:x>
+            <pd:y>264</pd:y>
+            <config>
+                <variableName>RetriesAR</variableName>
+            </config>
+            <pd:inputBindings>
+                <RetriesAR>
+                    <xsl:value-of select="$RetriesAR/RetriesAR + 1"/>
+                </RetriesAR>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:group name="Retries_SFTP">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1</pd:x>
+        <pd:y>97</pd:y>
+        <pd:width>280</pd:width>
+        <pd:height>249</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>j</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$Retries_SFTP_AR/Retries_SFTP_AR=5 or $Get_AR_File/SFTPGetOutputFile/FileTransferred!=""</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get_AR_File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Sleep_Retries</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get_AR_File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch_Retries</pd:from>
+            <pd:to>SFTP_Retries + 1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SFTP_Retries + 1</pd:from>
+            <pd:to>Sleep_Retries</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Get_AR_File">
+            <pd:type>com.tibco.plugin.sp.SFTPGetActivity</pd:type>
+            <pd:resourceType>ae.activities.SFTPGetActivityUI</pd:resourceType>
+            <pd:x>124</pd:x>
+            <pd:y>155</pd:y>
+            <config>
+                <Timeout>120000</Timeout>
+                <isBinary>false</isBinary>
+                <Overwrite>true</Overwrite>
+                <useProcessData>false</useProcessData>
+                <persistTimestamp>false</persistTimestamp>
+                <logout>true</logout>
+                <SharedUserData>/Connections/SFTP Connection.sharedsftp</SharedUserData>
+            </config>
+            <pd:inputBindings>
+                <SFTPGetInputDataFile>
+                    <RemoteFileName>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Validations_Response/Validations_ResponseFile_RemotePath, &#xA;$_globalVariables/ns1:GlobalVariables/RecaudoBogota/Validations_Response/Validations_ResponseFileName_Prefix,&#xA;$_globalVariables/ns1:GlobalVariables/RecaudoBogota/Bank_Code,&#xA;tib:format-date(&quot;yyyyMMdd&quot;, current-date()),&#xA;'*.pgp')"/>
+                    </RemoteFileName>
+                    <LocalFileName>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/RecaudoBogota/Validations_Response/Validations_ResponseFile_LocalPath"/>
+                    </LocalFileName>
+                    <Host>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/SFTP/Host"/>
+                    </Host>
+                    <Port>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/SFTP/Port"/>
+                    </Port>
+                    <UserName>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/SFTP/UserName"/>
+                    </UserName>
+                    <Password>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/SFTP/Password"/>
+                    </Password>
+                    <Timeout>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Connections/SFTP/TimeOut"/>
+                    </Timeout>
+                </SFTPGetInputDataFile>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="SFTP_Retries + 1">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>61</pd:x>
+            <pd:y>291</pd:y>
+            <config>
+                <variableName>Retries_SFTP_AR</variableName>
+            </config>
+            <pd:inputBindings>
+                <Retries_SFTP_AR>
+                    <xsl:value-of select="$Retries_SFTP_AR/Retries_SFTP_AR + 1"/>
+                </Retries_SFTP_AR>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch_Retries">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>163</pd:x>
+            <pd:y>223</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Sleep_Retries">
+            <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+            <pd:resourceType>ae.activities.sleep</pd:resourceType>
+            <pd:x>175</pd:x>
+            <pd:y>291</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:SleepInputSchema>
+                    <IntervalInMillisec>
+                        <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Timer_AV_Villas/SFTP_Retries"/>
+                    </IntervalInMillisec>
+                </ns0:SleepInputSchema>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="ClaimDataResult_Request_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>799</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns:LOGS_SAVE>
+                <ns:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:process>
+                <ns:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns:project>
+                <ns:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns:datetime>
+                <ns:level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns:level>
+                <ns:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se envía JSON generado de vuelta al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:message>
+                <ns:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns:id_process>
+            </ns:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ClaimDataResult_Response_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1195</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns:LOGS_SAVE>
+                <ns:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:process>
+                <ns:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns:project>
+                <ns:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns:datetime>
+                <ns:level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns:level>
+                <ns:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se ha cargado Respuesta de usos al FCS Operación ClaimDataResult&quot;, &quot; ProcessID: &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:message>
+                <ns:detail>
+                    <xsl:value-of select="concat($ClaimDataResult_Upload/ns12:RESTOutput/StatusCode, &quot; | &quot;, $ClaimDataResult_Upload/ns12:RESTOutput/ReasonPhrase)"/>
+                </ns:detail>
+                <ns:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns:id_process>
+            </ns:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Decrypt_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>577</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:LOGS_SAVE>
+                <ns:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:process>
+                <ns:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns:project>
+                <ns:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns:datetime>
+                <ns:level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns:level>
+                <ns:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se descifra el archivo AR para luego ser validado y procesado a json &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:message>
+                <ns:detail>
+                    <xsl:value-of select="$PGP_Descifrado/Uncifred_File/FileName"/>
+                </ns:detail>
+                <ns:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns:id_process>
+            </ns:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ErrorLog">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>455</pd:x>
+        <pd:y>226</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error_Get_AR_File/ActivityErrors/GetFilesException/FailedFiles[1]/Error"/>
+                </message>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1332</pd:x>
+        <pd:y>132</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:LOGS_SAVE>
+                <ns:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:process>
+                <ns:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns:project>
+                <ns:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns:datetime>
+                <ns:level>
+                    <xsl:value-of select="&quot;ERROR&quot;"/>
+                </ns:level>
+                <ns:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se ha superado el número de reintentos para cargar respuesta de usos al FCS &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:message>
+                <ns:detail>
+                    <xsl:value-of select="$Catch-Retries/exceptiondata/*"/>
+                </ns:detail>
+                <ns:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns:id_process>
+            </ns:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1332</pd:x>
+        <pd:y>233</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/Errors_Mail_To"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  Se ha superado el número de reintentos para cargar la respuesta de usos al FCS&quot;)"/>
+                </subject>
+                <message>
+                    <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se ha superado el número de reintentos al cargar respuesta de usos al FCS&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$Catch-Retries/exceptiondata/*,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                </message>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MailSend_ErrorSFTP">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>551</pd:x>
+        <pd:y>353</pd:y>
+        <config>
+            <processName>/Commons/MailSend.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <to>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Mail/Errors_Mail_To"/>
+                </to>
+                <subject>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; | Ha ocurrido un error al traer el archivo de Respuestas de usos del servidor SFTP&quot;)"/>
+                </subject>
+                <xsl:if test="$_error_Get_AR_File/ActivityErrors/GetFilesException/FailedFiles[1]/Error">
+                    <message>
+                        <xsl:value-of select="concat(&quot;&lt;html>&lt;head>&lt;title>Se han presentado errores al procesar el archivo de respuestas de usos&quot;,&#xA; &quot; &quot; ,tib:format-date(&quot;yyyy/MM/dd&quot;, tib:add-to-date(current-date(), 0,0,-1)),&quot;&lt;/title>&lt;/head>&lt;body>&quot;,&#xA;&quot;&lt;h2>Mensaje de error &lt;/h2>&quot;,&#xA;&quot;&lt;p>&quot;, current-dateTime(),&quot;&lt;/p>&quot;,&#xA; &quot;&lt;p>&quot;,$_error_Get_AR_File/ActivityErrors/GetFilesException/FailedFiles[1]/Error,&quot;&lt;/p>&lt;/body>&lt;/html>&quot;)"/>
+                    </message>
+                </xsl:if>
+                <id_proceso>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </id_proceso>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>1198</pd:x>
+        <pd:y>233</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Options">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>337</pd:x>
+        <pd:y>226</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="PGP_Descifrado">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>463</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Commons/PGP_Descifrado.process</processName>
+        </config>
+        <pd:inputBindings>
+            <input>
+                <fullNameInputFile>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Validations_Response/Validations_ResponseFile_LocalPath, tib:substring-after-last($Get_AR_File/SFTPGetOutputFile/FileTransferred[1]/Name, &quot;/&quot;))"/>
+                </fullNameInputFile>
+                <pathOutputFile>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/RecaudoBogota/Validations_Response/Validations_Response_UncifredFile"/>
+                </pathOutputFile>
+            </input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read_Uncifred_AR">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>684</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/TARJETAHIBRIDA.TRANSACTIONS/Get_Validations_Response/Implementation/Rejected_Transactions.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Uncifred_File>
+                <Full_AR_FileName>
+                    <xsl:value-of select="$PGP_Descifrado/Uncifred_File/FileName"/>
+                </Full_AR_FileName>
+                <Full_AEB9000_FileName>
+                    <xsl:value-of select="$GET_B9000AE/ns3:ListFilesActivityOutput/files/fileInfo[1]/fullName"/>
+                </Full_AEB9000_FileName>
+            </Uncifred_File>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="RetrieAR_Initial">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>803</pd:x>
+        <pd:y>234</pd:y>
+        <config>
+            <variableName>RetriesAR</variableName>
+        </config>
+        <pd:inputBindings>
+            <RetriesAR>
+                <xsl:value-of select="0"/>
+            </RetriesAR>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Retries_SFTP_Initial">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>137</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <variableName>Retries_SFTP_AR</variableName>
+        </config>
+        <pd:inputBindings>
+            <Retries_SFTP_AR>
+                <xsl:value-of select="0"/>
+            </Retries_SFTP_AR>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SFTP_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>335</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:LOGS_SAVE>
+                <ns:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:process>
+                <ns:project>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/RecaudoBogota/Project_Name, &quot; |  &quot;, $_processContext/ns2:ProcessContext/EngineName)"/>
+                </ns:project>
+                <ns:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns:datetime>
+                <ns:level>
+                    <xsl:value-of select="&quot;Info&quot;"/>
+                </ns:level>
+                <ns:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida AV Villas | Se extrae el archivo AR cifrado del servidor SFTP para luego proceder a descifrarlo &quot;, $_processContext/ns2:ProcessContext/ProcessId)"/>
+                </ns:message>
+                <xsl:if test="$Get_AR_File/SFTPGetOutputFile/FileTransferred[1]/Name">
+                    <ns:detail>
+                        <xsl:value-of select="$Get_AR_File/SFTPGetOutputFile/FileTransferred[1]/Name"/>
+                    </ns:detail>
+                </xsl:if>
+                <ns:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns:id_process>
+            </ns:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SFTP_Log</pd:from>
+        <pd:to>PGP_Descifrado</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PGP_Descifrado</pd:from>
+        <pd:to>Decrypt_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read_Uncifred_AR</pd:from>
+        <pd:to>ClaimDataResult_Request_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Retries_SFTP_Initial</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Decrypt_Log</pd:from>
+        <pd:to>Read_Uncifred_AR</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ClaimDataResult_Request_Log</pd:from>
+        <pd:to>RetrieAR_Initial</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ClaimDataResult_Response_Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RetrieAR_Initial</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>ClaimDataResult_Response_Log</pd:to>
+        <pd:xpathDescription>Ok</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>MailSend</pd:to>
+        <pd:xpathDescription>Retries=10</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$RetriesAR/RetriesAR=10</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorLog</pd:from>
+        <pd:to>MailSend_ErrorSFTP</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retries_SFTP</pd:from>
+        <pd:to>Options</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Retries_SFTP_Initial</pd:from>
+        <pd:to>Retries_SFTP</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Options</pd:from>
+        <pd:to>SFTP_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Options</pd:from>
+        <pd:to>ErrorLog</pd:to>
+        <pd:xpathDescription>Max_Retries</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Retries_SFTP_AR/Retries_SFTP_AR=5</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MailSend_ErrorSFTP</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Error</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

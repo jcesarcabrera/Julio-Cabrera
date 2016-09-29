@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="nsClaimResponseFcs" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns14="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:ns13="http://www.tibco.com/namespaces/tnt/plugins/json">
+    <xsd:import namespace="nsClaimResponseFcs" schemaLocation="/Services/NOVELTIESTRANSACTIONS.INSERT/SendFilesMail/Send_RejectedTransactions_File/Schemas/ValidatorFcsClaimResponse.xsd"/>
+    <pd:name>Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Transactions/Insert_Transactions.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>136</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>808</pd:endX>
+    <pd:endY>139</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472853958424</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>550</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>173</pd:width>
+        <pd:height>255</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-JSON/ns13:ActivityOutputClass/ns1:JSON/ns1:body</pd:over>
+            <pd:iterationElementSlot>Transactions_JSON</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>JSON_TRANSACTIONS</pd:outSlot>
+            <pd:activityOutputName>Insert_Transactions</pd:activityOutputName>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Insert_Transactions</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Insert_Transactions</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Catch</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Insert_Transactions">
+            <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+            <pd:x>629</pd:x>
+            <pd:y>71</pd:y>
+            <config>
+                <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                <commit>false</commit>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
+                <statement>insert into transactions values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>FileName</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>UserType</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ClaimDate</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>UsageDate</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ClearingDate</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>FCSCardNumber</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>CifredFCSCardNumber</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>TransactionSequenceNumber</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>CardTransactionNumber</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>AmountUsed</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>RemainingDailyBalance</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>DailyMaxDebitUse</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>TransportMeansGroupCd</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>TransportOperatorID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>LineID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>LineNm</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>RouteID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>RouteNm</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StationBusStopID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>StationBusStopNm</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>BusID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>DeviceID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>NumberTransfers</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>CardProfile</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>ReClaimCode</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <xsl:for-each select="$Transactions_JSON/ns1:body">
+                    <jdbcUpdateActivityInput>
+                        <FileName>
+                            <xsl:value-of select="$Read-File/ns2:ReadActivityOutputTextClass/fileInfo/fileName"/>
+                        </FileName>
+                        <UserType>
+                            <xsl:value-of select="ns1:UserType"/>
+                        </UserType>
+                        <ClaimDate>
+                            <xsl:value-of select="ns1:ClaimDate"/>
+                        </ClaimDate>
+                        <UsageDate>
+                            <xsl:value-of select="ns1:UsageDate"/>
+                        </UsageDate>
+                        <ClearingDate>
+                            <xsl:value-of select="ns1:ClearingDate"/>
+                        </ClearingDate>
+                        <FCSCardNumber>
+                            <xsl:value-of select="ns1:FCSCardNumber"/>
+                        </FCSCardNumber>
+                        <CifredFCSCardNumber>
+                            <xsl:value-of select="tib:hex-to-base64(ns1:FCSCardNumber)"/>
+                        </CifredFCSCardNumber>
+                        <TransactionSequenceNumber>
+                            <xsl:value-of select="ns1:TransactionSequenceNumber"/>
+                        </TransactionSequenceNumber>
+                        <CardTransactionNumber>
+                            <xsl:value-of select="ns1:CardTransactionNumber"/>
+                        </CardTransactionNumber>
+                        <AmountUsed>
+                            <xsl:value-of select="ns1:AmountUsed"/>
+                        </AmountUsed>
+                        <RemainingDailyBalance>
+                            <xsl:value-of select="ns1:RemainingDailyBalance"/>
+                        </RemainingDailyBalance>
+                        <DailyMaxDebitUse>
+                            <xsl:value-of select="ns1:DailyMaxDebitUse"/>
+                        </DailyMaxDebitUse>
+                        <TransportMeansGroupCd>
+                            <xsl:value-of select="ns1:TransportMeansGroupCd"/>
+                        </TransportMeansGroupCd>
+                        <TransportOperatorID>
+                            <xsl:value-of select="ns1:TransportOperatorID"/>
+                        </TransportOperatorID>
+                        <LineID>
+                            <xsl:value-of select="ns1:LineID"/>
+                        </LineID>
+                        <LineNm>
+                            <xsl:value-of select="ns1:LineNm"/>
+                        </LineNm>
+                        <RouteID>
+                            <xsl:value-of select="ns1:RouteID"/>
+                        </RouteID>
+                        <RouteNm>
+                            <xsl:value-of select="ns1:RouteNm"/>
+                        </RouteNm>
+                        <StationBusStopID>
+                            <xsl:value-of select="ns1:StationBusStopID"/>
+                        </StationBusStopID>
+                        <StationBusStopNm>
+                            <xsl:value-of select="ns1:StationBusStopNm"/>
+                        </StationBusStopNm>
+                        <BusID>
+                            <xsl:value-of select="ns1:BusID"/>
+                        </BusID>
+                        <DeviceID>
+                            <xsl:value-of select="ns1:DeviceID"/>
+                        </DeviceID>
+                        <NumberTransfers>
+                            <xsl:value-of select="ns1:NumberTransfers"/>
+                        </NumberTransfers>
+                        <CardProfile>
+                            <xsl:value-of select="ns1:CardProfile"/>
+                        </CardProfile>
+                        <ReClaimCode>
+                            <xsl:value-of select="ns1:ReClaimCode"/>
+                        </ReClaimCode>
+                    </jdbcUpdateActivityInput>
+                </xsl:for-each>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Catch">
+            <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+            <pd:resourceType>ae.activities.catch</pd:resourceType>
+            <pd:x>638</pd:x>
+            <pd:y>176</pd:y>
+            <pd:handler>true</pd:handler>
+            <config>
+                <catchAll>true</catchAll>
+            </config>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="GET_B9000AE">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>134</pd:x>
+        <pd:y>136</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns2:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Validations_Request/Validations_File_Local_Unzipped_Path,&#xA;'B9000.',$_globalVariables/ns:GlobalVariables/Noveltys_Request/BankID,'.',&#xA;tib:format-date(&quot;yyyyMMdd&quot;, tib:add-to-date(current-date(), 0, 0,-1)),&#xA;'*')"/>
+                </fileName>
+            </ns2:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>241</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns14:Errors_Save>
+                <ns14:error_message>
+                    <xsl:value-of select="&quot;No se encuentra el archivo de novedades para insertar Usos&quot;"/>
+                </ns14:error_message>
+                <ns14:id_process>
+                    <xsl:value-of select="$_processContext/ns3:ProcessContext/ProcessId"/>
+                </ns14:id_process>
+            </ns14:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>236</pd:x>
+        <pd:y>136</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>466</pd:x>
+        <pd:y>136</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="ns1:JSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns13:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Read-File/ns2:ReadActivityOutputTextClass/fileContent/textContent"/>
+                </jsonString>
+            </ns13:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>345</pd:x>
+        <pd:y>136</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns12:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="$GET_B9000AE/ns2:ListFilesActivityOutput/files/fileInfo[1]/fullName"/>
+                </fileName>
+                <encoding>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Encoding"/>
+                </encoding>
+            </ns12:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GET_B9000AE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GET_B9000AE</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:xpathDescription>Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($GET_B9000AE/ns2:ListFilesActivityOutput/files/fileInfo)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

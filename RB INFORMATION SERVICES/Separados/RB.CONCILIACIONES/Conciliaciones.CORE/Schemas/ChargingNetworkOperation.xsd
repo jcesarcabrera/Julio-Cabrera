@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd"
+	 xmlns:ns0="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd"
+	 xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd"
+	 targetNamespace="http://www.rbsas.co/schemas/RBInformationServices/Schemas/Version 1.0.0/InputOutput/ChargingNetworkOperation.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/GeneralSchemas/Version 1.0.0/BusinessObjects/AgentTransaction.xsd" schemaLocation="../../../RB.CONCILIACIONES/Conciliaciones.CORE/Schemas/BusinessObjects/AgentTransaction.xsd"/>
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="../../../RB.CONCILIACIONES/Conciliaciones.CORE/Schemas/BusinessObjects/Error.xsd"/>
+	<xs:element name="ChargingNetworkOperation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TransactionsSummary" minOccurs="0"/>
+				<xs:element ref="Transactions" minOccurs="0"/>
+				<xs:element ref="ErrorCount" minOccurs="0"/>
+				<xs:element ref="ns1:Error" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TransactionsSummary">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Clearingdate"/>
+				<xs:element ref="TotalRegistries"/>
+				<xs:element ref="TotalValue"/>
+				<xs:element ref="TotalExtraRegistries" minOccurs="0"/>
+				<xs:element ref="TotalExtraValue" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Clearingdate" type="xs:dateTime"/>
+	<xs:element name="TotalRegistries" type="xs:string"/>
+	<xs:element name="TotalValue" type="xs:string"/>
+	<xs:element name="Transactions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ns0:AgentTransaction" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TotalExtraRegistries" type="xs:string"/>
+	<xs:element name="TotalExtraValue" type="xs:string"/>
+	<xs:element name="ErrorCount" type="xs:byte"/>
+</xs:schema>

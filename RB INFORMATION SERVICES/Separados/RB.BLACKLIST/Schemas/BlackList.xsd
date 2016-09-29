@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/RBInformationServices/Schemas/Version 1.0.0/Response/BlackList.xsd"
+	 xmlns:ns1="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/RBInformationServices/Schemas/Version 1.0.0/Response/BlackList.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.rbsas.co/schemas/RBDAL/Schemas/Version 1.0.0/BusinessObjects/Error.xsd" schemaLocation="../../RB.BLACKLIST/Schemas/Error.xsd"/>
+	<xs:element name="BlackList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TotalCards" minOccurs="0"/>
+				<xs:element ref="CardNumber" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ErrorCount" minOccurs="0"/>
+				<xs:element ref="ns1:Error" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TotalCards" type="xs:int"/>
+	<xs:element name="CardNumber" type="xs:string"/>
+	<xs:element name="ErrorCount" type="xs:byte"/>
+</xs:schema>

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Services/NOVELTIESTRANSACTIONS.INSERT/UnitTest/InsertUsuarios_TEST.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>183</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>792</pd:endX>
+    <pd:endY>130</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472142688551</pd:targetNamespace>
+    <pd:activity name="List Files">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>112</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat(&#xA;$_globalVariables/ns1:GlobalVariables/Noveltys_Request/Noveltys_File_Local_Path,&#xA;$_globalVariables/ns1:GlobalVariables/Noveltys_Request/Noveltys_FileName_Prefix,&#xA;$_globalVariables/ns1:GlobalVariables/Noveltys_Request/Bank_Code,'*')"/>
+                </fileName>
+            </ns:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Lines">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>287</pd:x>
+        <pd:y>17</pd:y>
+        <pd:width>386</pd:width>
+        <pd:height>324</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$List-Files/ns:ListFilesActivityOutput/files/fileInfo</pd:over>
+            <pd:iterationElementSlot>CurrentFile</pd:iterationElementSlot>
+            <pd:indexSlot>idx</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>GetLinesFile</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Usuarios</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GetLinesFile</pd:from>
+            <pd:to>Usuarios</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GetLinesFile">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>354</pd:x>
+            <pd:y>188</pd:y>
+            <config>
+                <processName>/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Users/GetLinesFile.process</processName>
+            </config>
+            <pd:inputBindings>
+                <FileName>
+                    <xsl:value-of select="$CurrentFile/fileInfo/fullName"/>
+                </FileName>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:group name="Usuarios">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>413</pd:x>
+            <pd:y>47</pd:y>
+            <pd:width>237</pd:width>
+            <pd:height>259</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$GetLinesFile/Rows/line</pd:over>
+                <pd:iterationElementSlot>line</pd:iterationElementSlot>
+                <pd:indexSlot>idx1</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Parse Data</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Catch</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert Usuarios</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Parse Data</pd:from>
+                <pd:to>Insert Usuarios</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Insert Usuarios">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>490</pd:x>
+                <pd:y>109</pd:y>
+                <config>
+                    <timeout>%%Connections/MiddlewareDB/TimeOut%%</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <statement>INSERT INTO hcusers (TransportCardNumber, Cifred_TransportCardNumber, DocumentType, DocumentID, Names, LastName1, LastName2, Address, Genre, Email, Phone, MobilePhone, Occupation, DateTimeEEFile) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)</statement>
+                    <jdbcSharedConfig>/Connections/JDBCTIBCO.sharedjdbc</jdbcSharedConfig>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>TransportCardNumber</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Cifred_TransportCardNumber</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>DocumentType</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>DocumentID</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Names</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>LastName1</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>LastName2</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Address</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Genre</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Email</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Phone</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>MobilePhone</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>Occupation</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>DateTimeEEFile</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <TransportCardNumber>
+                            <xsl:value-of select="tib:base64-to-hex($Parse-Data/Output/Rows/Datos[1]/card_number)"/>
+                        </TransportCardNumber>
+                        <Cifred_TransportCardNumber>
+                            <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/card_number"/>
+                        </Cifred_TransportCardNumber>
+                        <DocumentType>
+                            <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/document_type"/>
+                        </DocumentType>
+                        <DocumentID>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/document_id)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/document_id"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </DocumentID>
+                        <Names>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/names)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/names"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </Names>
+                        <LastName1>
+                            <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/last_name"/>
+                        </LastName1>
+                        <LastName2>
+                            <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/second_last_name"/>
+                        </LastName2>
+                        <Address>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/address)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/address"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </Address>
+                        <Genre>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/gender)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/gender"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </Genre>
+                        <Email>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/email)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/email"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </Email>
+                        <Phone>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/phone)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/phone"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </Phone>
+                        <MobilePhone>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/mobile)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/mobile"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </MobilePhone>
+                        <Occupation>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-Data/Output/Rows/Datos[1]/occupation)">
+                                    <xsl:value-of select="$Parse-Data/Output/Rows/Datos[1]/occupation"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </Occupation>
+                        <DateTimeEEFile>
+                            <xsl:value-of select="substring($CurrentFile/fileInfo/fileName, 6, 14)"/>
+                        </DateTimeEEFile>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Parse Data">
+                <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
+                <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
+                <pd:x>489</pd:x>
+                <pd:y>208</pd:y>
+                <config>
+                    <InputType>String</InputType>
+                    <Encoding>ASCII</Encoding>
+                    <ParseSharedConfig>/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Users/Data Formats/FormatUsers.sharedparse</ParseSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <Input>
+                        <text>
+                            <xsl:value-of select="$line/line"/>
+                        </text>
+                        <noOfRecords>
+                            <xsl:value-of select="-1"/>
+                        </noOfRecords>
+                    </Input>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Catch">
+                <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+                <pd:resourceType>ae.activities.catch</pd:resourceType>
+                <pd:x>567</pd:x>
+                <pd:y>227</pd:y>
+                <pd:handler>true</pd:handler>
+                <config>
+                    <catchAll>true</catchAll>
+                </config>
+                <pd:inputBindings/>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>203</pd:x>
+        <pd:y>184</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>205</pd:x>
+        <pd:y>398</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns12:Errors_Save>
+                <ns12:error_message>
+                    <xsl:value-of select="&quot;No se encuentra el archivo de novedades para insertar Usuarios&quot;"/>
+                </ns12:error_message>
+                <ns12:id_process>
+                    <xsl:value-of select="$_processContext/ns2:ProcessContext/ProcessId"/>
+                </ns12:id_process>
+            </ns12:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>List Files</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>List Files</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Lines</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Lines</pd:to>
+        <pd:xpathDescription>Exist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($List-Files/ns:ListFilesActivityOutput/files/fileInfo)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions" xmlns:ns2="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/Errors_Audit_Save" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/DaviviendaHCS/Hybrid_Card_Davivienda/Logs_Management/Schemas/AUDIT" xmlns:ns="http://www.tibco.com/pe/EngineTypes">
+    <pd:name>Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Transactions/Insert_Transactions_Timer.process</pd:name>
+    <pd:startName>Timer_Transactions</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer_Transactions">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>63</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <StartTime>%%Mail/Timer%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>1</TimeInterval>
+            <FrequencyIndex>Day</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>528</pd:endX>
+    <pd:endY>36</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1472855014401</pd:targetNamespace>
+    <pd:activity name="Insert_Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>530</pd:x>
+        <pd:y>142</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Error.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:Errors_Save>
+                <ns2:error_message>
+                    <xsl:value-of select="$_error/ns:ErrorReport/StackTrace"/>
+                </ns2:error_message>
+                <ns2:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns2:id_process>
+            </ns2:Errors_Save>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Start_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>177</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns1:LOGS_SAVE>
+                <ns1:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
+                </ns1:process>
+                <ns1:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                </ns1:project>
+                <ns1:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns1:datetime>
+                <ns1:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns1:level>
+                <ns1:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Inicia la insercion de usos en la base de datos &quot;, $_processContext/ns:ProcessContext/ProcessId)"/>
+                </ns1:message>
+                <ns1:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns1:id_process>
+            </ns1:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="End_Log">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>426</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Audit_Management/Insert_Log.process</processName>
+            <spawn>true</spawn>
+        </config>
+        <pd:inputBindings>
+            <ns1:LOGS_SAVE>
+                <ns1:process>
+                    <xsl:value-of select="BW:getCurrentProcessName($_processContext/ns:ProcessContext/ProcessId)"/>
+                </ns1:process>
+                <ns1:project>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida&quot;, &quot; | &quot;, $_processContext/ns:ProcessContext/EngineName)"/>
+                </ns1:project>
+                <ns1:datetime>
+                    <xsl:value-of select="current-dateTime()"/>
+                </ns1:datetime>
+                <ns1:level>
+                    <xsl:value-of select="&quot;INFO&quot;"/>
+                </ns1:level>
+                <ns1:message>
+                    <xsl:value-of select="concat(&quot;Tarjeta Híbrida Davivienda | Finaliza la insercion de usos en la base de datos &quot;,$_processContext/ns:ProcessContext/ProcessId)"/>
+                </ns1:message>
+                <ns1:id_process>
+                    <xsl:value-of select="$_processContext/ns:ProcessContext/ProcessId"/>
+                </ns1:id_process>
+            </ns1:LOGS_SAVE>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>423</pd:x>
+        <pd:y>144</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Insert_Transactions">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>294</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Services/NOVELTIESTRANSACTIONS.INSERT/Insert_Transactions/Insert_Transactions.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer_Transactions</pd:from>
+        <pd:to>Start_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start_Log</pd:from>
+        <pd:to>Insert_Transactions</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Transactions</pd:from>
+        <pd:to>End_Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>End_Log</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Insert_Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert_Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

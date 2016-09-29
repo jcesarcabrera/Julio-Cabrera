@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>Catalina Montero</authorProperty>
+        </sharedArchive>
+        <processArchive name="RB.TARJETAHIBRIDA.DAVIVIENDA.TRANSACTIONS">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Julio Cabrera</authorProperty>
+            <processProperty>/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter.process,/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_Response/Interface/Get_Validations_Response_Starter.process,/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Interface/Get_Validations_Starter_Manual.process,/Services/TARJETAHIBRIDA.TRANSACTIONS/Validations/Get_Validations_FromFCS/Contingencias/ContingenciasMain.process</processProperty>
+        </processArchive>
+        <versionProperty>9</versionProperty>
+        <authorProperty>Julio Cabrera</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>RB.TARJETAHIBRIDA.DAVIVIENDA.TRANSACTIONS</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\WorkSpaceRB\TARJETA HIBRIDA DAVIVIENDA\DEPLOYMENTS\RB.TARJETAHIBRIDA.DAVIVIENDA.TRANSACTIONS.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>
